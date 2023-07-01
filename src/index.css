@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Akshar', sans-serif;
+  }
+}
+
+@layer utilities {
+
+  /* .active-menu_item::before {} */
+
+  .font-barlow {
+    @apply font-['Barlow']
+  }
+
+  .hover-menu_item::before,
+  .active-menu_item::before {
+    content: "";
+    width: 4px;
+    height: 0;
+    background-color: #DD3333;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .5s ease-in;
+    left: 0;
+  }
+
+  .active-menu_item::before {
+    height: 20px;
+    opacity: 1;
+  }
+
+  .hover-menu_item:hover::before {
+    opacity: 1;
+    height: 20px;
+  }
+
+  .service-card {
+    @apply relative
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    background-color: #DD3333;
+    transition: all .3s ease-in;
+  }
+}

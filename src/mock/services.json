@@ -1,0 +1,32 @@
+[
+	{
+		"id": 1,
+		"code": "RELOCATION_PACK_MOVE",
+		"name": "Relocation - Packers and Movers",
+		"description": "Relocation - Packers and Movers"
+	},
+	{
+		"id": 2,
+		"code": "COURIER_CARGO",
+		"name": "Courier and Cargo",
+		"description": "Courier and Cargo"
+	},
+	{
+		"id": 3,
+		"code": "TRUCKING",
+		"name": "Trucking",
+		"description": "Trucking"
+	},
+	{
+		"id": 4,
+		"code": "WAREHOUSE",
+		"name": "Warehousing",
+		"description": "Warehousing"
+	},
+	{
+		"id": 5,
+		"code": "AIR_AMBULANCE",
+		"name": "Air Ambulance",
+		"description": "Air Ambulance"
+	}
+]

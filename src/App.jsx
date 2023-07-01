@@ -1,0 +1,42 @@
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+
+import "./App.css";
+
+// PAGES
+import NotFound from "./pages/NotFound";
+import RootLayout from "./pages/RootLayout";
+import Relocation from "./pages/relocation/Relocation";
+import Home from "./pages/home/Home";
+
+function App() {
+	const router = createBrowserRouter([
+		{
+			path: "/",
+			element: <RootLayout />,
+			// errorElement: <ErrorPage />,
+			children: [
+				// {index: true, element: <LandingPage />},
+				{
+					index: true,
+					element: <Home />,
+				},
+				{
+					path: "/RELOCATION_PACK_MOVE",
+					element: <Relocation />,
+				},
+			],
+		},
+
+		{
+			path: "*",
+			element: <NotFound />,
+		},
+	]);
+	return (
+		<>
+			<RouterProvider router={router} />
+		</>
+	);
+}
+
+export default App;
