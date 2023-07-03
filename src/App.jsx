@@ -1,6 +1,10 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {LoadScript} from "@react-google-maps/api";
 
 import "./App.css";
+
+// UTILS
+import {API_KEY} from "./utils/variables";
 
 // PAGES
 import NotFound from "./pages/NotFound";
@@ -33,9 +37,9 @@ function App() {
 		},
 	]);
 	return (
-		<>
+		<LoadScript googleMapsApiKey={API_KEY} libraries={["places", "geometry"]}>
 			<RouterProvider router={router} />
-		</>
+		</LoadScript>
 	);
 }
 
