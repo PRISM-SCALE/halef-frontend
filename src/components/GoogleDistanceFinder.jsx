@@ -3,6 +3,7 @@ import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 
 import GoogleAutocomplete from "./forms/GoogleAutocomplete";
+import {calculateDistance} from "../utils/distanceCalculation";
 
 const GoogleDistanceFinder = () => {
 	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
@@ -16,31 +17,31 @@ const GoogleDistanceFinder = () => {
 		setValue,
 	} = useFormContext();
 
-	const calculateDistance = () => {
-		if (pickupAutocomplete && dropoffAutocomplete) {
-			const origin = pickupAutocomplete.getPlace().geometry.location;
-			const destination = dropoffAutocomplete.getPlace().geometry.location;
+	// const calculateDistance = () => {
+	// 	if (pickupAutocomplete && dropoffAutocomplete) {
+	// 		const origin = pickupAutocomplete.getPlace().geometry.location;
+	// 		const destination = dropoffAutocomplete.getPlace().geometry.location;
 
-			const service = new window.google.maps.DistanceMatrixService();
-			service.getDistanceMatrix(
-				{
-					origins: [origin],
-					destinations: [destination],
-					travelMode: "DRIVING",
-				},
-				(response, status) => {
-					if (status === "OK") {
-						const result = response.rows[0].elements[0];
-						if (result.status === "OK") {
-							setDistance(result.distance.text);
-						}
-					} else {
-						console.log("Error calculating distance:", status);
-					}
-				}
-			);
-		}
-	};
+	// 		const service = new window.google.maps.DistanceMatrixService();
+	// 		service.getDistanceMatrix(
+	// 			{
+	// 				origins: [origin],
+	// 				destinations: [destination],
+	// 				travelMode: "DRIVING",
+	// 			},
+	// 			(response, status) => {
+	// 				if (status === "OK") {
+	// 					const result = response.rows[0].elements[0];
+	// 					if (result.status === "OK") {
+	// 						setDistance(result.distance.text);
+	// 					}
+	// 				} else {
+	// 					console.log("Error calculating distance:", status);
+	// 				}
+	// 			}
+	// 		);
+	// 	}
+	// };
 
 	const onLoadPickup = (autocomplete) => {
 		console.log("pickup autocomplete: ", autocomplete);
@@ -71,7 +72,7 @@ const GoogleDistanceFinder = () => {
 			console.log(place);
 			if (place) {
 				setValue("dropoff", place.formatted_address);
-				calculateDistance();
+				calculateDistance(pickupAutocomplete, dropoffAutocomplete, setDistance);
 			}
 		} else {
 			console.log("Dropoff Autocomplete is not loaded yet!");
