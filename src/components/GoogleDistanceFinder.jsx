@@ -5,34 +5,46 @@ import {Autocomplete} from "@react-google-maps/api";
 import GoogleAutocomplete from "./forms/GoogleAutocomplete";
 
 const GoogleDistanceFinder = () => {
-	const [autocomplete, setAutocomplete] = useState(null);
+	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
+	const [dropoffAutocomplete, setDropoffAutocomplete] = useState(null);
 
 	const {
 		control,
 		formState: {errors},
-		// setValue,
+		setValue,
 	} = useFormContext();
 
-	const onLoad = (autocomplete) => {
-		console.log("autocomplete: ", autocomplete);
-		setAutocomplete(autocomplete);
+	const onLoadPickup = (autocomplete) => {
+		console.log("pickup autocomplete: ", autocomplete);
+		setPickupAutocomplete(autocomplete);
+	};
+
+	const onLoadDropoff = (autocomplete) => {
+		console.log("dropoff autocomplete: ", autocomplete);
+		setDropoffAutocomplete(autocomplete);
 	};
 
 	const onPlaceChangedForPickup = () => {
-		if (autocomplete !== null) {
-			console.log(autocomplete.getPlace());
-			// setValue("pickup", autocomplete.getPlace());
+		if (pickupAutocomplete !== null) {
+			const place = pickupAutocomplete.getPlace();
+			console.log(place);
+			if (place) {
+				setValue("pickup", place.formatted_address);
+			}
 		} else {
-			console.log("Autocomplete is not loaded yet!");
+			console.log("Pickup Autocomplete is not loaded yet!");
 		}
 	};
 
 	const onPlaceChangedForDropoff = () => {
-		if (autocomplete !== null) {
-			console.log(autocomplete.getPlace());
-			// setValue("dropoff", autocomplete.getPlace());
+		if (dropoffAutocomplete !== null) {
+			const place = dropoffAutocomplete.getPlace();
+			console.log(place);
+			if (place) {
+				setValue("dropoff", place.formatted_address);
+			}
 		} else {
-			console.log("Autocomplete is not loaded yet!");
+			console.log("Dropoff Autocomplete is not loaded yet!");
 		}
 	};
 
@@ -47,11 +59,9 @@ const GoogleDistanceFinder = () => {
 					render={({field}) => {
 						return (
 							<>
-								<Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChangedForPickup}>
+								<Autocomplete onLoad={onLoadPickup} onPlaceChanged={onPlaceChangedForPickup}>
 									<GoogleAutocomplete
 										placeholder="Pickup Location"
-										onLoad={onLoad}
-										onPalceChanged={onPlaceChangedForPickup}
 										ref={field.ref}
 										autoFocus
 										{...field}
@@ -76,14 +86,14 @@ const GoogleDistanceFinder = () => {
 					rules={{required: "Please enter a dropoff location"}}
 					render={({field}) => (
 						<>
-							<GoogleAutocomplete
-								placeholder="Dropoff Location"
-								ref={field.ref}
-								onLoad={onLoad}
-								onPalceChanged={onPlaceChangedForDropoff}
-								autoFocus
-								{...field}
-							/>
+							<Autocomplete onLoad={onLoadDropoff} onPlaceChanged={onPlaceChangedForDropoff}>
+								<GoogleAutocomplete
+									placeholder="Dropoff Location"
+									ref={field.ref}
+									autoFocus
+									{...field}
+								/>
+							</Autocomplete>
 							{errors.dropoff && (
 								<p role="alert" className="text-[#ef4444] leading-none">
 									{errors.dropoff.message}

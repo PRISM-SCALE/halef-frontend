@@ -10,7 +10,7 @@ import {API_KEY} from "./utils/variables";
 import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
 import Relocation from "./pages/relocation/Relocation";
-import Home from "./pages/home/Home";
+import Home, {serviceLoader} from "./pages/home/Home";
 
 function App() {
 	const router = createBrowserRouter([
@@ -23,9 +23,10 @@ function App() {
 				{
 					index: true,
 					element: <Home />,
+					loader: serviceLoader,
 				},
 				{
-					path: "/RELOCATION_PACK_MOVE",
+					path: "/RELOCATION",
 					element: <Relocation />,
 				},
 			],
@@ -36,6 +37,7 @@ function App() {
 			element: <NotFound />,
 		},
 	]);
+
 	return (
 		<LoadScript googleMapsApiKey={API_KEY} libraries={["places", "geometry"]}>
 			<RouterProvider router={router} />
