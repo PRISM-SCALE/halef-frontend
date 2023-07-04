@@ -1,7 +1,7 @@
 export const calculateDistance = (pickupAutocomplete, dropoffAutocomplete, setDistance) => {
 	if (pickupAutocomplete && dropoffAutocomplete) {
-		const origin = pickupAutocomplete.getPlace().geometry.location;
-		const destination = dropoffAutocomplete.getPlace().geometry.location;
+		const origin = pickupAutocomplete.getPlace().geometry.location; // * || .formatted_address
+		const destination = dropoffAutocomplete.getPlace().geometry.location; // * || .formatted_address
 
 		const service = new window.google.maps.DistanceMatrixService();
 		service.getDistanceMatrix(
