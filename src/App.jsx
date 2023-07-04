@@ -12,6 +12,9 @@ import RootLayout from "./pages/RootLayout";
 import Relocation from "./pages/relocation/Relocation";
 import Home, {serviceLoader} from "./pages/home/Home";
 import Cargo from "./pages/cargo/cargo";
+import Trucking from "./pages/trucking/Trucking";
+import Warehouse from "./pages/warehouse/Warehouse";
+import AirAmbulance from "./pages/ambulance/AirAmbulance";
 
 function App() {
 	const router = createBrowserRouter([
@@ -29,10 +32,21 @@ function App() {
 					path: "/relocation",
 					element: <Relocation />,
 				},
-
 				{
 					path: "/couriercargo",
 					element: <Cargo />,
+				},
+				{
+					path: "/trucking",
+					element: <Trucking />,
+				},
+				{
+					path: "/warehouse",
+					element: <Warehouse />,
+				},
+				{
+					path: "/airambulance",
+					element: <AirAmbulance />,
 				},
 			],
 		},

@@ -1,9 +1,10 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // COMPONENTS
 import Header from "../../components/Header";
 import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
+import ServiceWrapper from "../../components/ServiceWrapper";
 
 // ---------------------------------------------------------------------
 // * RELOCATION FORM COMPONENT START
@@ -15,6 +16,11 @@ const Relocation = () => {
 		defaultValues: {
 			pickup: "",
 			dropoff: "",
+			insurance: false,
+			houseCapcity: "",
+			truckType: "",
+			packingtype: "",
+			goodsValue: "",
 		},
 	});
 
@@ -22,11 +28,22 @@ const Relocation = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
+		formState,
+		reset,
 	} = methods;
+
+	useEffect(() => {
+		if (formState.isSubmitSuccessful) {
+			reset();
+		}
+	}, [formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-	const onSubmit = (data) => console.log(data);
+	const onSubmit = (data) => {
+		console.log(data);
+		reset();
+	};
 
 	const header_name = (
 		<>
@@ -34,7 +51,7 @@ const Relocation = () => {
 		</>
 	);
 	return (
-		<div className="py-8">
+		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
 			<FormProvider {...methods}>
@@ -58,7 +75,7 @@ const Relocation = () => {
 							<option value="3BHK">3BHK</option>
 						</select>
 						{errors.houseCapacity && (
-							<p role="alert" className="text-[#ef4444] leading-none">
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.houseCapacity?.message}
 							</p>
 						)}
@@ -74,14 +91,14 @@ const Relocation = () => {
 							placeholder="Choose your truck type"
 							{...register("truckType", {required: "Choose the truck type based on your needs"})}
 						>
-							{/* <option selected>Choose your truck type</option> */}
+							<option value="">Choose your truck type</option>
 							<option value="TATA ACE">TATA ACE</option>
 							<option value="MAHINDRA BOLERO PICK UP">MAHINDRA BOLERO PICK UP</option>
 							<option value="TATA 407">TATA 407</option>
 							<option value="EICHER 14 FEET">EICHER 14 FEET</option>
 						</select>
 						{errors.truckType && (
-							<p role="alert" className="text-[#ef4444] leading-none">
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.truckType?.message}
 							</p>
 						)}
@@ -97,16 +114,14 @@ const Relocation = () => {
 							placeholder="Choose a packing type"
 							{...register("packingType", {required: "Choose a packing type"})}
 						>
-							{/* <option selected>
-							<span className="">Choose your packing</span>
-						</option> */}
+							<option value="">Choose your packing</option>
 							<option value="NOT REQUIRED ">NOT REQUIRED</option>
 							<option value="SEMI PACKING">SEMI PACKING</option>
 							<option value="FULL PACKING ">FULL PACKING </option>
 							<option value="FRAGILE PACKING ">FRAGILE PACKING </option>
 						</select>
 						{errors.packingType && (
-							<p role="alert" className="text-[#ef4444] leading-none">
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.packingType?.message}
 							</p>
 						)}
@@ -118,7 +133,7 @@ const Relocation = () => {
 							type="checkbox"
 							name="insurance"
 							id="relocation-insurance"
-							{...register("insurance", {required: true})}
+							{...register("insurance")}
 							checked={isChecked}
 							onChange={() => setIsChecked(!isChecked)}
 						/>
@@ -137,7 +152,7 @@ const Relocation = () => {
 								aria-invalid={errors.goodsValue ? "true" : "false"}
 							/>
 							{errors.goodsValue && (
-								<p role="alert" className="text-[#ef4444] leading-none">
+								<p role="alert" className="text-[#ef4444] leading-none mt-1">
 									{errors.goodsValue?.message}
 								</p>
 							)}
@@ -152,7 +167,7 @@ const Relocation = () => {
 					</button>
 				</form>
 			</FormProvider>
-		</div>
+		</ServiceWrapper>
 	);
 };
 

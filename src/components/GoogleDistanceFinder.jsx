@@ -79,7 +79,7 @@ const GoogleDistanceFinder = () => {
 									/>
 								</Autocomplete>
 								{errors.pickup && (
-									<p role="alert" className="text-[#ef4444] leading-none">
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
 										{errors.pickup.message}
 									</p>
 								)}
@@ -101,15 +101,10 @@ const GoogleDistanceFinder = () => {
 					render={({field}) => (
 						<>
 							<Autocomplete onLoad={onLoadDropoff} onPlaceChanged={onPlaceChangedForDropoff}>
-								<GoogleAutocomplete
-									placeholder="Destination Address"
-									ref={field.ref}
-									autoFocus
-									{...field}
-								/>
+								<GoogleAutocomplete placeholder="Destination Address" ref={field.ref} {...field} />
 							</Autocomplete>
 							{errors.dropoff && (
-								<p role="alert" className="text-[#ef4444] leading-none">
+								<p role="alert" className="text-[#ef4444] leading-none mt-1">
 									{errors.dropoff.message}
 								</p>
 							)}
