@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
 import Relocation from "./pages/relocation/Relocation";
 import Home, {serviceLoader} from "./pages/home/Home";
+import Cargo from "./pages/cargo/cargo";
 
 function App() {
 	const router = createBrowserRouter([
@@ -19,15 +20,19 @@ function App() {
 			element: <RootLayout />,
 			// errorElement: <ErrorPage />,
 			children: [
-				// {index: true, element: <LandingPage />},
 				{
 					index: true,
 					element: <Home />,
 					loader: serviceLoader,
 				},
 				{
-					path: "/RELOCATION",
+					path: "/relocation",
 					element: <Relocation />,
+				},
+
+				{
+					path: "/couriercargo",
+					element: <Cargo />,
 				},
 			],
 		},
