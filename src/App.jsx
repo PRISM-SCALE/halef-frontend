@@ -1,5 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {LoadScript} from "@react-google-maps/api";
+import {LoadScriptNext} from "@react-google-maps/api";
 
 import "./App.css";
 
@@ -15,6 +15,8 @@ import Cargo from "./pages/cargo/cargo";
 import Trucking from "./pages/trucking/Trucking";
 import Warehouse from "./pages/warehouse/Warehouse";
 import AirAmbulance from "./pages/ambulance/AirAmbulance";
+
+const lib = ["places", "geometry"];
 
 function App() {
 	const router = createBrowserRouter([
@@ -59,9 +61,9 @@ function App() {
 	]);
 
 	return (
-		<LoadScript googleMapsApiKey={API_KEY} libraries={["places", "geometry"]}>
+		<LoadScriptNext googleMapsApiKey={API_KEY} libraries={[...lib]}>
 			<RouterProvider router={router} />
-		</LoadScript>
+		</LoadScriptNext>
 	);
 }
 

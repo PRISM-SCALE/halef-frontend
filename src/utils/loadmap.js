@@ -1,3 +1,5 @@
+import {API_KEY} from "./variables";
+
 ((g) => {
 	var h,
 		a,
@@ -34,7 +36,7 @@
 		? console.warn(p + " only loads once. Ignoring:", g)
 		: (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
 })({
-	key: `${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`,
+	key: API_KEY,
 	v: "weekly",
 	// Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
 	// Add other bootstrap parameters as needed, using camel case.
