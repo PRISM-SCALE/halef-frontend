@@ -40,16 +40,18 @@ const Relocation = () => {
 			<FormProvider {...methods}>
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
 					<GoogleDistanceFinder />
+
 					<div>
+						<label htmlFor="houseCapcity" className="text-[#f8bf02]">
+							House Type
+						</label>
 						<select
 							name="houseCapcity"
 							className="input-fields appearance-none"
 							placeholder="Choose your house capacity"
 							{...register("houseCapacity", {required: "Please select your house capacity size"})}
 						>
-							{/* <option selected>
-							<span className="">Choose your house capacity</span>
-						</option> */}
+							<option value="">Choose your house capacity</option>
 							<option value="1RK">1RK</option>
 							<option value="1BHK">1BHK</option>
 							<option value="2BHK">2BHK</option>
@@ -63,6 +65,9 @@ const Relocation = () => {
 					</div>
 
 					<div>
+						<label htmlFor="truckType" className="text-[#f8bf02]">
+							Truck Type
+						</label>
 						<select
 							name="truckType"
 							className="input-fields appearance-none"
@@ -83,6 +88,9 @@ const Relocation = () => {
 					</div>
 
 					<div>
+						<label htmlFor="packingtype" className="text-[#f8bf02]">
+							Packaging Type
+						</label>
 						<select
 							name="packingtype"
 							className="input-fields appearance-none"
@@ -117,7 +125,11 @@ const Relocation = () => {
 
 					{isChecked && (
 						<div>
+							<label htmlFor="goodsValue" className="text-[#f8bf02]">
+								Your Goods Value
+							</label>
 							<input
+								name="goodsValue"
 								className="input-fields"
 								placeholder="Enter your goods value"
 								{...register("goodsValue", {required: "Please enter your value of the goods"})}

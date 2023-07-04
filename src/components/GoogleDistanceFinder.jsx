@@ -57,6 +57,9 @@ const GoogleDistanceFinder = () => {
 		<>
 			{distance && <p>Distance: {distance}</p>}
 			<div>
+				<label htmlFor="pickup" className="text-[#f8bf02]">
+					Pickup Location
+				</label>
 				<Controller
 					name={"pickup"}
 					id={"pickup"}
@@ -85,6 +88,9 @@ const GoogleDistanceFinder = () => {
 			</div>
 
 			<div>
+				<label htmlFor="dropoff" className="text-[#f8bf02]">
+					Dropoff Location
+				</label>
 				<Controller
 					name={"dropoff"}
 					id={"dropoff"}
