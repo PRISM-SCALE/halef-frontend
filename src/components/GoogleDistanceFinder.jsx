@@ -46,6 +46,8 @@ const GoogleDistanceFinder = () => {
 			console.log(place);
 			if (place) {
 				setValue("dropoff", place.formatted_address);
+
+				// * Calculate Distance
 				calculateDistance(pickupAutocomplete, dropoffAutocomplete, setDistance);
 			}
 		} else {
@@ -70,7 +72,7 @@ const GoogleDistanceFinder = () => {
 							<>
 								<Autocomplete onLoad={onLoadPickup} onPlaceChanged={onPlaceChangedForPickup}>
 									<GoogleAutocomplete
-										placeholder="Pickup Location"
+										placeholder="Pickup Address"
 										ref={field.ref}
 										autoFocus
 										{...field}
@@ -100,7 +102,7 @@ const GoogleDistanceFinder = () => {
 						<>
 							<Autocomplete onLoad={onLoadDropoff} onPlaceChanged={onPlaceChangedForDropoff}>
 								<GoogleAutocomplete
-									placeholder="Dropoff Location"
+									placeholder="Destination Address"
 									ref={field.ref}
 									autoFocus
 									{...field}

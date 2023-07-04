@@ -47,7 +47,7 @@ const Relocation = () => {
 						</label>
 						<select
 							name="houseCapcity"
-							className="input-fields appearance-none"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose your house capacity"
 							{...register("houseCapacity", {required: "Please select your house capacity size"})}
 						>
@@ -70,7 +70,7 @@ const Relocation = () => {
 						</label>
 						<select
 							name="truckType"
-							className="input-fields appearance-none"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose your truck type"
 							{...register("truckType", {required: "Choose the truck type based on your needs"})}
 						>
@@ -93,7 +93,7 @@ const Relocation = () => {
 						</label>
 						<select
 							name="packingtype"
-							className="input-fields appearance-none"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose a packing type"
 							{...register("packingType", {required: "Choose a packing type"})}
 						>
@@ -118,6 +118,7 @@ const Relocation = () => {
 							type="checkbox"
 							name="insurance"
 							id="relocation-insurance"
+							{...register("insurance", {required: true})}
 							checked={isChecked}
 							onChange={() => setIsChecked(!isChecked)}
 						/>
@@ -130,7 +131,7 @@ const Relocation = () => {
 							</label>
 							<input
 								name="goodsValue"
-								className="input-fields"
+								className="input-fields focus:outline-[#dd3333]"
 								placeholder="Enter your goods value"
 								{...register("goodsValue", {required: "Please enter your value of the goods"})}
 								aria-invalid={errors.goodsValue ? "true" : "false"}

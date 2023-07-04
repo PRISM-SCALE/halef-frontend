@@ -4,7 +4,14 @@ import {forwardRef} from "react";
 const GoogleAutocomplete = forwardRef((props, ref) => {
 	const {placeholder, ...otherProps} = props;
 
-	return <input ref={ref} className="input-fields" placeholder={placeholder} {...otherProps} />;
+	return (
+		<input
+			ref={ref}
+			className="input-fields focus:outline-[#dd3333]"
+			placeholder={placeholder}
+			{...otherProps}
+		/>
+	);
 });
 
 GoogleAutocomplete.propTypes = {
