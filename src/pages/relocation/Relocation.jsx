@@ -34,7 +34,15 @@ const Relocation = () => {
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset();
+			reset({
+				pickup: "",
+				dropoff: "",
+				insurance: false,
+				houseCapcity: "",
+				truckType: "",
+				packingtype: "",
+				goodsValue: "",
+			});
 		}
 	}, [formState, reset]);
 
@@ -42,7 +50,6 @@ const Relocation = () => {
 	// * HANDLER FUNCTIONS
 	const onSubmit = (data) => {
 		console.log(data);
-		reset();
 	};
 
 	const header_name = (

@@ -6,7 +6,7 @@ const Header = ({caption, title}) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	return (
-		<div className="mb-10">
+		<div className="mb-6">
 			<div className="relative py-2 flex items-center gap-4">
 				{location.pathname === "/" ? null : (
 					<Icon

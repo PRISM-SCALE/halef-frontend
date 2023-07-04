@@ -4,7 +4,7 @@ const Navbar = () => {
 	return (
 		<div
 			style={{
-				height: "100px",
+				height: "80px",
 				display: "flex",
 				justifyContent: "space-between",
 				alignItems: "center",
