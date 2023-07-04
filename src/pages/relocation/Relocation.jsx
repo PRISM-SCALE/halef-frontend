@@ -1,27 +1,31 @@
 import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
-// COMPONENTS
+// * COMPONENTS
 import Header from "../../components/Header";
 import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
 import ServiceWrapper from "../../components/ServiceWrapper";
+import FormWrapper from "../../components/forms/FormWrapper";
+import Button from "../../components/forms/Button";
 
 // ---------------------------------------------------------------------
 // * RELOCATION FORM COMPONENT START
+
+const INITIAL_VALUES = {
+	pickup: "",
+	dropoff: "",
+	insurance: false,
+	houseCapcity: "",
+	vehicle: "",
+	packingtype: "",
+	goodsValue: "",
+};
 
 const Relocation = () => {
 	const [isChecked, setIsChecked] = useState(false);
 
 	const methods = useForm({
-		defaultValues: {
-			pickup: "",
-			dropoff: "",
-			insurance: false,
-			houseCapcity: "",
-			truckType: "",
-			packingtype: "",
-			goodsValue: "",
-		},
+		defaultValues: {...INITIAL_VALUES},
 	});
 
 	const {
@@ -30,21 +34,16 @@ const Relocation = () => {
 		handleSubmit,
 		formState,
 		reset,
+		clearErrors,
 	} = methods;
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset({
-				pickup: "",
-				dropoff: "",
-				insurance: false,
-				houseCapcity: "",
-				truckType: "",
-				packingtype: "",
-				goodsValue: "",
-			});
+			reset({...INITIAL_VALUES});
+
+			clearErrors({...INITIAL_VALUES});
 		}
-	}, [formState, reset]);
+	}, [clearErrors, formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -62,7 +61,7 @@ const Relocation = () => {
 			<Header caption="cost estimation for" title={header_name} />
 
 			<FormProvider {...methods}>
-				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<GoogleDistanceFinder />
 
 					<div>
@@ -89,24 +88,24 @@ const Relocation = () => {
 					</div>
 
 					<div>
-						<label htmlFor="truckType" className="text-[#f8bf02]">
-							Truck Type
+						<label htmlFor="vehicle" className="text-[#f8bf02]">
+							Select vehicle
 						</label>
 						<select
-							name="truckType"
+							name="vehicle"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose your truck type"
-							{...register("truckType", {required: "Choose the truck type based on your needs"})}
+							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
-							<option value="">Choose your truck type</option>
+							<option value="">Choose your vehicle</option>
 							<option value="TATA ACE">TATA ACE</option>
 							<option value="MAHINDRA BOLERO PICK UP">MAHINDRA BOLERO PICK UP</option>
 							<option value="TATA 407">TATA 407</option>
 							<option value="EICHER 14 FEET">EICHER 14 FEET</option>
 						</select>
-						{errors.truckType && (
+						{errors.vehicle && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.truckType?.message}
+								{errors.vehicle?.message}
 							</p>
 						)}
 					</div>
@@ -166,13 +165,8 @@ const Relocation = () => {
 						</div>
 					)}
 
-					<button
-						type="submit"
-						className="px-6 py-3 bg-[#dd3333] text-white uppercase w-1/2 mx-auto"
-					>
-						calculate
-					</button>
-				</form>
+					<Button buttonText="calculate" />
+				</FormWrapper>
 			</FormProvider>
 		</ServiceWrapper>
 	);

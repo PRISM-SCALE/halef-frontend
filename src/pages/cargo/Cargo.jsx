@@ -1,22 +1,28 @@
+import {useEffect} from "react";
 import {FormProvider, useForm} from "react-hook-form";
+
+// * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
-import {useEffect} from "react";
+import FormWrapper from "../../components/forms/FormWrapper";
+import Button from "../../components/forms/Button";
+
+const INITIAL_VALUES = {
+	region: "",
+	docType: "",
+	pickup: "",
+	dropoff: "",
+	weight: null,
+	length: null,
+	width: null,
+	height: null,
+	shipmentService: "",
+};
 
 const Cargo = () => {
 	const methods = useForm({
-		defaultValues: {
-			region: "",
-			docType: "",
-			pickup: "",
-			dropoff: "",
-			weight: null,
-			length: null,
-			width: null,
-			height: null,
-			shipmentService: "",
-		},
+		defaultValues: {...INITIAL_VALUES},
 	});
 
 	const {
@@ -25,21 +31,16 @@ const Cargo = () => {
 		handleSubmit,
 		formState,
 		reset,
+		clearErrors,
 	} = methods;
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset({
-				pickup: "",
-				dropoff: "",
-				insurance: false,
-				houseCapcity: "",
-				truckType: "",
-				packingtype: "",
-				goodsValue: "",
-			});
+			reset({...INITIAL_VALUES});
+
+			clearErrors({...INITIAL_VALUES});
 		}
-	}, [formState, reset]);
+	}, [clearErrors, formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -58,7 +59,7 @@ const Cargo = () => {
 			{/* FORM */}
 
 			<FormProvider {...methods}>
-				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<div>
 						<label htmlFor="region" className="text-[#f8bf02]">
 							Select Your Region
@@ -203,13 +204,8 @@ const Cargo = () => {
 						)}
 					</div>
 
-					<button
-						type="submit"
-						className="px-6 py-3 bg-[#dd3333] text-white uppercase w-1/2 mx-auto mt-8"
-					>
-						calculate
-					</button>
-				</form>
+					<Button buttonText="calculate" />
+				</FormWrapper>
 			</FormProvider>
 		</ServiceWrapper>
 	);
