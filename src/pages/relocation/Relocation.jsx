@@ -7,10 +7,10 @@ import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
+import {getPackageTypes, getRelocationHouseType} from "../../utils/api";
+import {defer, useLoaderData} from "react-router-dom";
 
-// ---------------------------------------------------------------------
-// * RELOCATION FORM COMPONENT START
-
+// * INITIAL FORM VALUES
 const INITIAL_VALUES = {
 	pickup: "",
 	dropoff: "",
@@ -21,8 +21,14 @@ const INITIAL_VALUES = {
 	goodsValue: "",
 };
 
+// ---------------------------------------------------------------------
+// * RELOCATION FORM COMPONENT START
+
 const Relocation = () => {
+	const {relocationHouseTypes, packingTypes} = useLoaderData();
 	const [isChecked, setIsChecked] = useState(false);
+
+	console.log(relocationHouseTypes);
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -35,6 +41,7 @@ const Relocation = () => {
 		formState,
 		reset,
 		clearErrors,
+		watch,
 	} = methods;
 
 	useEffect(() => {
@@ -44,6 +51,9 @@ const Relocation = () => {
 			clearErrors({...INITIAL_VALUES});
 		}
 	}, [clearErrors, formState, reset]);
+
+	// * So use filter method to show vehicles based on house type
+	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -56,6 +66,7 @@ const Relocation = () => {
 			Relocation - <strong className="text-[#DD3333]">Packers and Movers</strong>
 		</>
 	);
+
 	return (
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
@@ -75,10 +86,13 @@ const Relocation = () => {
 							{...register("houseCapacity", {required: "Please select your house capacity size"})}
 						>
 							<option value="">Choose your house capacity</option>
-							<option value="1RK">1RK</option>
-							<option value="1BHK">1BHK</option>
-							<option value="2BHK">2BHK</option>
-							<option value="3BHK">3BHK</option>
+							{relocationHouseTypes.map(({_id, type}) => {
+								return (
+									<option key={_id} value={type}>
+										{type}
+									</option>
+								);
+							})}
 						</select>
 						{errors.houseCapacity && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -92,6 +106,7 @@ const Relocation = () => {
 							Select vehicle
 						</label>
 						<select
+							disabled={!watch("houseCapacity")}
 							name="vehicle"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose your truck type"
@@ -121,10 +136,13 @@ const Relocation = () => {
 							{...register("packingType", {required: "Choose a packing type"})}
 						>
 							<option value="">Choose your packing</option>
-							<option value="NOT REQUIRED ">NOT REQUIRED</option>
-							<option value="SEMI PACKING">SEMI PACKING</option>
-							<option value="FULL PACKING ">FULL PACKING </option>
-							<option value="FRAGILE PACKING ">FRAGILE PACKING </option>
+							{packingTypes.map(({_id, code, name}) => {
+								return (
+									<option key={_id} value={code}>
+										{name}
+									</option>
+								);
+							})}
 						</select>
 						{errors.packingType && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -171,5 +189,13 @@ const Relocation = () => {
 		</ServiceWrapper>
 	);
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function relocationLoader() {
+	const relocationHouseTypes = await getRelocationHouseType();
+	const packingTypes = await getPackageTypes();
+
+	return defer({relocationHouseTypes, packingTypes});
+}
 
 export default Relocation;

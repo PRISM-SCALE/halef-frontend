@@ -9,8 +9,8 @@ import {API_KEY} from "./utils/variables";
 // PAGES
 import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
-import Home, {serviceLoader} from "./pages/home/Home";
-import Relocation from "./pages/relocation/Relocation";
+import Home, {servicesLoader} from "./pages/home/Home";
+import Relocation, {relocationLoader} from "./pages/relocation/Relocation";
 import Cargo from "./pages/cargo/cargo";
 import Trucking from "./pages/trucking/Trucking";
 import Warehouse from "./pages/warehouse/Warehouse";
@@ -26,11 +26,12 @@ function App() {
 				{
 					index: true,
 					element: <Home />,
-					loader: serviceLoader,
+					loader: servicesLoader,
 				},
 				{
 					path: "/relocation",
 					element: <Relocation />,
+					loader: relocationLoader,
 				},
 				{
 					path: "/couriercargo",

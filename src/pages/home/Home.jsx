@@ -13,7 +13,7 @@ const Home = () => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function serviceLoader() {
+export function servicesLoader() {
 	return getAllServices();
 }
 

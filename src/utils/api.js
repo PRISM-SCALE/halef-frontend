@@ -9,6 +9,20 @@ export async function getAllServices() {
 	return response.json();
 }
 
+export async function getHousePackingTypes() {
+	const houseTypesResponse = await fetch(`${BASE_URL}/housetypes`);
+	const packingTypesResponse = await fetch(`${BASE_URL}/packagetypes`);
+
+	if (!houseTypesResponse.ok && !packingTypesResponse.ok) {
+		throw {message: "Failed to fetch all services.", status: 500};
+	}
+
+	const houseTypes = houseTypesResponse.json();
+	const packingTypes = packingTypesResponse.json();
+
+	return {houseTypes, packingTypes};
+}
+
 export async function getRelocationHouseType() {
 	const response = await fetch(`${BASE_URL}/housetypes`);
 
