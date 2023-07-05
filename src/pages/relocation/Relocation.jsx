@@ -17,7 +17,7 @@ const INITIAL_VALUES = {
 	insurance: false,
 	houseCapacity: "",
 	vehicle: "",
-	packingtype: "",
+	packing: "",
 	goodsValue: "",
 };
 
@@ -38,26 +38,23 @@ const Relocation = () => {
 		handleSubmit,
 		formState,
 		reset,
-		clearErrors,
+		// clearErrors,
 		watch,
 	} = methods;
-
-	const selectedHouseCapacity = watch("houseCapacity");
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
 			reset({...INITIAL_VALUES});
 
-			clearErrors({...INITIAL_VALUES});
+			// clearErrors({...INITIAL_VALUES});
 		}
-	}, [clearErrors, formState, reset]);
+	}, [formState, reset]);
+
+	const selectedHouseCapacity = watch("houseCapacity");
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
-
 	const truckData = relocationHouseTypes.filter(({type}) => type === selectedHouseCapacity);
-
-	console.log(truckData);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -133,14 +130,14 @@ const Relocation = () => {
 					</div>
 
 					<div>
-						<label htmlFor="packingtype" className="text-[#f8bf02]">
+						<label htmlFor="packing" className="text-[#f8bf02]">
 							Packaging Type
 						</label>
 						<select
-							name="packingtype"
+							name="packing"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose a packing type"
-							{...register("packingType", {required: "Choose a packing type"})}
+							{...register("packing", {required: "Choose a packing type"})}
 						>
 							<option value="">Choose your packing</option>
 							{packingTypes.map(({_id, code, name}) => {
@@ -151,9 +148,9 @@ const Relocation = () => {
 								);
 							})}
 						</select>
-						{errors.packingType && (
+						{errors.packing && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.packingType?.message}
+								{errors.packing?.message}
 							</p>
 						)}
 					</div>
