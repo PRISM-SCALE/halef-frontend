@@ -15,7 +15,7 @@ const INITIAL_VALUES = {
 	pickup: "",
 	dropoff: "",
 	insurance: false,
-	houseCapcity: "",
+	houseCapacity: "",
 	vehicle: "",
 	packingtype: "",
 	goodsValue: "",
@@ -27,8 +27,6 @@ const INITIAL_VALUES = {
 const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 	const [isChecked, setIsChecked] = useState(false);
-
-	console.log(relocationHouseTypes);
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -44,6 +42,8 @@ const Relocation = () => {
 		watch,
 	} = methods;
 
+	const selectedHouseCapacity = watch("houseCapacity");
+
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
 			reset({...INITIAL_VALUES});
@@ -54,6 +54,10 @@ const Relocation = () => {
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
+
+	const truckData = relocationHouseTypes.filter(({type}) => type === selectedHouseCapacity);
+
+	console.log(truckData);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -86,7 +90,7 @@ const Relocation = () => {
 							{...register("houseCapacity", {required: "Please select your house capacity size"})}
 						>
 							<option value="">Choose your house capacity</option>
-							{relocationHouseTypes.map(({_id, type}) => {
+							{relocationHouseTypes?.map(({_id, type}) => {
 								return (
 									<option key={_id} value={type}>
 										{type}
@@ -113,10 +117,13 @@ const Relocation = () => {
 							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
 							<option value="">Choose your vehicle</option>
-							<option value="TATA ACE">TATA ACE</option>
-							<option value="MAHINDRA BOLERO PICK UP">MAHINDRA BOLERO PICK UP</option>
-							<option value="TATA 407">TATA 407</option>
-							<option value="EICHER 14 FEET">EICHER 14 FEET</option>
+							{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
+								return (
+									<option key={_id} value={name}>
+										{name}
+									</option>
+								);
+							})}
 						</select>
 						{errors.vehicle && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">

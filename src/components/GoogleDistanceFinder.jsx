@@ -9,7 +9,7 @@ const GoogleDistanceFinder = () => {
 	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
 	const [dropoffAutocomplete, setDropoffAutocomplete] = useState(null);
 	const [distance, setDistance] = useState(null);
-	console.log(distance);
+	// console.log(distance);
 
 	const {
 		control,
@@ -18,12 +18,12 @@ const GoogleDistanceFinder = () => {
 	} = useFormContext();
 
 	const onLoadPickup = (autocomplete) => {
-		console.log("pickup autocomplete: ", autocomplete);
+		// console.log("pickup autocomplete: ", autocomplete);
 		setPickupAutocomplete(autocomplete);
 	};
 
 	const onLoadDropoff = (autocomplete) => {
-		console.log("dropoff autocomplete: ", autocomplete);
+		// console.log("dropoff autocomplete: ", autocomplete);
 		setDropoffAutocomplete(autocomplete);
 		// calculateDistance();
 	};
@@ -31,7 +31,7 @@ const GoogleDistanceFinder = () => {
 	const onPlaceChangedForPickup = () => {
 		if (pickupAutocomplete !== null) {
 			const place = pickupAutocomplete.getPlace();
-			console.log(place);
+			// console.log(place);
 			if (place) {
 				setValue("pickup", place.formatted_address);
 			}
@@ -43,7 +43,7 @@ const GoogleDistanceFinder = () => {
 	const onPlaceChangedForDropoff = () => {
 		if (dropoffAutocomplete !== null) {
 			const place = dropoffAutocomplete.getPlace();
-			console.log(place);
+			// console.log(place);
 			if (place) {
 				setValue("dropoff", place.formatted_address);
 
