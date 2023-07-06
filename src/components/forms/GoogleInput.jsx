@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import {forwardRef} from "react";
 
-const GoogleAutocomplete = forwardRef((props, ref) => {
+const GoogleInput = forwardRef((props, ref) => {
 	const {placeholder, ...otherProps} = props;
 
 	return (
@@ -14,10 +14,10 @@ const GoogleAutocomplete = forwardRef((props, ref) => {
 	);
 });
 
-GoogleAutocomplete.propTypes = {
+GoogleInput.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 };
 
-GoogleAutocomplete.displayName = "GoogleAutocomplete";
+GoogleInput.displayName = "GoogleInput";
 
-export default GoogleAutocomplete;
+export default GoogleInput;

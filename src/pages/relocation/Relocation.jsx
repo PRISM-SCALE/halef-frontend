@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * COMPONENTS
@@ -19,6 +19,7 @@ const INITIAL_VALUES = {
 	vehicle: "",
 	packing: "",
 	goodsValue: "",
+	distance: "",
 };
 
 // ---------------------------------------------------------------------
@@ -36,19 +37,14 @@ const Relocation = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
-		formState,
-		reset,
-		// clearErrors,
 		watch,
 	} = methods;
 
-	useEffect(() => {
-		if (formState.isSubmitSuccessful) {
-			reset({...INITIAL_VALUES});
-
-			// clearErrors({...INITIAL_VALUES});
-		}
-	}, [formState, reset]);
+	// useEffect(() => {
+	// 	if (formState.isSubmitSuccessful) {
+	// 		reset({...INITIAL_VALUES});
+	// 	}
+	// }, [formState, reset]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
