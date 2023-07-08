@@ -13,6 +13,7 @@ export const calculateDistance = (pickupAutocomplete, dropoffAutocomplete, setDi
 			(response, status) => {
 				if (status === "OK") {
 					const result = response.rows[0].elements[0];
+
 					if (result.status === "OK") {
 						setDistance(result.distance.text);
 					}

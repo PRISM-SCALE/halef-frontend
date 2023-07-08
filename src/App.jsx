@@ -34,6 +34,7 @@ function App() {
 					path: "/relocation",
 					element: <Relocation />,
 					loader: relocationLoader,
+					// action: saveRelocationData,
 				},
 				{
 					path: "/couriercargo",
@@ -61,7 +62,7 @@ function App() {
 	]);
 
 	return (
-		<LoadScriptNext googleMapsApiKey={API_KEY} libraries={[...lib]}>
+		<LoadScriptNext googleMapsApiKey={API_KEY} libraries={lib}>
 			<RouterProvider router={router} />
 		</LoadScriptNext>
 	);

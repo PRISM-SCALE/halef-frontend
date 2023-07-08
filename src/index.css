@@ -29,6 +29,11 @@
 @layer utilities {
   /* .active-menu_item::before {} */
 
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+
   .font-barlow {
     @apply font-['Barlow']
   }

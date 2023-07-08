@@ -62,8 +62,9 @@ const GoogleDistanceFinder = () => {
 	};
 
 	if (distance !== null) {
-		setValue("distance", distance);
+		setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 	}
+	// console.log(Number("22,345 km".replace(" km", "").replace(",", "")));
 
 	return (
 		<>

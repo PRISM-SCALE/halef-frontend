@@ -1,5 +1,5 @@
-import {Icon} from "@iconify-icon/react";
 import PropTypes from "prop-types";
+import {Icon} from "@iconify-icon/react";
 import {useLocation, useNavigate} from "react-router-dom";
 
 const Header = ({caption, title}) => {
@@ -25,7 +25,7 @@ const Header = ({caption, title}) => {
 
 Header.propTypes = {
 	caption: PropTypes.string.isRequired,
-	title: PropTypes.object.isRequired,
+	title: PropTypes.node.isRequired,
 };
 
 export default Header;

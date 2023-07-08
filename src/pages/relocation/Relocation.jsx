@@ -7,7 +7,11 @@ import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
-import {getPackageTypes, getRelocationHouseType} from "../../utils/api";
+import {
+	getPackageTypes,
+	getRelocationHouseType,
+	relocationCalculationService,
+} from "../../utils/api";
 import {defer, useLoaderData} from "react-router-dom";
 
 // * INITIAL FORM VALUES
@@ -27,6 +31,7 @@ const INITIAL_VALUES = {
 
 const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
+
 	const [isChecked, setIsChecked] = useState(false);
 
 	const methods = useForm({
@@ -50,12 +55,17 @@ const Relocation = () => {
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
-	const truckData = relocationHouseTypes.filter(({type}) => type === selectedHouseCapacity);
+	const truckData = relocationHouseTypes.filter(({_id}) => _id === selectedHouseCapacity);
+
+	// console.log("VEHICLE", truckData);
+	// console.log("HOUSETYPE", relocationHouseTypes);
+	// console.log("PACKING", packingTypes);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
+
 	const onSubmit = (data) => {
-		console.log(data);
+		relocationCalculationService(data);
 	};
 
 	const header_name = (
@@ -72,7 +82,7 @@ const Relocation = () => {
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<GoogleDistanceFinder />
 
-					<div>
+					<fieldset>
 						<label htmlFor="houseCapcity" className="text-[#f8bf02]">
 							House Type
 						</label>
@@ -85,7 +95,7 @@ const Relocation = () => {
 							<option value="">Choose your house capacity</option>
 							{relocationHouseTypes?.map(({_id, type}) => {
 								return (
-									<option key={_id} value={type}>
+									<option key={_id} value={_id}>
 										{type}
 									</option>
 								);
@@ -96,9 +106,9 @@ const Relocation = () => {
 								{errors.houseCapacity?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
-					<div>
+					<fieldset>
 						<label htmlFor="vehicle" className="text-[#f8bf02]">
 							Select vehicle
 						</label>
@@ -112,7 +122,7 @@ const Relocation = () => {
 							<option value="">Choose your vehicle</option>
 							{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
 								return (
-									<option key={_id} value={name}>
+									<option key={_id} value={_id}>
 										{name}
 									</option>
 								);
@@ -123,9 +133,9 @@ const Relocation = () => {
 								{errors.vehicle?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
-					<div>
+					<fieldset>
 						<label htmlFor="packing" className="text-[#f8bf02]">
 							Packaging Type
 						</label>
@@ -136,9 +146,9 @@ const Relocation = () => {
 							{...register("packing", {required: "Choose a packing type"})}
 						>
 							<option value="">Choose your packing</option>
-							{packingTypes.map(({_id, code, name}) => {
+							{packingTypes.map(({_id, name}) => {
 								return (
-									<option key={_id} value={code}>
+									<option key={_id} value={_id}>
 										{name}
 									</option>
 								);
@@ -149,9 +159,9 @@ const Relocation = () => {
 								{errors.packing?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
-					<div className="flex items-center gap-2">
+					<fieldset className="flex items-center gap-2">
 						<label htmlFor="insurance">Insurance</label>
 						<input
 							type="checkbox"
@@ -161,16 +171,17 @@ const Relocation = () => {
 							checked={isChecked}
 							onChange={() => setIsChecked(!isChecked)}
 						/>
-					</div>
+					</fieldset>
 
 					{isChecked && (
-						<div>
+						<fieldset>
 							<label htmlFor="goodsValue" className="text-[#f8bf02]">
 								Your Goods Value
 							</label>
 							<input
 								name="goodsValue"
-								className="input-fields focus:outline-[#dd3333]"
+								type="number"
+								className="input-fields focus:outline-[#dd3333] appearance-none"
 								placeholder="Enter your goods value"
 								{...register("goodsValue", {required: "Please enter your value of the goods"})}
 								aria-invalid={errors.goodsValue ? "true" : "false"}
@@ -180,7 +191,7 @@ const Relocation = () => {
 									{errors.goodsValue?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 					)}
 
 					<Button buttonText="calculate" />
@@ -197,5 +208,25 @@ export async function relocationLoader() {
 
 	return defer({relocationHouseTypes, packingTypes});
 }
+
+// eslint-disable-next-line react-refresh/only-export-components
+// export async function saveRelocationData({request}) {
+// 	const form = await request.formData();
+
+// 	const data = {
+// 		pickup: form.get("pickup"),
+// 		dropoff: form.get("dropoff"),
+// 		insurance: form.get("insurance"),
+// 		houseCapacity: form.get(""),
+// 		vehicle: form.get("vehicle"),
+// 		packing: form.get("packing"),
+// 		goodsValue: form.get("goodsValue"),
+// 		distance: form.get("distance"),
+// 	};
+
+// 	console.log(data);
+
+// 	return null;
+// }
 
 export default Relocation;

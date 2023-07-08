@@ -4,8 +4,8 @@ import {FormProvider, useForm} from "react-hook-form";
 // * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
-import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
 import FormWrapper from "../../components/forms/FormWrapper";
+import GooglePincodeForm from "../../components/GooglePincodeForm";
 import Button from "../../components/forms/Button";
 
 const INITIAL_VALUES = {
@@ -80,7 +80,8 @@ const Cargo = () => {
 						)}
 					</div>
 
-					<GoogleDistanceFinder />
+					{/* <GoogleDistanceFinder /> */}
+					<GooglePincodeForm />
 
 					<div className="flex items-center justify-between gap-4 flex-col md:flex-row">
 						<div className="w-full">

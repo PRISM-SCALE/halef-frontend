@@ -6,7 +6,7 @@ import {Autocomplete} from "@react-google-maps/api";
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
-import GoogleAutocomplete from "../../components/forms/GoogleAutocomplete";
+import GoogleInput from "../../components/forms/GoogleInput";
 import Button from "../../components/forms/Button";
 
 const INITIAL_VALUES = {
@@ -89,7 +89,7 @@ const Warehouse = () => {
 								return (
 									<>
 										<Autocomplete onLoad={onLoadPickup} onPlaceChanged={onPlaceChangedForPickup}>
-											<GoogleAutocomplete placeholder="Pickup Address" ref={field.ref} {...field} />
+											<GoogleInput placeholder="Pickup Address" ref={field.ref} {...field} />
 										</Autocomplete>
 										{errors.pickup && (
 											<p role="alert" className="text-[#ef4444] leading-none mt-1">
