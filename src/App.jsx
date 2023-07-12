@@ -11,10 +11,10 @@ import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
 import Home, {servicesLoader} from "./pages/home/Home";
 import Relocation, {relocationLoader} from "./pages/relocation/Relocation";
-import Cargo from "./pages/cargo/cargo";
 import Trucking, {truckingLoader} from "./pages/trucking/Trucking";
 import Warehouse from "./pages/warehouse/Warehouse";
 import AirAmbulance from "./pages/ambulance/AirAmbulance";
+import Cargo from "./pages/cargo/Cargo";
 
 const lib = ["places", "geometry"];
 
