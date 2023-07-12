@@ -2,6 +2,7 @@ export const BASE_URL = "http://localhost:3001/api";
 
 export async function getAllServices() {
 	const response = await fetch(`${BASE_URL}/services`);
+
 	if (!response.ok) {
 		throw {message: "Failed to fetch all services.", status: 500};
 	}
@@ -30,6 +31,8 @@ export async function getPackageTypes() {
 }
 
 export async function relocationCalculationService(data) {
+	console.log(data);
+
 	const POST_DATA = {
 		distance: data.distance,
 		goodsValue: data.goodsValue,
@@ -41,17 +44,17 @@ export async function relocationCalculationService(data) {
 
 	console.log(POST_DATA);
 
-	const response = await fetch(`${BASE_URL}/calculate/relocation`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	// const response = await fetch(`${BASE_URL}/calculate/relocation`, {
+	// 	method: "POST",
+	// 	body: JSON.stringify(POST_DATA),
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// });
 
-	console.log(await response.json());
+	// console.log(await response.json());
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
-	}
+	// if (!response.ok) {
+	// 	throw {message: "Failed to send data.", status: 500};
+	// }
 }

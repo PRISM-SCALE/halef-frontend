@@ -63,7 +63,6 @@ const Relocation = () => {
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-
 	const onSubmit = (data) => {
 		relocationCalculationService(data);
 	};
@@ -79,7 +78,11 @@ const Relocation = () => {
 			<Header caption="cost estimation for" title={header_name} />
 
 			<FormProvider {...methods}>
-				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
+				<FormWrapper
+					onSubmit={handleSubmit(onSubmit)}
+					// method="post"
+					// action="/relocation"
+				>
 					<GoogleDistanceFinder />
 
 					<fieldset>
@@ -217,14 +220,14 @@ export async function relocationLoader() {
 // 		pickup: form.get("pickup"),
 // 		dropoff: form.get("dropoff"),
 // 		insurance: form.get("insurance"),
-// 		houseCapacity: form.get(""),
+// 		houseCapacity: form.get("houseCapacity"),
 // 		vehicle: form.get("vehicle"),
 // 		packing: form.get("packing"),
 // 		goodsValue: form.get("goodsValue"),
 // 		distance: form.get("distance"),
 // 	};
 
-// 	console.log(data);
+// 	await relocationCalculationService(data);
 
 // 	return null;
 // }

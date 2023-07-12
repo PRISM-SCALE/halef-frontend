@@ -1,4 +1,3 @@
-import {useEffect} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * COMPONENTS
@@ -29,18 +28,15 @@ const Cargo = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
-		formState,
-		reset,
-		clearErrors,
+		// formState,
+		// reset,
 	} = methods;
 
-	useEffect(() => {
-		if (formState.isSubmitSuccessful) {
-			reset({...INITIAL_VALUES});
-
-			clearErrors({...INITIAL_VALUES});
-		}
-	}, [clearErrors, formState, reset]);
+	// useEffect(() => {
+	// 	if (formState.isSubmitSuccessful) {
+	// 		reset({...INITIAL_VALUES});
+	// 	}
+	// }, [formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
