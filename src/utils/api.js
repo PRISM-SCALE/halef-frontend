@@ -31,6 +31,18 @@ export async function getPackageTypes() {
 	return response.json();
 }
 
+export async function getVehicles() {
+	const response = await fetch(`${BASE_URL}/vehicles`);
+
+	if (!response.ok) {
+		throw {message: "Failed to fetch vehicles.", status: 500};
+	}
+
+	return response.json();
+}
+
+// * CALCULATOR APIs
+
 export async function relocationCalculationService(data) {
 	const POST_DATA = {
 		distance: Math.round(data.distance),
@@ -69,6 +81,27 @@ export async function courierCargoCalculationService(data) {
 	};
 
 	const response = await fetch(`${CALCULATE_URL}/couriercargo`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to send data.", status: 500};
+	}
+
+	return response.json();
+}
+
+export async function truckingCalculationService(data) {
+	const POST_DATA = {
+		distance: Math.round(data.distance),
+		vehicle: data.vehicle,
+	};
+
+	const response = await fetch(`${CALCULATE_URL}/truckingcost`, {
 		method: "POST",
 		body: JSON.stringify(POST_DATA),
 		headers: {
