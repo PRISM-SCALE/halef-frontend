@@ -30,6 +30,7 @@ const INITIAL_VALUES = {
 // * RELOCATION FORM COMPONENT START
 
 const Relocation = () => {
+	const [relocationData, setRelocationData] = useState(null);
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 
 	const [isChecked, setIsChecked] = useState(false);
@@ -63,8 +64,9 @@ const Relocation = () => {
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-	const onSubmit = (data) => {
-		relocationCalculationService(data);
+	const onSubmit = async (data) => {
+		const responseData = await relocationCalculationService(data);
+		setRelocationData(responseData);
 	};
 
 	const header_name = (
@@ -76,6 +78,15 @@ const Relocation = () => {
 	return (
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
+
+			{relocationData ? (
+				<div className="flex gap-4 mb-6">
+					<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
+					<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
+					<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
+					<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
+				</div>
+			) : null}
 
 			<FormProvider {...methods}>
 				<FormWrapper

@@ -1,11 +1,15 @@
 import {FormProvider, useForm} from "react-hook-form";
 
+// * UTILS
+import {courierCargoCalculationService} from "../../utils/api";
+
 // * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import GooglePincodeForm from "../../components/GooglePincodeForm";
 import Button from "../../components/forms/Button";
+import {useState} from "react";
 
 const INITIAL_VALUES = {
 	region: "",
@@ -20,6 +24,7 @@ const INITIAL_VALUES = {
 };
 
 const Cargo = () => {
+	const [cargoCost, setCargoCost] = useState(null);
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
 	});
@@ -40,8 +45,10 @@ const Cargo = () => {
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-	const onSubmit = (data) => {
-		console.log(data);
+	const onSubmit = async (data) => {
+		const responseData = await courierCargoCalculationService(data);
+
+		setCargoCost(responseData);
 	};
 
 	const header_name = (
@@ -52,11 +59,22 @@ const Cargo = () => {
 	return (
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
+
+			{cargoCost ? (
+				<div className="flex gap-4 mb-6">
+					<span className="text-2xl">TRANSPORT COST: ₹{cargoCost?.transportCost}/-</span>
+					<span className="text-2xl">TOTAL: ₹{cargoCost?.total}/-</span>
+					<span className="text-2xl">
+						VOLUMETRIC WEIGHT: {cargoCost?.volumetricWeight?.toFixed(2)}
+					</span>
+				</div>
+			) : null}
+
 			{/* FORM */}
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<div>
+					<fieldset>
 						<label htmlFor="region" className="text-[#f8bf02]">
 							Select Your Region
 						</label>
@@ -66,21 +84,26 @@ const Cargo = () => {
 							{...register("region", {required: "Please select your region"})}
 						>
 							<option value="">Choose your region</option>
-							<option value="domestic">Domestic</option>
-							<option value="international">International</option>
+							{["domestic", "international"].map((region) => {
+								return (
+									<option value={region} key={region}>
+										{region.toUpperCase()}
+									</option>
+								);
+							})}
 						</select>
 						{errors.region && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.region?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
 					{/* <GoogleDistanceFinder /> */}
 					<GooglePincodeForm />
 
 					<div className="flex items-center justify-between gap-4 flex-col md:flex-row">
-						<div className="w-full">
+						<fieldset className="w-full">
 							<label htmlFor="docType" className="text-[#f8bf02]">
 								Select Document Type
 							</label>
@@ -90,19 +113,24 @@ const Cargo = () => {
 								{...register("docType", {required: "Please select your document type"})}
 							>
 								<option value="">Choose your document type</option>
-								<option value="document">Document</option>
-								<option value="non-document">Non Document</option>
+								{["document", "non-document"].map((docType) => {
+									return (
+										<option value={docType} key={docType}>
+											{docType.toUpperCase()}
+										</option>
+									);
+								})}
 							</select>
 							{errors.docType && (
 								<p role="alert" className="text-[#ef4444] leading-none mt-1">
 									{errors.docType?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 
-						<div className="w-full">
+						<fieldset className="w-full">
 							<label htmlFor="weight" className="text-[#f8bf02]">
-								Weight (cm)
+								Weight (kg)
 							</label>
 							<input
 								name="weight"
@@ -117,12 +145,12 @@ const Cargo = () => {
 									{errors.weight?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 					</div>
 
 					{/* DIMENSIONS */}
 					<div className="flex items-center justify-between gap-4 flex-col md:flex-row">
-						<div className="w-full">
+						<fieldset className="w-full">
 							<label htmlFor="length" className="text-[#f8bf02]">
 								Length (cm)
 							</label>
@@ -139,9 +167,9 @@ const Cargo = () => {
 									{errors.length?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 
-						<div className="w-full">
+						<fieldset className="w-full">
 							<label htmlFor="width" className="text-[#f8bf02]">
 								Width (cm)
 							</label>
@@ -158,9 +186,9 @@ const Cargo = () => {
 									{errors.width?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 
-						<div className="w-full">
+						<fieldset className="w-full">
 							<label htmlFor="height" className="text-[#f8bf02]">
 								Height (cm)
 							</label>
@@ -177,10 +205,10 @@ const Cargo = () => {
 									{errors.height?.message}
 								</p>
 							)}
-						</div>
+						</fieldset>
 					</div>
 
-					<div>
+					<fieldset>
 						<label htmlFor="shipmentService" className="text-[#f8bf02]">
 							Select Shipment Service
 						</label>
@@ -190,16 +218,20 @@ const Cargo = () => {
 							{...register("shipmentService", {required: "Please select your shipment service"})}
 						>
 							<option value="">Choose your shipment service</option>
-							<option value="groundExpress">Ground Express</option>
-							<option value="airCargo">Air Cargo</option>
-							<option value="priorityExpress">Priority Express</option>
+							{["ground_express", "air_cargo", "priority_express"].map((shipment) => {
+								return (
+									<option value={shipment} key={shipment}>
+										{shipment.toUpperCase().replace("_", " ")}
+									</option>
+								);
+							})}
 						</select>
 						{errors.shipmentService && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.shipmentService?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
 					<Button buttonText="calculate" />
 				</FormWrapper>
