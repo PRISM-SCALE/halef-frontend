@@ -12,7 +12,7 @@ import RootLayout from "./pages/RootLayout";
 import Home, {servicesLoader} from "./pages/home/Home";
 import Relocation, {relocationLoader} from "./pages/relocation/Relocation";
 import Trucking, {truckingLoader} from "./pages/trucking/Trucking";
-import Warehouse from "./pages/warehouse/Warehouse";
+import Warehouse, {warehouseLoader} from "./pages/warehouse/Warehouse";
 import AirAmbulance from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
@@ -48,10 +48,12 @@ function App() {
 				{
 					path: "/warehouse",
 					element: <Warehouse />,
+					loader: warehouseLoader,
 				},
 				{
 					path: "/airambulance",
 					element: <AirAmbulance />,
+					// loader: airAmbulanceLoader,
 				},
 			],
 		},

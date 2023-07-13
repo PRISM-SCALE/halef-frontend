@@ -41,6 +41,16 @@ export async function getVehicles() {
 	return response.json();
 }
 
+export async function getAllCities() {
+	const response = await fetch(`${BASE_URL}/cities`);
+
+	if (!response.ok) {
+		throw {message: "Failed to fetch all services.", status: 500};
+	}
+
+	return response.json();
+}
+
 // * CALCULATOR APIs
 
 export async function relocationCalculationService(data) {
@@ -101,7 +111,29 @@ export async function truckingCalculationService(data) {
 		vehicle: data.vehicle,
 	};
 
-	const response = await fetch(`${CALCULATE_URL}/truckingcost`, {
+	const response = await fetch(`${CALCULATE_URL}/trucking`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to send data.", status: 500};
+	}
+
+	return response.json();
+}
+
+export async function warehouseCalculationService(data) {
+	const POST_DATA = {
+		cft: Number(data.area),
+		packageType: data.packing,
+		durationInDays: Number(data.durationInDays),
+	};
+
+	const response = await fetch(`${CALCULATE_URL}/warehouse`, {
 		method: "POST",
 		body: JSON.stringify(POST_DATA),
 		headers: {

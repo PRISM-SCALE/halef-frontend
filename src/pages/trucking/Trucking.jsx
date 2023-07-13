@@ -122,7 +122,7 @@ const Trucking = () => {
 							].map((item) => {
 								return (
 									<option key={item} value={item}>
-										{item.toUpperCase().replace("_", " ")}
+										{item.toUpperCase().replaceAll("_", " ")}
 									</option>
 								);
 							})}

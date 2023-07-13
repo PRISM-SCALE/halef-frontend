@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Controller, FormProvider, useForm} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 
@@ -8,17 +8,94 @@ import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import GoogleInput from "../../components/forms/GoogleInput";
 import Button from "../../components/forms/Button";
+import {getPackageTypes, warehouseCalculationService} from "../../utils/api";
+import {useLoaderData} from "react-router-dom";
+
+const CFT_SQFT = [
+	{
+		name: "0-50 SQFT (100 CFT)",
+		cft: 50,
+		sqft: 100,
+	},
+	{
+		name: "100 SQFT (200 CFT)",
+		cft: 200,
+		sqft: 100,
+	},
+	{
+		name: "150 SQFT (300 CFT)",
+		cft: 300,
+		sqft: 150,
+	},
+	{
+		name: "200 SQFT (400 CFT)",
+		cft: 400,
+		sqft: 200,
+	},
+	{
+		name: "250 SQFT (500 CFT)",
+		cft: 500,
+		sqft: 250,
+	},
+	{
+		name: "300 SQFT (600 CFT)",
+		cft: 600,
+		sqft: 500,
+	},
+	{
+		name: "400 SQFT (800 CFT)",
+		cft: 800,
+		sqft: 400,
+	},
+	{
+		name: "500 SQFT (1000 CFT)",
+		cft: 1000,
+		sqft: 500,
+	},
+	{
+		name: "600 SQFT (1200 CFT)",
+		cft: 1200,
+		sqft: 600,
+	},
+	{
+		name: "700 SQFT (1400 CFT)",
+		cft: 1400,
+		sqft: 700,
+	},
+	{
+		name: "800 SQFT (1600 CFT)",
+		cft: 1600,
+		sqft: 800,
+	},
+	{
+		name: "900 SQFT (1800 CFT)",
+		cft: 1800,
+		sqft: 900,
+	},
+	{
+		name: "1000 SQFT (2000 CFT)",
+		cft: 2000,
+		sqft: 1000,
+	},
+	{
+		name: "ABOVE 1000 SQFT (2000CFT++)",
+		cft: 2001,
+		sqft: 1001,
+	},
+];
 
 const INITIAL_VALUES = {
-	pickup: "",
-	dropoff: "",
+	selectCity: "",
 	area: "",
 	goodsType: "",
 	durationInDays: "",
-	packingType: "",
+	packing: "",
 };
 
 const Warehouse = () => {
+	const packageData = useLoaderData();
+
+	const [warehouse, setWarehouse] = useState(null);
 	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
 
 	const methods = useForm({
@@ -30,41 +107,39 @@ const Warehouse = () => {
 		control,
 		formState: {errors},
 		handleSubmit,
-		formState,
-		reset,
-		clearErrors,
+		// formState,
+		// reset,
 		setValue,
 	} = methods;
 
 	const onLoadPickup = (autocomplete) => {
-		console.log("pickup autocomplete: ", autocomplete);
+		// console.log("pickup autocomplete: ", autocomplete);
 		setPickupAutocomplete(autocomplete);
 	};
 
 	const onPlaceChangedForPickup = () => {
 		if (pickupAutocomplete !== null) {
 			const place = pickupAutocomplete.getPlace();
-			console.log(place);
+			// console.log(place);
 			if (place) {
-				setValue("pickup", place.formatted_address);
+				setValue("selectCity", place.formatted_address);
 			}
 		} else {
-			console.log("Pickup Autocomplete is not loaded yet!");
+			console.log("selectCity Autocomplete is not loaded yet!");
 		}
 	};
 
-	useEffect(() => {
-		if (formState.isSubmitSuccessful) {
-			reset({...INITIAL_VALUES});
-
-			clearErrors({...INITIAL_VALUES});
-		}
-	}, [clearErrors, formState, reset]);
+	// useEffect(() => {
+	// 	if (formState.isSubmitSuccessful) {
+	// 		reset({...INITIAL_VALUES});
+	// 	}
+	// }, [ formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-	const onSubmit = (data) => {
-		console.log(data);
+	const onSubmit = async (data) => {
+		const responseData = await warehouseCalculationService(data);
+		setWarehouse(responseData);
 	};
 
 	const header_name = <strong className="text-[#DD3333]">Warehousing</strong>;
@@ -73,34 +148,47 @@ const Warehouse = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
+			{warehouse ? (
+				<div className="flex gap-4 mb-6">
+					<span className="text-2xl">STORAGE COST: ₹{warehouse?.storageCost}/-</span>
+					<span className="text-2xl">PACKAGE COST: ₹{warehouse?.packageCost}/-</span>
+					<span className="text-2xl">TOTAL: ₹{warehouse?.total}/-</span>
+				</div>
+			) : null}
+
 			{/* FORMS */}
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<div>
-						<label htmlFor="pickup" className="text-[#f8bf02]">
-							Pickup Location
+					<fieldset>
+						<label htmlFor="selectCity" className="text-[#f8bf02]">
+							Select a warehouse location
 						</label>
 						<Controller
-							name={"pickup"}
-							id={"pickup"}
+							name={"selectCity"}
+							id={"selectCity"}
 							control={control}
 							rules={{required: "Please enter a pickup address"}}
 							render={({field}) => {
 								return (
 									<>
 										<Autocomplete onLoad={onLoadPickup} onPlaceChanged={onPlaceChangedForPickup}>
-											<GoogleInput placeholder="Pickup Address" ref={field.ref} {...field} />
+											<GoogleInput
+												name="selectCity"
+												placeholder="Warehouse location"
+												ref={field.ref}
+												{...field}
+											/>
 										</Autocomplete>
-										{errors.pickup && (
+										{errors.selectCity && (
 											<p role="alert" className="text-[#ef4444] leading-none mt-1">
-												{errors.pickup.message}
+												{errors.selectCity.message}
 											</p>
 										)}
 									</>
 								);
 							}}
 						/>
-					</div>
+					</fieldset>
 
 					<div>
 						<label htmlFor="goodsType" className="text-[#f8bf02]">
@@ -114,10 +202,24 @@ const Warehouse = () => {
 							})}
 						>
 							<option value="">Choose your goods type</option>
-							<option value="Household">Household</option>
-							<option value="Electronic & White Goods">Electronic & White Goods</option>
-							<option value="Furnitures">Furnitures</option>
-							<option value="Industrial & Commercial Goods">Industrial & Commercial Goods</option>
+							{[
+								"industrial_machinery",
+								"household_goods",
+								"parcels_&_lugguage",
+								"fruits_&_vegetables",
+								"FMCG",
+								"Healthcare",
+								"Grocery",
+								"liquids_&_barrels",
+								"Chemicals",
+								"Fertilizers",
+							].map((item) => {
+								return (
+									<option key={item} value={item}>
+										{item.toUpperCase().replaceAll("_", " ")}
+									</option>
+								);
+							})}{" "}
 						</select>
 						{errors.goodsType && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -137,11 +239,14 @@ const Warehouse = () => {
 								required: "Choose one of the options based on your goods",
 							})}
 						>
-							<option value="">Choose your goods type</option>
-							<option value="0-50sqft">0-50 SQFT (100 CFT)</option>
-							<option value="100sqft">100 SQFT (200 CFT)</option>
-							<option value="150sqft">150 SQFT (300 CFT)</option>
-							<option value="200sqft">200 SQFT (400 CFT)</option>
+							<option value="">Choose your area</option>
+							{CFT_SQFT?.map(({cft, name}, index) => {
+								return (
+									<option value={cft} key={index}>
+										{name}
+									</option>
+								);
+							})}
 						</select>
 						{errors.area && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -150,53 +255,52 @@ const Warehouse = () => {
 						)}
 					</div>
 
-					<div>
+					<fieldset>
 						<label htmlFor="durationInDays" className="text-[#f8bf02]">
-							Duration in days
+							Storage duration in days
 						</label>
-						<select
+						<input
 							name="durationInDays"
+							placeholder="How long should your goods be stored"
+							type="number"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							{...register("durationInDays", {
-								required: "Choose one of the options based on your needs",
+								required: "Provide your duration to be stored in the warehouse",
 							})}
-						>
-							<option value="">Choose your duration</option>
-							<option value="15-31days">15-31 Days</option>
-							<option value="32-60days">32-60 Days</option>
-							<option value="61-200days">61-200 Days</option>
-							<option value="201-400days">201-400 Days</option>
-							<option value="401++days">401++ Days</option>
-						</select>
+						/>
+
 						{errors.durationInDays && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.durationInDays?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
-					<div>
-						<label htmlFor="packingtype" className="text-[#f8bf02]">
+					<fieldset>
+						<label htmlFor="packing" className="text-[#f8bf02]">
 							Packaging Type
 						</label>
 						<select
-							name="packingtype"
+							name="packing"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose a packing type"
-							{...register("packingType", {required: "Choose a packing type"})}
+							{...register("packing", {required: "Choose a packing type"})}
 						>
 							<option value="">Choose your packing</option>
-							<option value="NOT REQUIRED ">NOT REQUIRED</option>
-							<option value="SEMI PACKING">SEMI PACKING</option>
-							<option value="FULL PACKING ">FULL PACKING </option>
-							<option value="FRAGILE PACKING ">FRAGILE PACKING </option>
+							{packageData.map(({_id, name}) => {
+								return (
+									<option key={_id} value={_id}>
+										{name}
+									</option>
+								);
+							})}
 						</select>
 						{errors.packingType && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
 								{errors.packingType?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
 					<Button buttonText="calculate" />
 				</FormWrapper>
@@ -204,5 +308,12 @@ const Warehouse = () => {
 		</ServiceWrapper>
 	);
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function warehouseLoader() {
+	const packingTypes = await getPackageTypes();
+
+	return packingTypes;
+}
 
 export default Warehouse;

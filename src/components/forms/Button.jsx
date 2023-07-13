@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 
-const Button = ({buttonText}) => {
+const Button = ({buttonText, ...otherProps}) => {
 	return (
 		<button
 			type="submit"
-			className="px-6 py-3 bg-[#dd3333] text-white uppercase w-1/2 mx-auto mt-8"
+			className="px-6 py-3 bg-[#dd3333] text-white uppercase w-1/2 mx-auto mt-8 disabled:bg-slate-400"
+			{...otherProps}
 		>
 			{buttonText}
 		</button>
