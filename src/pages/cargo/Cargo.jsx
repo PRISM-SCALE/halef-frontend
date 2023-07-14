@@ -62,10 +62,10 @@ const Cargo = () => {
 
 			{cargoCost ? (
 				<div className="flex gap-4 mb-6">
-					<span className="text-2xl">TRANSPORT COST: ₹{cargoCost?.transportCost}/-</span>
-					<span className="text-2xl">TOTAL: ₹{cargoCost?.total}/-</span>
+					{/* <span className="text-2xl">TRANSPORT COST: ₹{cargoCost?.transportCost}/-</span> */}
+					<span className="text-2xl">COURIER COST: ₹{cargoCost?.total}/-</span>
 					<span className="text-2xl">
-						VOLUMETRIC WEIGHT: {cargoCost?.volumetricWeight?.toFixed(2)}
+						VOLUMETRIC WEIGHT: {Math.round(cargoCost?.volumetricWeight)}kg
 					</span>
 				</div>
 			) : null}

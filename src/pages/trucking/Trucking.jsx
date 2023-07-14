@@ -59,8 +59,7 @@ const Trucking = () => {
 
 			{truckingData ? (
 				<div className="flex gap-4 mb-6">
-					<span className="text-2xl">TRANSPORT COST: ₹{truckingData?.transportCost}/-</span>
-					<span className="text-2xl">TOTAL: ₹{truckingData?.total}/-</span>
+					<span className="text-2xl">Freight Cost: ₹{truckingData?.total}/-</span>
 				</div>
 			) : null}
 

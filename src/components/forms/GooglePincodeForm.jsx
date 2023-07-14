@@ -6,6 +6,7 @@ import GoogleInput from "./GoogleInput";
 // * If your value is DOMESTIC only get postal_code based on INDIA and make other region pincode as not valid for domestic purpose
 // * The Pincode should match based on region, domestic or international, When region is not set, and pincode(560016) is entered setValue("domestic")
 // * Assuming we type 560016(Bengaluru, India) & 57000(Malaysia) this case would be invalid the origin and destination country must match
+// * Show Locality Validation
 
 const GooglePincodeForm = () => {
 	const {

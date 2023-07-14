@@ -89,7 +89,7 @@ const AirAmbulance = () => {
 
 					<div className="w-full">
 						<label htmlFor="weight" className="text-[#f8bf02]">
-							Weight (cm)
+							Weight (kg)
 						</label>
 						<input
 							name="weight"
@@ -106,6 +106,7 @@ const AirAmbulance = () => {
 						)}
 					</div>
 
+					{/* cost 5000/- */}
 					<div className="flex items-center gap-2">
 						<label htmlFor="isPackingRequired">Do you need packing?</label>
 						<input
