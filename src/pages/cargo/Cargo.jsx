@@ -7,7 +7,7 @@ import {courierCargoCalculationService} from "../../utils/api";
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
-import GooglePincodeForm from "../../components/GooglePincodeForm";
+import GooglePincodeForm from "../../components/forms/GooglePincodeForm";
 import Button from "../../components/forms/Button";
 import {useState} from "react";
 

@@ -1,8 +1,6 @@
 import {useState} from "react";
-import {Controller, FormProvider, useForm} from "react-hook-form";
-// import {useLoaderData} from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import {useLoaderData} from "react-router";
+import {FormProvider, useForm} from "react-hook-form";
 
 // * UTILS
 import {getAllCities} from "../../utils/api";
@@ -12,6 +10,7 @@ import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
+import CitiesFinder from "../../components/forms/CitiesFinder";
 
 const INITIAL_VALUES = {
 	region: "",
@@ -21,19 +20,8 @@ const INITIAL_VALUES = {
 	isPackingRequired: false,
 };
 
-const options = [
-	{name: "United States"},
-	{name: "Canada"},
-	{name: "Mexico"},
-	{name: "Brazil"},
-	{name: "Argentina"},
-	{name: "Chile"},
-];
-
 const AirAmbulance = () => {
-	// const data = useLoaderData();
-
-	// console.log(data);
+	const cities = useLoaderData();
 
 	const [isChecked, setIsChecked] = useState(false);
 
@@ -45,13 +33,6 @@ const AirAmbulance = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
-		// watch,
-		// setError,
-		control,
-		// setValue,
-
-		// formState,
-		// reset,
 	} = methods;
 
 	// useEffect(() => {
@@ -104,89 +85,7 @@ const AirAmbulance = () => {
 					</div>
 
 					{/* <GoogleDistanceFinder /> */}
-					<div className="flex items-center justify-between gap-4 flex-col md:flex-row">
-						<fieldset className="w-full">
-							<label htmlFor="origin" className="text-[#f8bf02]">
-								Origin city
-							</label>
-							<Controller
-								name={"origin"}
-								id={"origin"}
-								control={control}
-								rules={{required: "Please enter your origin city"}}
-								render={() => {
-									return (
-										<>
-											<Autocomplete
-												options={options}
-												autoHighlight
-												getOptionLabel={(option) => option.name}
-												renderInput={(params) => (
-													<>
-														<TextField
-															className="input-fields focus:outline-[#dd3333] appearance-none"
-															{...params}
-															placeholder="Choose a country"
-															inputProps={{
-																...params.inputProps,
-																autoComplete: "new-password", // disable autocomplete and autofill
-															}}
-														/>
-														{errors.origin && (
-															<p role="alert" className="text-[#ef4444] leading-none mt-1">
-																{errors.origin?.message}
-															</p>
-														)}
-													</>
-												)}
-											/>
-										</>
-									);
-								}}
-							/>
-						</fieldset>
-
-						<fieldset className="w-full">
-							<label htmlFor="destination" className="text-[#f8bf02]">
-								Destination city
-							</label>
-							<Controller
-								name={"destination"}
-								id={"destination"}
-								control={control}
-								rules={{required: "Please enter your destination city"}}
-								render={() => {
-									return (
-										<>
-											<Autocomplete
-												options={options}
-												autoHighlight
-												getOptionLabel={(option) => option.name}
-												renderInput={(params) => (
-													<>
-														<TextField
-															className="input-fields focus:outline-[#dd3333] appearance-none"
-															{...params}
-															placeholder="Choose a country"
-															inputProps={{
-																...params.inputProps,
-																autoComplete: "new-password", // disable autocomplete and autofill
-															}}
-														/>
-														{errors.origin && (
-															<p role="alert" className="text-[#ef4444] leading-none mt-1">
-																{errors.origin?.message}
-															</p>
-														)}
-													</>
-												)}
-											/>
-										</>
-									);
-								}}
-							/>
-						</fieldset>
-					</div>
+					<CitiesFinder cities={cities} />
 
 					<div className="w-full">
 						<label htmlFor="weight" className="text-[#f8bf02]">

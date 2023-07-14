@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
-import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
+import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import {getVehicles, truckingCalculationService} from "../../utils/api";
 import {useLoaderData} from "react-router-dom";
 import {useState} from "react";

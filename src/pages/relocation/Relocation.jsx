@@ -3,7 +3,7 @@ import {FormProvider, useForm} from "react-hook-form";
 
 // * COMPONENTS
 import Header from "../../components/Header";
-import GoogleDistanceFinder from "../../components/GoogleDistanceFinder";
+import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";

@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {Controller, useFormContext, useWatch} from "react-hook-form";
 
-import GoogleInput from "./forms/GoogleInput";
+import GoogleInput from "./GoogleInput";
 
 // * If your value is DOMESTIC only get postal_code based on INDIA and make other region pincode as not valid for domestic purpose
 // * The Pincode should match based on region, domestic or international, When region is not set, and pincode(560016) is entered setValue("domestic")

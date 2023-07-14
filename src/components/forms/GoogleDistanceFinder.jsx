@@ -2,8 +2,8 @@ import {useState} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 
-import GoogleInput from "./forms/GoogleInput";
-import {calculateDistance} from "../utils/distanceCalculation";
+import GoogleInput from "./GoogleInput";
+import {calculateDistance} from "../../utils/distanceCalculation";
 
 const GoogleDistanceFinder = () => {
 	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
