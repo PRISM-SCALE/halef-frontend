@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import Logo from "../Logo";
 
 const Navbar = () => {
@@ -18,8 +19,8 @@ const Navbar = () => {
 			</div>
 			<div className="flex items-center gap-2">
 				<div className="relative px-5 py-2">
-					<a
-						href="#"
+					<Link
+						to="/"
 						className="active-menu_item text-[#595959] uppercase text-base font-barlow font-semibold"
 						// style={{
 						// 	color: "#171717",
@@ -31,7 +32,7 @@ const Navbar = () => {
 						// }}
 					>
 						Calculator
-					</a>
+					</Link>
 				</div>
 
 				<div className="relative px-5 py-2">
