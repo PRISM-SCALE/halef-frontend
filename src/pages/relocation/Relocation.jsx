@@ -44,6 +44,7 @@ const Relocation = () => {
 		formState: {errors},
 		handleSubmit,
 		watch,
+		getValues,
 	} = methods;
 
 	// useEffect(() => {
@@ -53,6 +54,7 @@ const Relocation = () => {
 	// }, [formState, reset]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
+	const distance = getValues("distance");
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
@@ -79,138 +81,149 @@ const Relocation = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
-			{relocationData ? (
-				<div className="flex gap-4 mb-6">
-					<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
-					<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
-					<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
-					<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
-				</div>
-			) : null}
-
-			<FormProvider {...methods}>
-				<FormWrapper
-					onSubmit={handleSubmit(onSubmit)}
-					// method="post"
-					// action="/relocation"
-				>
-					<GoogleDistanceFinder />
-
-					<fieldset>
-						<label htmlFor="houseCapcity" className="text-[#f8bf02]">
-							House Type
-						</label>
-						<select
-							name="houseCapcity"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose your house capacity"
-							{...register("houseCapacity", {required: "Please select your house capacity size"})}
+			<div className="flex gap-4">
+				<div className={`${relocationData ? "w-8/12" : "w-full"}`}>
+					<FormProvider {...methods}>
+						<FormWrapper
+							onSubmit={handleSubmit(onSubmit)}
+							// method="post"
+							// action="/relocation"
 						>
-							<option value="">Choose your house capacity</option>
-							{relocationHouseTypes?.map(({_id, type}) => {
-								return (
-									<option key={_id} value={_id}>
-										{type}
-									</option>
-								);
-							})}
-						</select>
-						{errors.houseCapacity && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.houseCapacity?.message}
-							</p>
-						)}
-					</fieldset>
+							<GoogleDistanceFinder />
 
-					<fieldset>
-						<label htmlFor="vehicle" className="text-[#f8bf02]">
-							Select vehicle
-						</label>
-						<select
-							disabled={!watch("houseCapacity")}
-							name="vehicle"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose your truck type"
-							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
-						>
-							<option value="">Choose your vehicle</option>
-							{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
-								return (
-									<option key={_id} value={_id}>
-										{name}
-									</option>
-								);
-							})}
-						</select>
-						{errors.vehicle && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.vehicle?.message}
-							</p>
-						)}
-					</fieldset>
+							<fieldset>
+								<label htmlFor="houseCapcity" className="text-[#f8bf02]">
+									House Type
+								</label>
+								<select
+									name="houseCapcity"
+									className="input-fields appearance-none focus:outline-[#dd3333]"
+									placeholder="Choose your house capacity"
+									{...register("houseCapacity", {
+										required: "Please select your house capacity size",
+									})}
+								>
+									<option value="">Choose your house capacity</option>
+									{relocationHouseTypes?.map(({_id, type}) => {
+										return (
+											<option key={_id} value={_id}>
+												{type}
+											</option>
+										);
+									})}
+								</select>
+								{errors.houseCapacity && (
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
+										{errors.houseCapacity?.message}
+									</p>
+								)}
+							</fieldset>
 
-					<fieldset>
-						<label htmlFor="packing" className="text-[#f8bf02]">
-							Packaging Type
-						</label>
-						<select
-							name="packing"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose a packing type"
-							{...register("packing", {required: "Choose a packing type"})}
-						>
-							<option value="">Choose your packing</option>
-							{packingTypes.map(({_id, name}) => {
-								return (
-									<option key={_id} value={_id}>
-										{name}
-									</option>
-								);
-							})}
-						</select>
-						{errors.packing && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.packing?.message}
-							</p>
-						)}
-					</fieldset>
+							<fieldset>
+								<label htmlFor="vehicle" className="text-[#f8bf02]">
+									Select vehicle
+								</label>
+								<select
+									disabled={!watch("houseCapacity")}
+									name="vehicle"
+									className="input-fields appearance-none focus:outline-[#dd3333]"
+									placeholder="Choose your truck type"
+									{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
+								>
+									<option value="">Choose your vehicle</option>
+									{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
+										return (
+											<option key={_id} value={_id}>
+												{name}
+											</option>
+										);
+									})}
+								</select>
+								{errors.vehicle && (
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
+										{errors.vehicle?.message}
+									</p>
+								)}
+							</fieldset>
 
-					<fieldset className="flex items-center gap-2">
-						<label htmlFor="insurance">Insurance</label>
-						<input
-							type="checkbox"
-							name="insurance"
-							id="relocation-insurance"
-							{...register("insurance")}
-							checked={isChecked}
-							onChange={() => setIsChecked(!isChecked)}
-						/>
-					</fieldset>
+							<fieldset>
+								<label htmlFor="packing" className="text-[#f8bf02]">
+									Packaging Type
+								</label>
+								<select
+									name="packing"
+									className="input-fields appearance-none focus:outline-[#dd3333]"
+									placeholder="Choose a packing type"
+									{...register("packing", {required: "Choose a packing type"})}
+								>
+									<option value="">Choose your packing</option>
+									{packingTypes.map(({_id, name}) => {
+										return (
+											<option key={_id} value={_id}>
+												{name}
+											</option>
+										);
+									})}
+								</select>
+								{errors.packing && (
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
+										{errors.packing?.message}
+									</p>
+								)}
+							</fieldset>
 
-					{isChecked && (
-						<fieldset>
-							<label htmlFor="goodsValue" className="text-[#f8bf02]">
-								Your Goods Value
-							</label>
-							<input
-								name="goodsValue"
-								type="number"
-								className="input-fields focus:outline-[#dd3333] appearance-none"
-								placeholder="Enter your goods value"
-								{...register("goodsValue", {required: "Please enter your value of the goods"})}
-								aria-invalid={errors.goodsValue ? "true" : "false"}
-							/>
-							{errors.goodsValue && (
-								<p role="alert" className="text-[#ef4444] leading-none mt-1">
-									{errors.goodsValue?.message}
-								</p>
+							<fieldset className="flex items-center gap-2">
+								<label htmlFor="insurance">Insurance</label>
+								<input
+									type="checkbox"
+									name="insurance"
+									id="relocation-insurance"
+									{...register("insurance")}
+									checked={isChecked}
+									onChange={() => setIsChecked(!isChecked)}
+								/>
+							</fieldset>
+
+							{isChecked && (
+								<fieldset>
+									<label htmlFor="goodsValue" className="text-[#f8bf02]">
+										Your Goods Value
+									</label>
+									<input
+										name="goodsValue"
+										type="number"
+										className="input-fields focus:outline-[#dd3333] appearance-none"
+										placeholder="Enter your goods value"
+										{...register("goodsValue", {required: "Please enter your value of the goods"})}
+										aria-invalid={errors.goodsValue ? "true" : "false"}
+									/>
+									{errors.goodsValue && (
+										<p role="alert" className="text-[#ef4444] leading-none mt-1">
+											{errors.goodsValue?.message}
+										</p>
+									)}
+								</fieldset>
 							)}
-						</fieldset>
-					)}
 
-					<Button buttonText="calculate" />
-				</FormWrapper>
-			</FormProvider>
+							<Button buttonText="calculate" />
+						</FormWrapper>
+					</FormProvider>
+				</div>
+
+				{relocationData ? (
+					<div className="w-1/3 flex flex-col justify-between max-h-96">
+						<div className="flex gap-4 mb-6 flex-col">
+							<span className="text-2xl">DISTANCE: {distance}km</span>
+							<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
+							<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
+							<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
+						</div>
+						<div>
+							<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
+						</div>
+					</div>
+				) : null}
+			</div>
 		</ServiceWrapper>
 	);
 };

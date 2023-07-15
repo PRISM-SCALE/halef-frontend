@@ -1,12 +1,10 @@
 import {useState} from "react";
-import {Controller, FormProvider, useForm} from "react-hook-form";
-import {Autocomplete} from "@react-google-maps/api";
+import {FormProvider, useForm} from "react-hook-form";
 
 // * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
-import GoogleInput from "../../components/forms/GoogleInput";
 import Button from "../../components/forms/Button";
 import {getPackageTypes, warehouseCalculationService} from "../../utils/api";
 import {useLoaderData} from "react-router-dom";
@@ -96,7 +94,6 @@ const Warehouse = () => {
 	const packageData = useLoaderData();
 
 	const [warehouse, setWarehouse] = useState(null);
-	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -104,30 +101,11 @@ const Warehouse = () => {
 
 	const {
 		register,
-		control,
 		formState: {errors},
 		handleSubmit,
 		// formState,
 		// reset,
-		setValue,
 	} = methods;
-
-	const onLoadPickup = (autocomplete) => {
-		// console.log("pickup autocomplete: ", autocomplete);
-		setPickupAutocomplete(autocomplete);
-	};
-
-	const onPlaceChangedForPickup = () => {
-		if (pickupAutocomplete !== null) {
-			const place = pickupAutocomplete.getPlace();
-			// console.log(place);
-			if (place) {
-				setValue("selectCity", place.formatted_address);
-			}
-		} else {
-			console.log("selectCity Autocomplete is not loaded yet!");
-		}
-	};
 
 	// useEffect(() => {
 	// 	if (formState.isSubmitSuccessful) {
@@ -148,11 +126,16 @@ const Warehouse = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
-			{warehouse ? (
+			{warehouse && warehouse?.total ? (
 				<div className="flex gap-4 mb-6">
 					<span className="text-2xl">STORAGE COST: ₹{warehouse?.storageCost}/-</span>
 					<span className="text-2xl">PACKAGE COST: ₹{warehouse?.packageCost}/-</span>
 					<span className="text-2xl">TOTAL: ₹{warehouse?.total}/-</span>
+				</div>
+			) : null}
+			{warehouse && warehouse?.message ? (
+				<div className="flex gap-4 mb-6">
+					<span className="text-2xl">{warehouse?.message}</span>
 				</div>
 			) : null}
 
@@ -163,34 +146,48 @@ const Warehouse = () => {
 						<label htmlFor="selectCity" className="text-[#f8bf02]">
 							Select a warehouse location
 						</label>
-						<Controller
+						<select
 							name={"selectCity"}
-							id={"selectCity"}
-							control={control}
-							rules={{required: "Please enter a pickup address"}}
-							render={({field}) => {
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							{...register("selectCity", {
+								required: "Please enter a pickup address",
+							})}
+						>
+							<option value="">Select a warehouse location</option>
+							{[
+								"Ahmedabad",
+								"A&N Islands (UT)",
+								"Amritsar",
+								"Bangalore",
+								"Chennai",
+								"Calicut",
+								"Delhi",
+								"Goa",
+								"Guwahati",
+								"Hyderabad",
+								"Jaipur",
+								"Kolkata",
+								"Kochi",
+								"Mumbai",
+								"Nagpur",
+								"Srinagar",
+								"Thiruvananthapuram",
+							].map((item) => {
 								return (
-									<>
-										<Autocomplete onLoad={onLoadPickup} onPlaceChanged={onPlaceChangedForPickup}>
-											<GoogleInput
-												name="selectCity"
-												placeholder="Warehouse location"
-												ref={field.ref}
-												{...field}
-											/>
-										</Autocomplete>
-										{errors.selectCity && (
-											<p role="alert" className="text-[#ef4444] leading-none mt-1">
-												{errors.selectCity.message}
-											</p>
-										)}
-									</>
+									<option key={item} value={item}>
+										{item.toUpperCase().replaceAll("_", " ")}
+									</option>
 								);
-							}}
-						/>
+							})}{" "}
+						</select>
+						{errors.goodsType && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.goodsType?.message}
+							</p>
+						)}
 					</fieldset>
 
-					<div>
+					<fieldset>
 						<label htmlFor="goodsType" className="text-[#f8bf02]">
 							Select the type of your goods
 						</label>
@@ -226,9 +223,9 @@ const Warehouse = () => {
 								{errors.goodsType?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
-					<div>
+					<fieldset>
 						<label htmlFor="area" className="text-[#f8bf02]">
 							Select the area of your goods
 						</label>
@@ -253,7 +250,7 @@ const Warehouse = () => {
 								{errors.area?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
 					<fieldset>
 						<label htmlFor="durationInDays" className="text-[#f8bf02]">

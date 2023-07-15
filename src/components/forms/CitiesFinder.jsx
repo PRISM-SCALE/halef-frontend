@@ -30,16 +30,15 @@ const CitiesFinder = ({cities}) => {
 	const debounceCities = useMemo(
 		() =>
 			debounce((request, callback) => {
-				// For example, filter the cities based on the input value
+				// Filter the cities based on the input value
 				const filteredCities = cities.filter(
 					(city) => city.city.toLowerCase().indexOf(request.input.toLowerCase()) !== -1
 				);
 
-				// Simulate API delay for demonstration purposes
 				setTimeout(() => {
 					callback(filteredCities);
-				}, 400);
-			}, 400),
+				}, 2000);
+			}, 2000),
 		[cities]
 	);
 

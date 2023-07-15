@@ -17,6 +17,11 @@ import AirAmbulance, {airAmbulanceLoader} from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
 const lib = ["places", "geometry"];
+// new Loader({
+// 	apiKey: `${API_KEY}`,
+// 	version: "weekly",
+// 	libraries: lib,
+// });
 
 function App() {
 	const router = createBrowserRouter([

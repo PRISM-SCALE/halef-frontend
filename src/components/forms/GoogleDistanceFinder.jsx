@@ -68,7 +68,6 @@ const GoogleDistanceFinder = () => {
 
 	return (
 		<>
-			{distance && <p>Distance: {distance}</p>}
 			<div>
 				<label htmlFor="pickup" className="text-[#f8bf02]">
 					Pickup Location
