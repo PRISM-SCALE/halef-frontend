@@ -82,7 +82,7 @@ const Relocation = () => {
 			<Header caption="cost estimation for" title={header_name} />
 
 			<div className="flex gap-4">
-				<div className={`${relocationData ? "w-8/12" : "w-full"}`}>
+				<div className={"w-[70%]"}>
 					<FormProvider {...methods}>
 						<FormWrapper
 							onSubmit={handleSubmit(onSubmit)}
@@ -211,7 +211,7 @@ const Relocation = () => {
 				</div>
 
 				{relocationData ? (
-					<div className="w-1/3 flex flex-col justify-between max-h-96">
+					<div className="w-[30%] bg-slate-50 flex flex-col justify-between max-h-96 border border-slate-200 border-solid">
 						<div className="flex gap-4 mb-6 flex-col">
 							<span className="text-2xl">DISTANCE: {distance}km</span>
 							<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
@@ -222,7 +222,11 @@ const Relocation = () => {
 							<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
 						</div>
 					</div>
-				) : null}
+				) : (
+					<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
+						<h1>Please enter the details to get calculated results</h1>
+					</div>
+				)}
 			</div>
 		</ServiceWrapper>
 	);

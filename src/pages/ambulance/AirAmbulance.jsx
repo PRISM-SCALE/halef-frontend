@@ -1,16 +1,15 @@
 import {useState} from "react";
-import {useLoaderData} from "react-router";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * UTILS
-import {getAllCities} from "../../utils/api";
+// import {getAllCities} from "../../utils/api";
 
 // * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
-import CitiesFinder from "../../components/forms/CitiesFinder";
+import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 
 const INITIAL_VALUES = {
 	region: "",
@@ -21,8 +20,6 @@ const INITIAL_VALUES = {
 };
 
 const AirAmbulance = () => {
-	const cities = useLoaderData();
-
 	const [isChecked, setIsChecked] = useState(false);
 
 	const methods = useForm({
@@ -84,8 +81,8 @@ const AirAmbulance = () => {
 						)}
 					</div>
 
-					{/* <GoogleDistanceFinder /> */}
-					<CitiesFinder cities={cities} />
+					<GoogleDistanceFinder />
+					{/* <CitiesFinder cities={cities} /> */}
 
 					<div className="w-full">
 						<label htmlFor="weight" className="text-[#f8bf02]">
@@ -127,10 +124,10 @@ const AirAmbulance = () => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export async function airAmbulanceLoader() {
-	const cities = await getAllCities();
+// export async function airAmbulanceLoader() {
+// 	const cities = await getAllCities();
 
-	return cities;
-}
+// 	return cities;
+// }
 
 export default AirAmbulance;

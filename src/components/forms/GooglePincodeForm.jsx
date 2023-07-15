@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Controller, useFormContext, useWatch} from "react-hook-form";
 
 import GoogleInput from "./GoogleInput";
@@ -18,6 +18,9 @@ const GooglePincodeForm = () => {
 	const originPincode = useWatch({name: "pickup", control});
 	const destinationPincode = useWatch({name: "dropoff", control});
 
+	const [validOriginPincodeCity, setValidOriginPincodeCity] = useState();
+	const [validDestinationPincodeCity, setValidDestinationPincodeCity] = useState();
+
 	// * ---------------------------------------------------------------------------------
 	// * GETTING LOCATION DETAILS BASED ON PIN CODES
 	useEffect(() => {
@@ -25,6 +28,11 @@ const GooglePincodeForm = () => {
 			geocodePincode(originPincode, (originLocation) => {
 				console.log("Origin Location Details:");
 				console.log(originLocation);
+
+				const validCity = originLocation.location.address_components;
+
+				setValidOriginPincodeCity(validCity[1].long_name);
+
 				// console.log("Latitude:", originLocation.lat);
 				// console.log("Longitude:", originLocation.lng);
 			});
@@ -36,6 +44,11 @@ const GooglePincodeForm = () => {
 			geocodePincode(destinationPincode, function (destinationLocation) {
 				console.log("Destination Location Details:");
 				console.log(destinationLocation);
+
+				const validCity = destinationLocation.location.address_components;
+
+				setValidDestinationPincodeCity(validCity[1].long_name);
+
 				// console.log("Latitude:", destinationLocation.lat);
 				// console.log("Longitude:", destinationLocation.lng);
 			});
@@ -73,34 +86,50 @@ const GooglePincodeForm = () => {
 	function geocodePincode(pincode, callback) {
 		var geocoder = new window.google.maps.Geocoder();
 
-		geocoder.geocode({address: pincode}, function (results, status) {
-			if (status === window.google.maps.GeocoderStatus.OK) {
-				if (results.length > 0) {
-					// var location = results[0].geometry.location;
-					var location = results[0];
+		geocoder.geocode(
+			{address: pincode, componentRestrictions: {country: "IN", postalCode: pincode}},
 
-					// * SEND WHATEVER
-					callback({location});
+			function (results, status) {
+				if (status === window.google.maps.GeocoderStatus.OK) {
+					if (results.length > 0) {
+						// var location = results[0].geometry.location;
+						var location = results[0];
+
+						// * SEND WHATEVER
+						callback({location});
+					} else {
+						console.log("No results found for the pincode:", pincode);
+					}
 				} else {
-					console.log("No results found for the pincode:", pincode);
+					console.log("Geocode request failed for the pincode:", pincode);
+					// setValidDestinationPincodeCity("");
+					// setValidOriginPincodeCity("");
 				}
-			} else {
-				console.log("Geocode request failed for the pincode:", pincode);
 			}
-		});
+		);
 	}
 
 	return (
 		<>
 			<fieldset>
-				<label htmlFor="pickup" className="text-[#f8bf02]">
-					Origin Pincode
-				</label>
+				<div className="flex items-center justify-between">
+					<label htmlFor="pickup" className="text-[#f8bf02]">
+						Origin Pincode
+					</label>
+					{validOriginPincodeCity && <p className="text-green-500">{validOriginPincodeCity}</p>}
+				</div>
 				<Controller
 					name={"pickup"}
 					id={"pickup"}
 					control={control}
-					rules={{required: "Please enter a pickup pincode"}}
+					rules={{
+						required: "Please enter a pickup pincode",
+
+						minLength: {
+							value: 6,
+							message: "Pincode must be of 6 digit value",
+						},
+					}}
 					render={({field}) => {
 						return (
 							<>
@@ -122,14 +151,26 @@ const GooglePincodeForm = () => {
 			</fieldset>
 
 			<fieldset>
-				<label htmlFor="dropoff" className="text-[#f8bf02]">
-					Destination Pincode
-				</label>
+				<div className="flex items-center justify-between">
+					<label htmlFor="dropoff" className="text-[#f8bf02]">
+						Destination Pincode
+					</label>
+					{validDestinationPincodeCity && (
+						<p className="text-green-500">{validDestinationPincodeCity}</p>
+					)}
+				</div>
 				<Controller
 					name={"dropoff"}
 					id={"dropoff"}
 					control={control}
-					rules={{required: "Please enter a dropoff Pincode"}}
+					rules={{
+						required: "Please enter a dropoff Pincode",
+
+						minLength: {
+							value: 6,
+							message: "Pincode must be of 6 digit value",
+						},
+					}}
 					render={({field}) => (
 						<>
 							<GoogleInput

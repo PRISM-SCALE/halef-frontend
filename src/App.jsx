@@ -13,7 +13,7 @@ import Home, {servicesLoader} from "./pages/home/Home";
 import Relocation, {relocationLoader} from "./pages/relocation/Relocation";
 import Trucking, {truckingLoader} from "./pages/trucking/Trucking";
 import Warehouse, {warehouseLoader} from "./pages/warehouse/Warehouse";
-import AirAmbulance, {airAmbulanceLoader} from "./pages/ambulance/AirAmbulance";
+import AirAmbulance from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
 const lib = ["places", "geometry"];
@@ -58,7 +58,7 @@ function App() {
 				{
 					path: "/airambulance",
 					element: <AirAmbulance />,
-					loader: airAmbulanceLoader,
+					// loader: airAmbulanceLoader,
 				},
 			],
 		},

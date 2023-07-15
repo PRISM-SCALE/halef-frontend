@@ -33,6 +33,7 @@ const Cargo = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
+		watch,
 		// formState,
 		// reset,
 	} = methods;
@@ -235,7 +236,16 @@ const Cargo = () => {
 						)}
 					</fieldset>
 
-					<Button buttonText="calculate" />
+					<Button
+						buttonText={
+							watch("region") === "international"
+								? "coming soon"
+								: watch("region") === "domestic"
+								? "calculate"
+								: "calculate"
+						}
+						disabled={watch("region") === "international"}
+					/>
 				</FormWrapper>
 			</FormProvider>
 		</ServiceWrapper>
