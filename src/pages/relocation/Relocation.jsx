@@ -13,6 +13,9 @@ import {
 	relocationCalculationService,
 } from "../../utils/api";
 import {defer, useLoaderData} from "react-router-dom";
+import {useResponsive} from "../../hooks/useResponsive";
+import {Box, Dialog, IconButton} from "@mui/material";
+import {Icon} from "@iconify-icon/react";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -30,10 +33,21 @@ const INITIAL_VALUES = {
 // * RELOCATION FORM COMPONENT START
 
 const Relocation = () => {
+	const {mediumScreenAndUp} = useResponsive();
+
 	const [relocationData, setRelocationData] = useState(null);
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 
 	const [isChecked, setIsChecked] = useState(false);
+	const [open, setOpen] = useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -66,6 +80,7 @@ const Relocation = () => {
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
+
 	const onSubmit = async (data) => {
 		const responseData = await relocationCalculationService(data);
 		setRelocationData(responseData);
@@ -81,8 +96,8 @@ const Relocation = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
-			<div className="flex gap-4">
-				<div className={"w-[70%]"}>
+			<div className="service-layout">
+				<div className={"w-full"}>
 					<FormProvider {...methods}>
 						<FormWrapper
 							onSubmit={handleSubmit(onSubmit)}
@@ -205,29 +220,65 @@ const Relocation = () => {
 								</fieldset>
 							)}
 
-							<Button buttonText="calculate" />
+							<Button buttonText="calculate" onClick={handleClickOpen} />
 						</FormWrapper>
 					</FormProvider>
 				</div>
 
-				{relocationData ? (
-					<div className="w-[30%] bg-slate-50 flex flex-col justify-between max-h-96 border border-slate-200 border-solid">
-						<div className="flex gap-4 mb-6 flex-col">
-							<span className="text-2xl">DISTANCE: {distance}km</span>
-							<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
-							<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
-							<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
-						</div>
-						<div>
-							<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
-						</div>
-					</div>
-				) : (
-					<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
-						<h1>Please enter the details to get calculated results</h1>
-					</div>
+				{mediumScreenAndUp && (
+					<>
+						{relocationData ? (
+							<div className="w-[30%] bg-slate-50 flex flex-col justify-between border border-slate-200 border-solid p-6">
+								<div className="flex gap-4 mb-6 flex-col">
+									<span className="text-2xl">DISTANCE: {distance}km</span>
+									<span className="text-2xl">
+										TRANSPORT COST: ₹{relocationData?.transportCost}/-
+									</span>
+									<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
+									<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
+								</div>
+								<div>
+									<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
+								</div>
+							</div>
+						) : (
+							<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
+								<h1>Please enter the details to get calculated results</h1>
+							</div>
+						)}
+					</>
 				)}
 			</div>
+
+			{!mediumScreenAndUp && (
+				<Dialog fullScreen open={open} onClose={handleClose}>
+					<Box className="text-right mb-6">
+						<IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+							<Icon icon="lucide:x" />
+						</IconButton>
+					</Box>
+
+					{relocationData ? (
+						<div className="w-full flex flex-col justify-between p-6">
+							<div className="flex gap-4 mb-6 flex-col">
+								<span className="text-2xl">DISTANCE: {distance}km</span>
+								<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
+								<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
+								<span className="text-2xl">
+									INSURANCE: ₹{relocationData?.insurance.toFixed(2)}/-
+								</span>
+							</div>
+							<div>
+								<span className="text-2xl">TOTAL: ₹{relocationData?.total.toFixed(2)}/-</span>
+							</div>
+						</div>
+					) : (
+						<div className="text-center  rounded-sm p-4 uppercase flex items-center justify-center">
+							<h1>Please enter the details to get calculated results</h1>
+						</div>
+					)}
+				</Dialog>
+			)}
 		</ServiceWrapper>
 	);
 };
