@@ -1,4 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+// import {Loader} from "@googlemaps/js-api-loader";
 import {LoadScriptNext} from "@react-google-maps/api";
 
 import "./App.css";
@@ -18,7 +19,7 @@ import Cargo from "./pages/cargo/Cargo";
 
 const lib = ["places", "geometry"];
 // new Loader({
-// 	apiKey: `${API_KEY}`,
+// 	apiKey: API_KEY,
 // 	version: "weekly",
 // 	libraries: lib,
 // });
