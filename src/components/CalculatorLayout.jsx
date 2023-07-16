@@ -1,16 +1,23 @@
 import PropTypes from "prop-types";
 
-const CalculatorLayout = ({children}) => {
+const CalculatorResultLayout = ({children}) => {
 	return (
-		<div className="w-[30%] bg-slate-50 flex flex-col justify-between border border-slate-200 border-solid p-6">
-      
-			{children}
+		<div className="bg-slate-50 flex flex-col justify-between p-6">
+			{/* IMAGE */}
+			<div>
+				<div>
+					<img src="/Container_32ft_SXL.webp" alt="truck image" />
+				</div>
+			</div>
+
+			{/* LOOP DATA */}
+			<div>{children}</div>
 		</div>
 	);
 };
 
-CalculatorLayout.propTypes = {
+CalculatorResultLayout.propTypes = {
 	children: PropTypes.node.isRequired,
 };
 
-export default CalculatorLayout;
+export default CalculatorResultLayout;

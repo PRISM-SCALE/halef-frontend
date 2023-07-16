@@ -14,8 +14,9 @@ import {
 } from "../../utils/api";
 import {defer, useLoaderData} from "react-router-dom";
 import {useResponsive} from "../../hooks/useResponsive";
-import {Box, Dialog, IconButton} from "@mui/material";
+import {Box, Dialog, IconButton, Typography} from "@mui/material";
 import {Icon} from "@iconify-icon/react";
+import CalculatorResultLayout from "../../components/CalculatorLayout";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -225,7 +226,7 @@ const Relocation = () => {
 					</FormProvider>
 				</div>
 
-				{mediumScreenAndUp && (
+				{/* {mediumScreenAndUp && (
 					<>
 						{relocationData ? (
 							<div className="w-[30%] bg-slate-50 flex flex-col justify-between border border-slate-200 border-solid p-6">
@@ -247,7 +248,12 @@ const Relocation = () => {
 							</div>
 						)}
 					</>
-				)}
+				)} */}
+
+				<CalculatorResultLayout>
+					<Typography variant="subtitle2">DISTANCE</Typography>
+					<Typography className="text-2xl">{distance}km</Typography>
+				</CalculatorResultLayout>
 			</div>
 
 			{!mediumScreenAndUp && (
