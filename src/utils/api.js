@@ -63,8 +63,6 @@ export async function relocationCalculationService(data) {
 		vehicle: data.vehicle,
 	};
 
-	console.log(POST_DATA);
-
 	const response = await fetch(`${CALCULATE_URL}/relocation`, {
 		method: "POST",
 		body: JSON.stringify(POST_DATA),

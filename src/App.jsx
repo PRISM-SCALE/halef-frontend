@@ -1,13 +1,17 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {ThemeProvider} from "@mui/material";
 // import {Loader} from "@googlemaps/js-api-loader";
 import {LoadScriptNext} from "@react-google-maps/api";
 
 import "./App.css";
 
-// UTILS
+// * THEME
+import {theme} from "./theme";
+
+// * UTILS
 import {API_KEY} from "./utils/variables";
 
-// PAGES
+// * PAGES
 import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
 import Home, {servicesLoader} from "./pages/home/Home";
@@ -71,9 +75,11 @@ function App() {
 	]);
 
 	return (
-		<LoadScriptNext googleMapsApiKey={API_KEY} libraries={lib}>
-			<RouterProvider router={router} />
-		</LoadScriptNext>
+		<ThemeProvider theme={theme}>
+			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={lib}>
+				<RouterProvider router={router} />
+			</LoadScriptNext>
+		</ThemeProvider>
 	);
 }
 
