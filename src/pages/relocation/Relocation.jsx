@@ -60,7 +60,7 @@ const Relocation = () => {
 		formState: {errors},
 		handleSubmit,
 		watch,
-		getValues,
+		// getValues,
 	} = methods;
 
 	// useEffect(() => {
@@ -70,7 +70,7 @@ const Relocation = () => {
 	// }, [formState, reset]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
-	const distance = getValues("distance");
+	// const distance = getValues("distance");
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
@@ -226,30 +226,6 @@ const Relocation = () => {
 						</FormWrapper>
 					</FormProvider>
 				</div>
-
-				{/* {mediumScreenAndUp && (
-					<>
-						{relocationData ? (
-							<div className="w-[30%] bg-slate-50 flex flex-col justify-between border border-slate-200 border-solid p-6">
-								<div className="flex gap-4 mb-6 flex-col">
-									<span className="text-2xl">DISTANCE: {distance}km</span>
-									<span className="text-2xl">
-										TRANSPORT COST: ₹{relocationData?.transportCost}/-
-									</span>
-									<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
-									<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
-								</div>
-								<div>
-									<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
-								</div>
-							</div>
-						) : (
-							<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
-								<h1>Please enter the details to get calculated results</h1>
-							</div>
-						)}
-					</>
-				)} */}
 
 				{mediumScreenAndUp && relocationData ? (
 					<CalculatorResultLayout
