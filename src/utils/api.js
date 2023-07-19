@@ -145,3 +145,27 @@ export async function warehouseCalculationService(data) {
 
 	return response.json();
 }
+
+export async function airAmbulanceCalculationService(data) {
+	const POST_DATA = {
+		destination: data.dropoff,
+		origin: data.pickup,
+		isPackingRequired: data.isPackingRequired,
+		region: data.region,
+		weight: data.weight,
+	};
+
+	const response = await fetch(`${CALCULATE_URL}/airambulance`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to send data.", status: 500};
+	}
+
+	return response.json();
+}
