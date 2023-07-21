@@ -4,8 +4,14 @@ import {Autocomplete} from "@react-google-maps/api";
 
 import GoogleInput from "./GoogleInput";
 import {calculateDistance} from "../../utils/distanceCalculation";
+import {useLocation} from "react-router-dom";
 
 const GoogleDistanceFinder = () => {
+	const location = useLocation();
+
+	const checkPathIsAirAmbulance = location.pathname === "/airambulance";
+	const checkPath = location.pathname === "/relocation" && location.pathname === "/trucking";
+
 	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
 	const [dropoffAutocomplete, setDropoffAutocomplete] = useState(null);
 	const [distance, setDistance] = useState(null);
@@ -38,7 +44,11 @@ const GoogleDistanceFinder = () => {
 		if (pickupAutocomplete !== null) {
 			const place = pickupAutocomplete.getPlace();
 			console.log(place);
-			if (place) {
+			if (place && checkPathIsAirAmbulance) {
+				setValue("pickup", place.vicinity);
+			}
+
+			if (place && checkPath) {
 				setValue("pickup", place.formatted_address);
 			}
 		} else {
@@ -50,8 +60,15 @@ const GoogleDistanceFinder = () => {
 		if (dropoffAutocomplete !== null) {
 			const place = dropoffAutocomplete.getPlace();
 			console.log(place);
-			if (place) {
+
+			if (place && checkPathIsAirAmbulance) {
+				setValue("dropoff", place.vicinity);
+				console.log("in air_ambulance");
+			}
+
+			if (place && checkPath) {
 				setValue("dropoff", place.formatted_address);
+				console.log("in other pages");
 
 				// * Calculate Distance
 				calculateDistance(pickupAutocomplete, dropoffAutocomplete, setDistance);
@@ -64,7 +81,7 @@ const GoogleDistanceFinder = () => {
 	if (distance !== null) {
 		setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 	}
-	// console.log(Number("22,345 km".replace(" km", "").replace(",", "")));
+	console.log(distance);
 
 	return (
 		<>

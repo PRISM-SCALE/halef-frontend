@@ -14,9 +14,10 @@ import {
 } from "../../utils/api";
 import {defer, useLoaderData} from "react-router-dom";
 import {useResponsive} from "../../hooks/useResponsive";
-import {Box, Dialog, IconButton, Typography} from "@mui/material";
+import {Box, Dialog, IconButton} from "@mui/material";
 import {Icon} from "@iconify-icon/react";
-import CalculatorResultLayout from "../../components/CalculatorLayout";
+import CalculatorResultLayout from "../../components/CalculatorResultLayout";
+import CalculatorResultItem from "../../components/CalculatorResultItem";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -59,7 +60,7 @@ const Relocation = () => {
 		formState: {errors},
 		handleSubmit,
 		watch,
-		getValues,
+		// getValues,
 	} = methods;
 
 	// useEffect(() => {
@@ -69,7 +70,7 @@ const Relocation = () => {
 	// }, [formState, reset]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
-	const distance = getValues("distance");
+	// const distance = getValues("distance");
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
@@ -226,34 +227,20 @@ const Relocation = () => {
 					</FormProvider>
 				</div>
 
-				{/* {mediumScreenAndUp && (
-					<>
-						{relocationData ? (
-							<div className="w-[30%] bg-slate-50 flex flex-col justify-between border border-slate-200 border-solid p-6">
-								<div className="flex gap-4 mb-6 flex-col">
-									<span className="text-2xl">DISTANCE: {distance}km</span>
-									<span className="text-2xl">
-										TRANSPORT COST: ₹{relocationData?.transportCost}/-
-									</span>
-									<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
-									<span className="text-2xl">INSURANCE: ₹{relocationData?.insurance}/-</span>
-								</div>
-								<div>
-									<span className="text-2xl">TOTAL: ₹{relocationData?.total}/-</span>
-								</div>
-							</div>
-						) : (
-							<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
-								<h1>Please enter the details to get calculated results</h1>
-							</div>
-						)}
-					</>
-				)} */}
-
-				<CalculatorResultLayout>
-					<Typography variant="subtitle2">DISTANCE</Typography>
-					<Typography className="text-2xl">{distance}km</Typography>
-				</CalculatorResultLayout>
+				{mediumScreenAndUp && relocationData ? (
+					<CalculatorResultLayout
+						imageName={relocationData?.vehicleName}
+						imageUrl={relocationData?.vehicleImage}
+					>
+						{relocationData?.relocationCost.map(({name, cost, unit}, index) => {
+							return <CalculatorResultItem key={index} title={name} value={cost} unit={unit} />;
+						})}
+					</CalculatorResultLayout>
+				) : (
+					<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
+						<h1>Please enter the details to get calculated results</h1>
+					</div>
+				)}
 			</div>
 
 			{!mediumScreenAndUp && (
@@ -265,21 +252,16 @@ const Relocation = () => {
 					</Box>
 
 					{relocationData ? (
-						<div className="w-full flex flex-col justify-between p-6">
-							<div className="flex gap-4 mb-6 flex-col">
-								<span className="text-2xl">DISTANCE: {distance}km</span>
-								<span className="text-2xl">TRANSPORT COST: ₹{relocationData?.transportCost}/-</span>
-								<span className="text-2xl">PACKAGE COST: ₹{relocationData?.packageCost}/-</span>
-								<span className="text-2xl">
-									INSURANCE: ₹{relocationData?.insurance.toFixed(2)}/-
-								</span>
-							</div>
-							<div>
-								<span className="text-2xl">TOTAL: ₹{relocationData?.total.toFixed(2)}/-</span>
-							</div>
-						</div>
+						<CalculatorResultLayout
+							imageName={relocationData?.vehicleName}
+							imageUrl={relocationData?.vehicleImage}
+						>
+							{relocationData?.relocationCost.map(({name, cost, unit}, index) => {
+								return <CalculatorResultItem key={index} title={name} value={cost} unit={unit} />;
+							})}
+						</CalculatorResultLayout>
 					) : (
-						<div className="text-center  rounded-sm p-4 uppercase flex items-center justify-center">
+						<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
 							<h1>Please enter the details to get calculated results</h1>
 						</div>
 					)}

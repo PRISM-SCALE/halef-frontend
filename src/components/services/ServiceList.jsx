@@ -15,10 +15,10 @@ const ServiceList = ({data}) => {
 	return (
 		<div className="py-8">
 			<Header caption="our services" title={header_name} />
-			{data.map(({name, _id, code}, index) => {
+			{data.map(({name, _id, code, icon}) => {
 				return (
 					<Link to={`/${code.toLowerCase()}`} key={_id}>
-						<Card icon={<h3>0{index + 1}</h3>} title={name} />
+						<Card icon={icon} title={name} code={code} />
 					</Link>
 				);
 			})}
@@ -37,3 +37,4 @@ ServiceList.propTypes = {
 };
 
 export default ServiceList;
+

@@ -10,11 +10,14 @@ import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
+import {airAmbulanceCalculationService} from "../../utils/api";
 
 const INITIAL_VALUES = {
 	region: "",
-	origin: "",
-	destination: "",
+	// origin: "",
+	// destination: "",
+	pickup: "",
+	dropoff: "",
 	weight: null,
 	isPackingRequired: false,
 };
@@ -30,25 +33,22 @@ const AirAmbulance = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
+		watch,
+		// setError,
+		// getValues,
 	} = methods;
 
 	// useEffect(() => {
-	// 	const getData = setTimeout(() => {
-	// 		getAllCities();
-	// 	}, 2000);
-
-	// 	return () => clearTimeout(getData);
-	// }, []);
-
-	// if (watch("origin") === watch("destination")) {
-	// 	setError("origin", `${watch("origin")} cannot be the same as ${watch("destination")}`);
-	// 	setError("destination", `${watch("destination")} cannot be the same as ${watch("origin")}`);
-	// }
+	// 	if (getValues("pickup") === getValues("dropoff")) {
+	// 		setError("pickup", `${getValues("pickup")} cannot be the same as ${getValues("dropoff")}`);
+	// 		setError("dropoff", `${getValues("dropoff")} cannot be the same as ${getValues("pickup")}`);
+	// 	}
+	// }, [getValues, setError]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = (data) => {
-		console.log(data);
+		airAmbulanceCalculationService(data);
 	};
 
 	const header_name = (
@@ -81,7 +81,7 @@ const AirAmbulance = () => {
 						)}
 					</div>
 
-					<GoogleDistanceFinder />
+					<GoogleDistanceFinder options={{types: ["airport"]}} />
 					{/* <CitiesFinder cities={cities} /> */}
 
 					<div className="w-full">
@@ -116,7 +116,17 @@ const AirAmbulance = () => {
 						/>
 					</div>
 
-					<Button buttonText="coming soon" disabled />
+					<Button
+						buttonText={
+							watch("region") === "international"
+								? "coming soon"
+								: watch("region") === "domestic"
+								? "calculate"
+								: "calculate"
+						}
+						disabled={watch("region") === "international"}
+						// onClick={handleClickOpen}
+					/>
 				</FormWrapper>
 			</FormProvider>
 		</ServiceWrapper>
