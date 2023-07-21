@@ -148,8 +148,8 @@ export async function warehouseCalculationService(data) {
 
 export async function airAmbulanceCalculationService(data) {
 	const POST_DATA = {
-		destination: data.dropoff,
-		origin: data.pickup,
+		destinationCity: data.dropoff,
+		sourceCity: data.pickup,
 		isPackingRequired: data.isPackingRequired,
 		region: data.region,
 		weight: data.weight,

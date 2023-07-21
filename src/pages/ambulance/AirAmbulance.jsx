@@ -81,7 +81,10 @@ const AirAmbulance = () => {
 						)}
 					</div>
 
-					<GoogleDistanceFinder options={{types: ["airport"]}} />
+					<GoogleDistanceFinder
+					// originOptions={{types: ["airport"]}}
+					// destinationOptions={{types: ["airport"]}}
+					/>
 					{/* <CitiesFinder cities={cities} /> */}
 
 					<div className="w-full">

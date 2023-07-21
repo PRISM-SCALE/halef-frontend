@@ -1,12 +1,13 @@
 import {useState} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
+import PropTypes from "prop-types";
 
 import GoogleInput from "./GoogleInput";
 import {calculateDistance} from "../../utils/distanceCalculation";
 import {useLocation} from "react-router-dom";
 
-const GoogleDistanceFinder = () => {
+const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 	const location = useLocation();
 
 	const checkPathIsAirAmbulance = location.pathname === "/airambulance";
@@ -45,7 +46,7 @@ const GoogleDistanceFinder = () => {
 			const place = pickupAutocomplete.getPlace();
 			console.log(place);
 			if (place && checkPathIsAirAmbulance) {
-				setValue("pickup", place.vicinity);
+				setValue("pickup", place?.address_components[0]?.long_name);
 			}
 
 			if (place && checkPath) {
@@ -100,7 +101,7 @@ const GoogleDistanceFinder = () => {
 								<Autocomplete
 									onLoad={onLoadPickup}
 									onPlaceChanged={onPlaceChangedForPickup}
-									// options={{types: ["geocode"]}}
+									options={originOptions}
 								>
 									<GoogleInput placeholder="Pickup Address" ref={field.ref} {...field} />
 								</Autocomplete>
@@ -126,7 +127,11 @@ const GoogleDistanceFinder = () => {
 					rules={{required: "Please enter a dropoff location"}}
 					render={({field}) => (
 						<>
-							<Autocomplete onLoad={onLoadDropoff} onPlaceChanged={onPlaceChangedForDropoff}>
+							<Autocomplete
+								onLoad={onLoadDropoff}
+								onPlaceChanged={onPlaceChangedForDropoff}
+								options={destinationOptions}
+							>
 								<GoogleInput placeholder="Destination Address" ref={field.ref} {...field} />
 							</Autocomplete>
 							{errors.dropoff && (
@@ -140,6 +145,11 @@ const GoogleDistanceFinder = () => {
 			</div>
 		</>
 	);
+};
+
+GoogleDistanceFinder.propTypes = {
+	originOptions: PropTypes.object,
+	destinationOptions: PropTypes.object,
 };
 
 export default GoogleDistanceFinder;
