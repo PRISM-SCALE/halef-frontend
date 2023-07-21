@@ -5,7 +5,7 @@ const Navbar = () => {
 	return (
 		<div
 			style={{
-				height: "80px",
+				height: "100px",
 				display: "flex",
 				justifyContent: "space-between",
 				alignItems: "center",
@@ -14,7 +14,7 @@ const Navbar = () => {
 			<div>
 				{/* LOGO */}
 				<a href="https://halefinternational.com">
-					<Logo styles={{height: "80px"}} />
+					<Logo styles={{height: "140px", paddingTop: "5px"}} />
 				</a>
 			</div>
 			<div className="flex items-center gap-2">

@@ -1,4 +1,4 @@
-import halefLogo from "/logo.svg";
+import halefLogo from "/logo.png";
 import PropTypes from "prop-types";
 
 const Logo = ({styles}) => {
