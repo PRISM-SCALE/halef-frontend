@@ -3,7 +3,7 @@ export const CALCULATE_URL = `${BASE_URL}/calculate`;
 
 export async function getAllServices() {
 	try {
-		const response = await fetch(`${BASE_URL}/servicesssssssssss`);
+		const response = await fetch(`${BASE_URL}/services`);
 
 		if (!response.ok) {
 			throw {message: "Failed to fetch all services.", status: 500};
