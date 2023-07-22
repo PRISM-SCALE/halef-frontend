@@ -7,7 +7,13 @@ const Home = () => {
 
 	return (
 		<div>
-			<ServiceList data={data} />
+			{data ? (
+				<ServiceList data={data} />
+			) : (
+				<div className="flex items-center justify-center p-14 border-dashed border-slate-300">
+					<h2 className="text-xl">NO DATA TO SHOW</h2>
+				</div>
+			)}
 		</div>
 	);
 };
