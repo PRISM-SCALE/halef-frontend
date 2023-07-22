@@ -10,8 +10,8 @@ const Home = () => {
 			{data ? (
 				<ServiceList data={data} />
 			) : (
-				<div className="flex items-center justify-center p-14 border-dashed border-slate-300">
-					<h2 className="text-xl">NO DATA TO SHOW</h2>
+				<div className="flex items-center justify-center p-14 border-dashed border-slate-300 border-2 mt-8">
+					<h2 className="text-xl">Uh-oh! There&apos;s nothing to show here.</h2>
 				</div>
 			)}
 		</div>
@@ -21,6 +21,10 @@ const Home = () => {
 // eslint-disable-next-line react-refresh/only-export-components
 export async function servicesLoader() {
 	const services = await getAllServices();
+
+	if (!services) {
+		return null;
+	}
 
 	return services;
 }

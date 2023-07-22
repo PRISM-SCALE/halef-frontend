@@ -2,13 +2,17 @@ export const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3
 export const CALCULATE_URL = `${BASE_URL}/calculate`;
 
 export async function getAllServices() {
-	const response = await fetch(`${BASE_URL}/services`);
+	try {
+		const response = await fetch(`${BASE_URL}/servicesssssssssss`);
 
-	if (!response.ok) {
-		throw {message: "Failed to fetch all services.", status: 500};
+		if (!response.ok) {
+			throw {message: "Failed to fetch all services.", status: 500};
+		}
+
+		return response.json();
+	} catch (error) {
+		console.error(error);
 	}
-
-	return response.json();
 }
 
 export async function getRelocationHouseType() {
@@ -51,6 +55,8 @@ export async function getAllCities() {
 	return response.json();
 }
 
+// * -------------------------------------------------------------------------
+// * -------------------------------------------------------------------------
 // * CALCULATOR APIs
 
 export async function relocationCalculationService(data) {
