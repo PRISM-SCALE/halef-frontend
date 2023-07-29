@@ -1,4 +1,5 @@
-import {useState} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useEffect, useRef, useState} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 import PropTypes from "prop-types";
@@ -11,10 +12,10 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 	const location = useLocation();
 
 	const checkPathIsAirAmbulance = location.pathname === "/airambulance";
-	const checkPath = location.pathname === "/relocation" && location.pathname === "/trucking";
 
-	const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
-	const [dropoffAutocomplete, setDropoffAutocomplete] = useState(null);
+	const pickupAutocomplete = useRef();
+	const dropoffAutocomplete = useRef();
+
 	const [distance, setDistance] = useState(null);
 	// console.log(distance);
 
@@ -24,6 +25,13 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 		setValue,
 	} = useFormContext();
 
+	useEffect(() => {
+		// Calculate distance whenever the pickup or drop-off locations change
+		if (pickupAutocomplete.current && dropoffAutocomplete.current) {
+			calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
+		}
+	}, [pickupAutocomplete.current, dropoffAutocomplete.current]);
+
 	// useEffect(() => {
 	// 	if (isSubmitSuccessful) {
 	// 		setDistance(null);
@@ -32,24 +40,24 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 
 	const onLoadPickup = (autocomplete) => {
 		// console.log("pickup autocomplete: ", autocomplete);
-		setPickupAutocomplete(autocomplete);
+		pickupAutocomplete.current = autocomplete;
 	};
 
 	const onLoadDropoff = (autocomplete) => {
 		// console.log("dropoff autocomplete: ", autocomplete);
-		setDropoffAutocomplete(autocomplete);
+		dropoffAutocomplete.current = autocomplete;
 		// calculateDistance();
 	};
 
 	const onPlaceChangedForPickup = () => {
-		if (pickupAutocomplete !== null) {
-			const place = pickupAutocomplete.getPlace();
+		if (pickupAutocomplete.current !== null) {
+			const place = pickupAutocomplete.current.getPlace();
 			console.log(place);
 			if (place && checkPathIsAirAmbulance) {
 				setValue("pickup", place?.address_components[0]?.long_name);
 			}
 
-			if (place && checkPath) {
+			if (place) {
 				setValue("pickup", place.formatted_address);
 			}
 		} else {
@@ -58,8 +66,8 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 	};
 
 	const onPlaceChangedForDropoff = () => {
-		if (dropoffAutocomplete !== null) {
-			const place = dropoffAutocomplete.getPlace();
+		if (dropoffAutocomplete.current !== null) {
+			const place = dropoffAutocomplete.current.getPlace();
 			console.log(place);
 
 			if (place && checkPathIsAirAmbulance) {
@@ -67,21 +75,22 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 				console.log("in air_ambulance");
 			}
 
-			if (place && checkPath) {
+			if (place) {
 				setValue("dropoff", place.formatted_address);
 				console.log("in other pages");
 
 				// * Calculate Distance
-				calculateDistance(pickupAutocomplete, dropoffAutocomplete, setDistance);
+				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
+
+				if (distance !== null) {
+					setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
+				}
 			}
 		} else {
 			console.log("Dropoff Autocomplete is not loaded yet!");
 		}
 	};
 
-	if (distance !== null) {
-		setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
-	}
 	console.log(distance);
 
 	return (

@@ -1,16 +1,99 @@
-import FormWrapper from "./FormWrapper";
-import Button from "./Button";
+import {useFormContext} from "react-hook-form";
 
 const ModalForm = () => {
+	const {
+		register,
+		formState: {errors},
+	} = useFormContext();
 	return (
-		<FormWrapper>
-      <fieldset>
-        
-      </fieldset>
-			<fieldset></fieldset>
+		<div className="w-full flex flex-col gap-4">
+			<fieldset>
+				<label htmlFor="firstName" className="text-[#f8bf02]">
+					First Name
+				</label>
+				<input
+					name="firstName"
+					className="input-fields appearance-none focus:outline-[#dd3333]"
+					placeholder="Enter Your First Name"
+					{...register("firstName", {
+						required: "Please enter your first name",
+					})}
+				/>
+				{errors.firstName && (
+					<p role="alert" className="text-[#ef4444] leading-none mt-1">
+						{errors.firstName?.message}
+					</p>
+				)}
+			</fieldset>
 
-			<Button buttonText="submit" />
-		</FormWrapper>
+			<fieldset>
+				<label htmlFor="lastName" className="text-[#f8bf02]">
+					Last Name
+				</label>
+				<input
+					name="lastName"
+					className="input-fields appearance-none focus:outline-[#dd3333]"
+					placeholder="Enter Your Last Name"
+					{...register("lastName", {
+						required: "Please enter your last name",
+					})}
+				/>
+				{errors.lastName && (
+					<p role="alert" className="text-[#ef4444] leading-none mt-1">
+						{errors.lastName?.message}
+					</p>
+				)}
+			</fieldset>
+
+			<fieldset>
+				<label htmlFor="email" className="text-[#f8bf02]">
+					Email
+				</label>
+				<input
+					name="email"
+					type="email"
+					className="input-fields appearance-none focus:outline-[#dd3333]"
+					placeholder="Enter Your First Name"
+					{...register("email", {
+						required: "Please enter your first name",
+						validate: {
+							maxLength: (v) => v.length <= 50 || "The email should have at most 50 characters",
+							matchPattern: (v) =>
+								/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+								"Email address must be a valid address",
+						},
+					})}
+				/>
+				{errors.email && (
+					<p role="alert" className="text-[#ef4444] leading-none mt-1">
+						{errors.email?.message}
+					</p>
+				)}
+			</fieldset>
+
+			<fieldset>
+				<label htmlFor="phone" className="text-[#f8bf02]">
+					Mobile Number
+				</label>
+				<input
+					name="phone"
+					className="input-fields appearance-none focus:outline-[#dd3333]"
+					placeholder="Enter Your Mobile Number"
+					{...register("phone", {
+						required: "Please enter your mobile number",
+						maxLength: {
+							value: 10,
+							message: "Mobile number has a limit of 10, please enter a valid number",
+						},
+					})}
+				/>
+				{errors.phone && (
+					<p role="alert" className="text-[#ef4444] leading-none mt-1">
+						{errors.phone?.message}
+					</p>
+				)}
+			</fieldset>
+		</div>
 	);
 };
 

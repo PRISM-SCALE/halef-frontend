@@ -11,6 +11,7 @@ const RHFAutocomplete = ({
 	placeholder,
 	getOptionLabel,
 	noOptionsText,
+	rules,
 	...others
 }) => {
 	const {control} = useFormContext();
@@ -19,6 +20,7 @@ const RHFAutocomplete = ({
 		<Controller
 			name={name}
 			control={control}
+			rules={rules}
 			render={({fieldState: {error}}) => {
 				return (
 					<>
@@ -54,6 +56,7 @@ const RHFAutocomplete = ({
 									/>
 								</>
 							)}
+							
 						/>
 					</>
 				);

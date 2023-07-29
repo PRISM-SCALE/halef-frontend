@@ -125,7 +125,7 @@ const GooglePincodeForm = () => {
 					rules={{
 						required: "Please enter a pickup pincode",
 
-						minLength: {
+						maxLength: {
 							value: 6,
 							message: "Pincode must be of 6 digit value",
 						},
@@ -166,7 +166,7 @@ const GooglePincodeForm = () => {
 					rules={{
 						required: "Please enter a dropoff Pincode",
 
-						minLength: {
+						maxLength: {
 							value: 6,
 							message: "Pincode must be of 6 digit value",
 						},
