@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 import PropTypes from "prop-types";
@@ -8,7 +8,7 @@ import GoogleInput from "./GoogleInput";
 import {calculateDistance} from "../../utils/distanceCalculation";
 import {useLocation} from "react-router-dom";
 
-const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
+const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) => {
 	const location = useLocation();
 
 	const checkPathIsAirAmbulance = location.pathname === "/airambulance";
@@ -16,7 +16,6 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 	const pickupAutocomplete = useRef();
 	const dropoffAutocomplete = useRef();
 
-	const [distance, setDistance] = useState(null);
 	// console.log(distance);
 
 	const {
@@ -59,6 +58,8 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 
 			if (place) {
 				setValue("pickup", place.formatted_address);
+
+				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
 			}
 		} else {
 			console.log("Pickup Autocomplete is not loaded yet!");
@@ -81,17 +82,11 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 
 				// * Calculate Distance
 				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
-
-				if (distance !== null) {
-					setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
-				}
 			}
 		} else {
 			console.log("Dropoff Autocomplete is not loaded yet!");
 		}
 	};
-
-	console.log(distance);
 
 	return (
 		<>
@@ -159,6 +154,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions}) => {
 GoogleDistanceFinder.propTypes = {
 	originOptions: PropTypes.object,
 	destinationOptions: PropTypes.object,
+	setDistance: PropTypes.func,
 };
 
 export default GoogleDistanceFinder;

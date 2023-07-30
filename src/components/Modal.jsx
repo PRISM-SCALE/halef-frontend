@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * COMPONENTS
@@ -25,13 +25,17 @@ const Modal = ({open, onClose}) => {
 		defaultValues: {...INITIAL_VALUES},
 	});
 
-	const {handleSubmit} = methods;
+	const {
+		handleSubmit,
+		formState: {isSubmitSuccessful, isValid},
+	} = methods;
 
 	const onSubmit = (data) => {
 		console.log("MODAL FORM", data);
 		setValues(data);
 	};
 
+	console.log("MODAL FORM", isValid);
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<DialogTitle className="font-semibold">
@@ -40,7 +44,7 @@ const Modal = ({open, onClose}) => {
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<DialogContent>
-						<ModalForm />
+						{isSubmitSuccessful ? <Box>OTP FORM HERE</Box> : <ModalForm />}
 					</DialogContent>
 					<DialogActions sx={{py: 2}}>
 						<Button onClick={onClose} color="error">

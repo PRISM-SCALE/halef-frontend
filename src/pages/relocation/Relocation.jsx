@@ -16,6 +16,8 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/Modal";
+import {Box} from "@mui/material";
+import {useEffect, useState} from "react";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -34,11 +36,7 @@ const INITIAL_VALUES = {
 
 const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
-
 	const {toggle: open, onOpen, onClose} = useToggle();
-
-	//* STATES
-	// const [relocationData, setRelocationData] = useState(null);
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -46,12 +44,24 @@ const Relocation = () => {
 
 	const {
 		register,
-		formState: {errors, isSubmitted},
+		formState: {errors, isValid},
 		handleSubmit,
 		watch,
+		setValue,
 	} = methods;
-
 	const values = watch();
+
+	//* STATES
+	// const [relocationData, setRelocationData] = useState(null);
+	const [distance, setDistance] = useState(null);
+
+	useEffect(() => {
+		if (distance !== null) {
+			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
+		}
+	}, [distance, setValue]);
+
+	console.log(isValid);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
@@ -66,7 +76,7 @@ const Relocation = () => {
 		// const responseData = await relocationCalculationService(data);
 		// setRelocationData(responseData);
 		console.log(data);
-		if (isSubmitted) {
+		if (isValid) {
 			console.log("SUBMITTED");
 			onOpen();
 		}
@@ -93,7 +103,10 @@ const Relocation = () => {
 					// method="post"
 					// action="/relocation"
 				>
-					<GoogleDistanceFinder />
+					<Box>{values.distance}</Box>
+					<GoogleDistanceFinder setDistance={setDistance} />
+
+					{/* <GoogleAutocomplete /> */}
 
 					<fieldset>
 						<label htmlFor="houseCapcity" className="text-[#f8bf02]">
@@ -208,7 +221,7 @@ const Relocation = () => {
 						</fieldset>
 					)}
 
-					<Button buttonText="calculate" onClick={onOpen} />
+					<Button buttonText="calculate" />
 				</FormWrapper>
 			</FormProvider>
 

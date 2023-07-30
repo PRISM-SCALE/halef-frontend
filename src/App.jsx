@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ThemeProvider} from "@mui/material";
-// import {Loader} from "@googlemaps/js-api-loader";
+import {Loader} from "@googlemaps/js-api-loader";
 import {LoadScriptNext} from "@react-google-maps/api";
 
 import "./App.css";
@@ -22,11 +22,11 @@ import AirAmbulance from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
 const lib = ["places", "geometry"];
-// new Loader({
-// 	apiKey: API_KEY,
-// 	version: "weekly",
-// 	libraries: lib,
-// });
+new Loader({
+	apiKey: API_KEY,
+	version: "weekly",
+	libraries: lib,
+});
 
 function App() {
 	const router = createBrowserRouter([
