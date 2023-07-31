@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const CalculatorResultLayout = ({children, imageUrl, imageName}) => {
 	return (
-		<div className="bg-slate-50 flex flex-col ">
+		<div className="bg-slate-50 flex flex-col">
 			{/* IMAGE */}
 			<div className="relative">
 				<div

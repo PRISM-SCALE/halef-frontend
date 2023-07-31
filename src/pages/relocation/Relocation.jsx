@@ -5,7 +5,7 @@ import {defer, useLoaderData} from "react-router-dom";
 import {
 	getPackageTypes,
 	getRelocationHouseType,
-	// relocationCalculationService,
+	relocationCalculationService,
 } from "../../utils/api";
 
 // * COMPONENTS
@@ -18,6 +18,8 @@ import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/Modal";
 import {Box} from "@mui/material";
 import {useEffect, useState} from "react";
+
+const isVerified = false;
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -52,7 +54,7 @@ const Relocation = () => {
 	const values = watch();
 
 	//* STATES
-	// const [relocationData, setRelocationData] = useState(null);
+	const [relocationData, setRelocationData] = useState(null);
 	const [distance, setDistance] = useState(null);
 
 	useEffect(() => {
@@ -60,8 +62,6 @@ const Relocation = () => {
 			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 		}
 	}, [distance, setValue]);
-
-	console.log(isValid);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
@@ -73,13 +73,15 @@ const Relocation = () => {
 	// * HANDLER FUNCTIONS
 
 	const onSubmit = async (data) => {
-		// const responseData = await relocationCalculationService(data);
-		// setRelocationData(responseData);
-		console.log(data);
-		if (isValid) {
+		if (isValid && !isVerified) {
 			console.log("SUBMITTED");
 			onOpen();
+			return;
 		}
+
+		const responseData = await relocationCalculationService(data);
+		setRelocationData(responseData);
+		onOpen();
 	};
 
 	// const handleModal = () => {
@@ -225,7 +227,7 @@ const Relocation = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} />
+			<Modal onClose={onClose} open={open} isVerified={isVerified} serviceData={relocationData} />
 		</ServiceWrapper>
 	);
 };
