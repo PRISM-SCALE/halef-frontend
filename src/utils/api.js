@@ -68,9 +68,10 @@ export async function createUser(data) {
 	const response = await fetch(`${BASE_URL}/user/create`, {
 		method: "POST",
 		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
 	});
-
-	console.log(POST_DATA);
 
 	if (!response.ok) {
 		throw {message: "Failed to create a user.", status: 500};
@@ -78,6 +79,44 @@ export async function createUser(data) {
 
 	return response.json();
 }
+
+export async function resendOTP(phone) {
+	const POST_DATA = {
+		phone: Number(phone),
+	};
+
+	const response = await fetch(`${BASE_URL}/otp/resend`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to create a user.", status: 500};
+	}
+
+	return response.json();
+}
+
+export async function verifyOtp(data) {
+	const response = await fetch(`${BASE_URL}/otp/verify`, {
+		method: "POST",
+		body: JSON.stringify(data),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to create a user.", status: 500};
+	}
+
+	return response.json();
+}
+// * -------------------------------------------------------------------------
+// * -------------------------------------------------------------------------
 
 // * -------------------------------------------------------------------------
 // * -------------------------------------------------------------------------

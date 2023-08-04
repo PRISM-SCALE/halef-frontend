@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
@@ -7,7 +7,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useResponsive} from "../hooks/useResponsive";
 
 // * API
-import {createUser} from "../utils/api";
+import {createUser, verifyOtp} from "../utils/api";
 
 // * COMPONENTS
 import ModalForm from "./forms/ModalForm";
@@ -18,72 +18,88 @@ import CalculatorResultLayout from "./CalculatorResultLayout";
 import CalculatorResultItem from "./CalculatorResultItem";
 
 // * INITIAL FORM VALUES
-const INITIAL_VALUES = {
-	name: "",
-	email: "",
-	phone: "",
-	otp: "",
-};
 
 const UserDetails = ({open, onClose}) => {
+	const INITIAL_VALUES = {
+		name: "",
+		email: "",
+		phone: "",
+	};
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useLocalStorage("userData", {...INITIAL_VALUES});
 
-	const [userData, setUserData] = useState();
+	const [userData, setUserData] = useState({});
+	const [responseData, setResponseData] = useState();
 
-	// useEffect(() => {
-	// 	const getUserFromLocal = () => {
-	// 		const USER_DATA = JSON.parse(localStorage.getItem("userData"));
-	// 		setUserData(USER_DATA);
-	// 	};
+	const isUserDataAvailable = Boolean(userData?.email) && Boolean(userData?.phone);
 
-	// 	getUserFromLocal();
-	// }, [values]);
+	useEffect(() => {
+		const getUserFromLocal = () => {
+			const USER_DATA = JSON.parse(localStorage.getItem("userData"));
+			setUserData(USER_DATA);
+		};
+
+		getUserFromLocal();
+	}, [values]);
 
 	const methods = useForm({
-		defaultValues: {...INITIAL_VALUES},
+		defaultValues: isUserDataAvailable ? {code: ""} : {...INITIAL_VALUES},
 	});
 
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-		// if (!isUserDataAvailable) {
-		// 	setValues(data);
-		// }
+		console.log(values);
 
-		const response = await createUser(data);
+		if (!isUserDataAvailable) {
+			setValues(data);
+			const response = await createUser(data);
 
-		setUserData(response);
+			setResponseData(response);
+		}
+
+		if (isUserDataAvailable) {
+			console.log("VERIFY LOGIC");
+
+			const phone = Number(values.phone);
+			const code = Number(data.code);
+
+			const verificationData = {
+				phone,
+				code,
+			};
+
+			console.log("VERIFICATION_DATA", verificationData);
+
+			const response = await verifyOtp(verificationData);
+
+			setResponseData(response);
+		}
+
 		reset();
 	};
 
-	console.log("USER_DATA", userData);
+	console.log("USER_DATA", responseData);
 
 	return (
 		<Dialog open={open}>
 			<DialogTitle className="font-semibold">
-				{!userData ? "Fill the below form to get your calculated results" : userData?.message}
+				{!userData ? "Fill the below form to get your calculated results" : "Enter OTP to verify"}
 			</DialogTitle>
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<DialogContent>{!userData?.isVerified ? <ModalForm /> : <OTPForm />}</DialogContent>
+					<DialogContent>
+						{!isUserDataAvailable ? <ModalForm /> : <OTPForm phone={Number(values.phone)} />}
+					</DialogContent>
 
-					{userData ? (
-						<DialogActions sx={{py: 2}}>
-							<Button type="submit" color="error" onClick={onClose}>
-								CLOSE
-							</Button>
-						</DialogActions>
-					) : (
-						<DialogActions sx={{py: 2}}>
-							<Button onClick={onClose} color="error">
-								Cancel
-							</Button>
-							<Button type="submit" color="success">
-								Save
-							</Button>
-						</DialogActions>
-					)}
+					<DialogActions sx={{py: 2}}>
+						<Button onClick={onClose} color="error">
+							Cancel
+						</Button>
+						<Button type="submit" color="success">
+							Submit
+						</Button>
+					</DialogActions>
 				</FormWrapper>
 			</FormProvider>
 		</Dialog>

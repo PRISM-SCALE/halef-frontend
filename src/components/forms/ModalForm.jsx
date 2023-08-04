@@ -15,7 +15,7 @@ const ModalForm = () => {
 				<input
 					name="name"
 					className="input-fields appearance-none focus:outline-[#dd3333]"
-					placeholder="Enter Your First Name"
+					placeholder="Enter Your Name"
 					{...register("name", {
 						required: "Please enter your first name",
 					})}
