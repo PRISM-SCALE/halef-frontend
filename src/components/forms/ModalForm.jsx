@@ -5,42 +5,24 @@ const ModalForm = () => {
 		register,
 		formState: {errors},
 	} = useFormContext();
+
 	return (
 		<div className="w-full flex flex-col gap-4">
 			<fieldset>
-				<label htmlFor="firstName" className="text-[#f8bf02]">
-					First Name
+				<label htmlFor="name" className="text-[#f8bf02]">
+					Name
 				</label>
 				<input
-					name="firstName"
+					name="name"
 					className="input-fields appearance-none focus:outline-[#dd3333]"
 					placeholder="Enter Your First Name"
-					{...register("firstName", {
+					{...register("name", {
 						required: "Please enter your first name",
 					})}
 				/>
-				{errors.firstName && (
+				{errors.name && (
 					<p role="alert" className="text-[#ef4444] leading-none mt-1">
-						{errors.firstName?.message}
-					</p>
-				)}
-			</fieldset>
-
-			<fieldset>
-				<label htmlFor="lastName" className="text-[#f8bf02]">
-					Last Name
-				</label>
-				<input
-					name="lastName"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
-					placeholder="Enter Your Last Name"
-					{...register("lastName", {
-						required: "Please enter your last name",
-					})}
-				/>
-				{errors.lastName && (
-					<p role="alert" className="text-[#ef4444] leading-none mt-1">
-						{errors.lastName?.message}
+						{errors.name?.message}
 					</p>
 				)}
 			</fieldset>

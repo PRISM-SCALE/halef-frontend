@@ -57,6 +57,30 @@ export async function getAllCities() {
 
 // * -------------------------------------------------------------------------
 // * -------------------------------------------------------------------------
+// * USER INFO
+export async function createUser(data) {
+	const POST_DATA = {
+		name: data.name,
+		email: data.email,
+		phone: Number(data.phone),
+	};
+
+	const response = await fetch(`${BASE_URL}/user/create`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+	});
+
+	console.log(POST_DATA);
+
+	if (!response.ok) {
+		throw {message: "Failed to create a user.", status: 500};
+	}
+
+	return response.json();
+}
+
+// * -------------------------------------------------------------------------
+// * -------------------------------------------------------------------------
 // * CALCULATOR APIs
 
 export async function relocationCalculationService(data) {

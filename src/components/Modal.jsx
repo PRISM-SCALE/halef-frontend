@@ -1,21 +1,25 @@
+import {useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
+
+// * HOOKS
+import {useResponsive} from "../hooks/useResponsive";
+
+// * API
+import {createUser} from "../utils/api";
 
 // * COMPONENTS
 import ModalForm from "./forms/ModalForm";
 import FormWrapper from "./forms/FormWrapper";
 import useLocalStorage from "../hooks/useLocalStorage";
 import OTPForm from "./forms/OTPForm";
-import {useEffect, useState} from "react";
 import CalculatorResultLayout from "./CalculatorResultLayout";
 import CalculatorResultItem from "./CalculatorResultItem";
-import {useResponsive} from "../hooks/useResponsive";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
-	firstName: "",
-	lastName: "",
+	name: "",
 	email: "",
 	phone: "",
 	otp: "",
@@ -27,45 +31,44 @@ const UserDetails = ({open, onClose}) => {
 
 	const [userData, setUserData] = useState();
 
-	const isUserDataAvailable = userData?.email && userData?.phone ? true : false;
+	// useEffect(() => {
+	// 	const getUserFromLocal = () => {
+	// 		const USER_DATA = JSON.parse(localStorage.getItem("userData"));
+	// 		setUserData(USER_DATA);
+	// 	};
 
-	useEffect(() => {
-		const getUserFromLocal = () => {
-			const USER_DATA = JSON.parse(localStorage.getItem("userData"));
-			setUserData(USER_DATA);
-		};
-
-		getUserFromLocal();
-	}, [values]);
+	// 	getUserFromLocal();
+	// }, [values]);
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
 	});
 
-	const {handleSubmit} = methods;
+	const {handleSubmit, reset} = methods;
 
-	const onSubmit = (data) => {
-		if (!isUserDataAvailable) {
-			setValues(data);
-		}
+	const onSubmit = async (data) => {
+		// if (!isUserDataAvailable) {
+		// 	setValues(data);
+		// }
+
+		const response = await createUser(data);
+
+		setUserData(response);
+		reset();
 	};
 
 	console.log("USER_DATA", userData);
 
-	console.log("USER_DATA_AVAILABLE", isUserDataAvailable);
-
 	return (
 		<Dialog open={open}>
 			<DialogTitle className="font-semibold">
-				{isUserDataAvailable
-					? "Please provide the OTP we have sent you"
-					: "Fill the below form to get your calculated results"}
+				{!userData ? "Fill the below form to get your calculated results" : userData?.message}
 			</DialogTitle>
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<DialogContent>{isUserDataAvailable ? <OTPForm /> : <ModalForm />}</DialogContent>
+					<DialogContent>{!userData?.isVerified ? <ModalForm /> : <OTPForm />}</DialogContent>
 
-					{isUserDataAvailable ? (
+					{userData ? (
 						<DialogActions sx={{py: 2}}>
 							<Button type="submit" color="error" onClick={onClose}>
 								CLOSE
