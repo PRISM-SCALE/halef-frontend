@@ -19,76 +19,6 @@ import CalculatorResultItem from "./CalculatorResultItem";
 
 // * INITIAL FORM VALUES
 
-const UserDetails = ({open, onClose}) => {
-	const INITIAL_VALUES = {
-		name: "",
-		email: "",
-		phone: "",
-	};
-	// eslint-disable-next-line no-unused-vars
-	const [values, setValues] = useLocalStorage("userData");
-
-	const [userData, setUserData] = useState(null);
-	const [responseData, setResponseData] = useState();
-
-	const isUserDataAvailable = Boolean(userData?.email) && Boolean(userData?.phone);
-
-	useEffect(() => {
-		if (userData) {
-			setValues(responseData);
-		}
-	}, [userData, setValues, responseData]);
-
-	const methods = useForm({
-		defaultValues: isUserDataAvailable ? {code: ""} : {...INITIAL_VALUES},
-	});
-
-	const {handleSubmit, reset} = methods;
-
-	const onSubmit = async (data) => {
-		if (!userData) {
-			const response = createUser(data);
-			setResponseData(response);
-			setUserData(response?.user);
-		}
-
-		// if()
-
-		reset();
-	};
-
-	console.log("USER_DATA", responseData);
-
-	return (
-		<Dialog open={open}>
-			<DialogTitle className="font-semibold">
-				{!userData ? "Fill the below form to get your calculated results" : "Enter OTP to verify"}
-			</DialogTitle>
-			<FormProvider {...methods}>
-				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<DialogContent>
-						{!userData ? <ModalForm /> : <OTPForm phone={Number(values.phone)} />}
-					</DialogContent>
-
-					<DialogActions sx={{py: 2}}>
-						<Button onClick={onClose} color="error">
-							Cancel
-						</Button>
-						<Button type="submit" color="success">
-							Submit
-						</Button>
-					</DialogActions>
-				</FormWrapper>
-			</FormProvider>
-		</Dialog>
-	);
-};
-
-UserDetails.propTypes = {
-	open: PropTypes.bool.isRequired,
-	onClose: PropTypes.func.isRequired,
-};
-
 // -----------------------------------------------------------------------------
 
 const ResultModal = ({open, onClose, serviceData}) => {
@@ -137,14 +67,93 @@ ResultModal.propTypes = {
 
 // -----------------------------------------------------------------------------
 
-const Modal = ({open, onClose, isVerified, serviceData}) => {
+const UserDetails = ({open, onClose, serviceData}) => {
+	const INITIAL_VALUES = {
+		name: "",
+		email: "",
+		phone: "",
+	};
+	// eslint-disable-next-line no-unused-vars
+	const [values, setValues] = useLocalStorage("userData");
+
+	const [userData, setUserData] = useState(null);
+	const [responseData, setResponseData] = useState();
+
+	useEffect(() => {
+		if (userData) {
+			setValues(responseData);
+		}
+		console.log("USER_DATA", responseData);
+	}, [userData, setValues, responseData]);
+
+	const methods = useForm({
+		defaultValues: !userData?.isPhoneVerified ? {code: ""} : {...INITIAL_VALUES},
+	});
+
+	const {handleSubmit, reset} = methods;
+
+	const onSubmit = async (data) => {
+		console.log("onSubmit userData Entry", userData);
+		if (!userData) {
+			const response = await createUser(data);
+			setResponseData(response);
+			setUserData(response?.user);
+
+			console.log("onSubmit userData", userData);
+		}
+
+		if (userData && !userData?.isPhoneVerified) {
+			const response = await verifyOtp(data);
+			setResponseData(response);
+			setUserData(response?.user);
+		}
+
+		reset();
+	};
+
+	return (
+		<Dialog open={open}>
+			<DialogTitle className="font-semibold">
+				{!userData ? "Fill the below form to get your calculated results" : "Enter OTP to verify"}
+			</DialogTitle>
+			<FormProvider {...methods}>
+				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
+					<DialogContent>
+						{!userData ? (
+							<ModalForm />
+						) : userData && !userData?.isPhoneVerified ? (
+							<OTPForm phone={Number(values?.user?.phone)} />
+						) : (
+							<ResultModal open={open} onClose={onClose} serviceData={serviceData} />
+						)}
+					</DialogContent>
+
+					<DialogActions sx={{py: 2}}>
+						<Button onClick={onClose} color="error">
+							Cancel
+						</Button>
+						<Button type="submit" color="success">
+							Submit
+						</Button>
+					</DialogActions>
+				</FormWrapper>
+			</FormProvider>
+		</Dialog>
+	);
+};
+
+UserDetails.propTypes = {
+	open: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	serviceData: PropTypes.object,
+};
+
+// -----------------------------------------------------------------------------
+
+const Modal = ({open, onClose, serviceData}) => {
 	return (
 		<>
-			{isVerified ? (
-				<ResultModal open={open} onClose={onClose} serviceData={serviceData} />
-			) : (
-				<UserDetails open={open} onClose={onClose} />
-			)}
+			<UserDetails open={open} onClose={onClose} serviceData={serviceData} />
 		</>
 	);
 };
@@ -152,7 +161,6 @@ const Modal = ({open, onClose, isVerified, serviceData}) => {
 Modal.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	isVerified: PropTypes.bool.isRequired,
 	serviceData: PropTypes.object,
 };
 export default Modal;
