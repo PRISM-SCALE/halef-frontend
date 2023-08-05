@@ -115,11 +115,11 @@ const Relocation = () => {
 					{/* <GoogleAutocomplete /> */}
 
 					<fieldset>
-						<label htmlFor="houseCapcity" className="text-[#f8bf02]">
+						<label htmlFor="houseCapacity" className="text-[#f8bf02]">
 							House Type
 						</label>
 						<select
-							name="houseCapcity"
+							name="houseCapacity"
 							className="input-fields appearance-none focus:outline-[#dd3333]"
 							placeholder="Choose your house capacity"
 							{...register("houseCapacity", {
