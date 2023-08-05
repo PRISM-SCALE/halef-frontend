@@ -8,8 +8,7 @@ const CalculatorResultItem = ({title, value, unit}) => {
 				{title}
 			</Typography>
 			<p className="text-4xl">
-				{unit}
-				{value}/-
+				{unit === "kg" ? null : unit} {value} {unit === "₹" ? null : unit}
 			</p>
 		</Box>
 	);

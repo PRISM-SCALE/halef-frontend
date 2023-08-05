@@ -7,7 +7,7 @@ const ModalForm = () => {
 	} = useFormContext();
 
 	return (
-		<div className="w-full flex flex-col gap-4">
+		<div className="w-full flex flex-col gap-4 p-6">
 			<fieldset>
 				<label htmlFor="name" className="text-[#f8bf02]">
 					Name
@@ -72,6 +72,41 @@ const ModalForm = () => {
 				{errors.phone && (
 					<p role="alert" className="text-[#ef4444] leading-none mt-1">
 						{errors.phone?.message}
+					</p>
+				)}
+			</fieldset>
+			<fieldset>
+				<label htmlFor="services" className="text-[#f8bf02]">
+					Services
+				</label>
+				<select
+					name="services"
+					className="input-fields appearance-none focus:outline-[#dd3333]"
+					placeholder="Choose your house capacity"
+					{...register("services", {
+						required: "Please select your service",
+					})}
+				>
+					<option value="">Choose Services</option>
+					{[
+						"Compassionate Deceased Body Transportation",
+						"Courier & Cargo",
+						"Trucking",
+						"Scrap Management",
+						"Warehousing",
+						"Liquidation",
+						"Relocations",
+					]?.map((item) => {
+						return (
+							<option key={item} value={item}>
+								{item}
+							</option>
+						);
+					})}
+				</select>
+				{errors.services && (
+					<p role="alert" className="text-[#ef4444] leading-none mt-1">
+						{errors.services?.message}
 					</p>
 				)}
 			</fieldset>

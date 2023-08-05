@@ -8,13 +8,15 @@ const OTPForm = ({phone}) => {
 		formState: {errors},
 	} = useFormContext();
 
+	console.log("OTP FORM", phone);
+
 	const handleResendOTP = async (e) => {
 		e.preventDefault();
 		await resendOTP(phone);
 	};
 
 	return (
-		<div>
+		<div className={"p-6"}>
 			<fieldset>
 				<label htmlFor="code" className="text-[#f8bf02]">
 					OTP
