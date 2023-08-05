@@ -76,14 +76,14 @@ const ModalForm = () => {
 				)}
 			</fieldset>
 			<fieldset>
-				<label htmlFor="services" className="text-[#f8bf02]">
+				<label htmlFor="service" className="text-[#f8bf02]">
 					Services
 				</label>
 				<select
-					name="services"
+					name="service"
 					className="input-fields appearance-none focus:outline-[#dd3333]"
 					placeholder="Choose your house capacity"
-					{...register("services", {
+					{...register("service", {
 						required: "Please select your service",
 					})}
 				>
@@ -104,9 +104,9 @@ const ModalForm = () => {
 						);
 					})}
 				</select>
-				{errors.services && (
+				{errors.service && (
 					<p role="alert" className="text-[#ef4444] leading-none mt-1">
-						{errors.services?.message}
+						{errors.service?.message}
 					</p>
 				)}
 			</fieldset>
