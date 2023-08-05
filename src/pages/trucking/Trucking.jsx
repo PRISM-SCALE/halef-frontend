@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import {useLoaderData} from "react-router-dom";
 
@@ -16,6 +16,7 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import Modal from "../../components/Modal";
+import {Box} from "@mui/material";
 
 const INITIAL_VALUES = {
 	pickup: "",
@@ -28,6 +29,7 @@ const INITIAL_VALUES = {
 const Trucking = () => {
 	const data = useLoaderData();
 	const [truckingData, setTruckingData] = useState(null);
+	const [distance, setDistance] = useState(null);
 
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
@@ -43,9 +45,19 @@ const Trucking = () => {
 		register,
 		formState: {errors, isValid},
 		handleSubmit,
+		watch,
+		setValue,
 		// formState,
 		// reset,
 	} = methods;
+
+	const values = watch();
+
+	useEffect(() => {
+		if (distance !== null) {
+			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
+		}
+	}, [distance, setValue]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
@@ -71,7 +83,8 @@ const Trucking = () => {
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<GoogleDistanceFinder />
+					<Box>{values.distance}</Box>
+					<GoogleDistanceFinder setDistance={setDistance} />
 
 					<div>
 						<label htmlFor="vehicle" className="text-[#f8bf02]">

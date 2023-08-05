@@ -94,8 +94,9 @@ const AirAmbulance = () => {
 					</div>
 
 					<GoogleDistanceFinder
-					// originOptions={{types: ["airport"]}}
-					// destinationOptions={{types: ["airport"]}}
+						setDistance={null}
+						// originOptions={{types: ["airport"]}}
+						// destinationOptions={{types: ["airport"]}}
 					/>
 					{/* <CitiesFinder cities={cities} /> */}
 

@@ -54,6 +54,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 			console.log(place);
 			if (place && checkPathIsAirAmbulance) {
 				setValue("pickup", place?.address_components[0]?.long_name);
+				return;
 			}
 
 			if (place) {
@@ -74,6 +75,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 			if (place && checkPathIsAirAmbulance) {
 				setValue("dropoff", place.vicinity);
 				console.log("in air_ambulance");
+				return;
 			}
 
 			if (place) {
