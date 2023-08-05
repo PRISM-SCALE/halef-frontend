@@ -26,21 +26,18 @@ const UserDetails = ({open, onClose}) => {
 		phone: "",
 	};
 	// eslint-disable-next-line no-unused-vars
-	const [values, setValues] = useLocalStorage("userData", {...INITIAL_VALUES});
+	const [values, setValues] = useLocalStorage("userData");
 
-	const [userData, setUserData] = useState({});
+	const [userData, setUserData] = useState(null);
 	const [responseData, setResponseData] = useState();
 
 	const isUserDataAvailable = Boolean(userData?.email) && Boolean(userData?.phone);
 
 	useEffect(() => {
-		const getUserFromLocal = () => {
-			const USER_DATA = JSON.parse(localStorage.getItem("userData"));
-			setUserData(USER_DATA);
-		};
-
-		getUserFromLocal();
-	}, [values]);
+		if (userData) {
+			setValues(responseData);
+		}
+	}, [userData, setValues, responseData]);
 
 	const methods = useForm({
 		defaultValues: isUserDataAvailable ? {code: ""} : {...INITIAL_VALUES},
@@ -49,32 +46,13 @@ const UserDetails = ({open, onClose}) => {
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-		console.log(values);
-
-		if (!isUserDataAvailable) {
-			setValues(data);
-			const response = await createUser(data);
-
+		if (!userData) {
+			const response = createUser(data);
 			setResponseData(response);
+			setUserData(response?.user);
 		}
 
-		if (isUserDataAvailable) {
-			console.log("VERIFY LOGIC");
-
-			const phone = Number(values.phone);
-			const code = Number(data.code);
-
-			const verificationData = {
-				phone,
-				code,
-			};
-
-			console.log("VERIFICATION_DATA", verificationData);
-
-			const response = await verifyOtp(verificationData);
-
-			setResponseData(response);
-		}
+		// if()
 
 		reset();
 	};
@@ -89,7 +67,7 @@ const UserDetails = ({open, onClose}) => {
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<DialogContent>
-						{!isUserDataAvailable ? <ModalForm /> : <OTPForm phone={Number(values.phone)} />}
+						{!userData ? <ModalForm /> : <OTPForm phone={Number(values.phone)} />}
 					</DialogContent>
 
 					<DialogActions sx={{py: 2}}>
