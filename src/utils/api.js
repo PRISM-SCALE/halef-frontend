@@ -63,6 +63,7 @@ export async function createUser(data) {
 		name: data.name,
 		email: data.email,
 		phone: Number(data.phone),
+		service: data.service,
 	};
 
 	const response = await fetch(`${BASE_URL}/user/create`, {

@@ -57,6 +57,7 @@ const INITIAL_VALUES = {
 	name: "",
 	email: "",
 	phone: "",
+	service: "",
 };
 
 const UserDetails = ({open, onClose, serviceData}) => {
