@@ -1,16 +1,20 @@
 import {useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
+import {useLoaderData} from "react-router-dom";
+
+// * UTILS
+import {getPackageTypes, warehouseCalculationService} from "../../utils/api";
+
+// * HOOKS
+import useToggle from "../../hooks/useToggle";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 // * COMPONENTS
 import Header from "../../components/Header";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
-import {getPackageTypes, warehouseCalculationService} from "../../utils/api";
-import {useLoaderData} from "react-router-dom";
-import {useResponsive} from "../../hooks/useResponsive";
-import {Box, Dialog, IconButton} from "@mui/material";
-import {Icon} from "@iconify-icon/react";
+import Modal from "../../components/Modal";
 
 const CFT_SQFT = [
 	{
@@ -95,18 +99,11 @@ const INITIAL_VALUES = {
 
 const Warehouse = () => {
 	const packageData = useLoaderData();
-	const {mediumScreenAndUp} = useResponsive();
 	const [warehouse, setWarehouse] = useState(null);
 
-	const [open, setOpen] = useState(false);
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
+	const {toggle: open, onOpen, onClose} = useToggle();
+	// eslint-disable-next-line no-unused-vars
+	const [storedValues, setValues] = useLocalStorage("userData");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -114,23 +111,25 @@ const Warehouse = () => {
 
 	const {
 		register,
-		formState: {errors},
+		formState: {errors, isValid},
 		handleSubmit,
 		// formState,
 		// reset,
 	} = methods;
-
-	// useEffect(() => {
-	// 	if (formState.isSubmitSuccessful) {
-	// 		reset({...INITIAL_VALUES});
-	// 	}
-	// }, [ formState, reset]);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
 		const responseData = await warehouseCalculationService(data);
 		setWarehouse(responseData);
+		onOpen();
+		console.log("STORED VALUES", storedValues);
+
+		const isVerified = storedValues?.user?.isPhoneVerified;
+
+		if (isValid && !isVerified) {
+			onOpen();
+		}
 	};
 
 	const header_name = <strong className="text-[#DD3333]">Warehousing</strong>;
@@ -139,223 +138,170 @@ const Warehouse = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
-			{/* FORMS */}
-			<div className="service-layout">
-				<div className="w-full">
-					<FormProvider {...methods}>
-						<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-							<fieldset>
-								<label htmlFor="selectCity" className="text-[#f8bf02]">
-									Select a warehouse location
-								</label>
-								<select
-									name={"selectCity"}
-									className="input-fields appearance-none focus:outline-[#dd3333]"
-									{...register("selectCity", {
-										required: "Please enter a pickup address",
-									})}
-								>
-									<option value="">Select a warehouse location</option>
-									{[
-										"Ahmedabad",
-										"A&N Islands (UT)",
-										"Amritsar",
-										"Bangalore",
-										"Chennai",
-										"Calicut",
-										"Delhi",
-										"Goa",
-										"Guwahati",
-										"Hyderabad",
-										"Jaipur",
-										"Kolkata",
-										"Kochi",
-										"Mumbai",
-										"Nagpur",
-										"Srinagar",
-										"Thiruvananthapuram",
-									].map((item) => {
-										return (
-											<option key={item} value={item}>
-												{item.toUpperCase().replaceAll("_", " ")}
-											</option>
-										);
-									})}{" "}
-								</select>
-								{errors.goodsType && (
-									<p role="alert" className="text-[#ef4444] leading-none mt-1">
-										{errors.goodsType?.message}
-									</p>
-								)}
-							</fieldset>
-
-							<fieldset>
-								<label htmlFor="goodsType" className="text-[#f8bf02]">
-									Select the type of your goods
-								</label>
-								<select
-									name="goodsType"
-									className="input-fields appearance-none focus:outline-[#dd3333]"
-									{...register("goodsType", {
-										required: "Choose one of the options based on your goods",
-									})}
-								>
-									<option value="">Choose your goods type</option>
-									{[
-										"industrial_machinery",
-										"household_goods",
-										"parcels_&_lugguage",
-										"fruits_&_vegetables",
-										"FMCG",
-										"Healthcare",
-										"Grocery",
-										"liquids_&_barrels",
-										"Chemicals",
-										"Fertilizers",
-									].map((item) => {
-										return (
-											<option key={item} value={item}>
-												{item.toUpperCase().replaceAll("_", " ")}
-											</option>
-										);
-									})}{" "}
-								</select>
-								{errors.goodsType && (
-									<p role="alert" className="text-[#ef4444] leading-none mt-1">
-										{errors.goodsType?.message}
-									</p>
-								)}
-							</fieldset>
-
-							<fieldset>
-								<label htmlFor="area" className="text-[#f8bf02]">
-									Select the area of your goods
-								</label>
-								<select
-									name="area"
-									className="input-fields appearance-none focus:outline-[#dd3333]"
-									{...register("area", {
-										required: "Choose one of the options based on your goods",
-									})}
-								>
-									<option value="">Choose your area</option>
-									{CFT_SQFT?.map(({cft, name}, index) => {
-										return (
-											<option value={cft} key={index}>
-												{name}
-											</option>
-										);
-									})}
-								</select>
-								{errors.area && (
-									<p role="alert" className="text-[#ef4444] leading-none mt-1">
-										{errors.area?.message}
-									</p>
-								)}
-							</fieldset>
-
-							<fieldset>
-								<label htmlFor="durationInDays" className="text-[#f8bf02]">
-									Storage duration in days
-								</label>
-								<input
-									name="durationInDays"
-									placeholder="How long should your goods be stored"
-									type="number"
-									className="input-fields appearance-none focus:outline-[#dd3333]"
-									{...register("durationInDays", {
-										required: "Provide your duration to be stored in the warehouse",
-									})}
-								/>
-
-								{errors.durationInDays && (
-									<p role="alert" className="text-[#ef4444] leading-none mt-1">
-										{errors.durationInDays?.message}
-									</p>
-								)}
-							</fieldset>
-
-							<fieldset>
-								<label htmlFor="packing" className="text-[#f8bf02]">
-									Packaging Type
-								</label>
-								<select
-									name="packing"
-									className="input-fields appearance-none focus:outline-[#dd3333]"
-									placeholder="Choose a packing type"
-									{...register("packing", {required: "Choose a packing type"})}
-								>
-									<option value="">Choose your packing</option>
-									{packageData.map(({_id, name}) => {
-										return (
-											<option key={_id} value={_id}>
-												{name}
-											</option>
-										);
-									})}
-								</select>
-								{errors.packingType && (
-									<p role="alert" className="text-[#ef4444] leading-none mt-1">
-										{errors.packingType?.message}
-									</p>
-								)}
-							</fieldset>
-
-							<Button buttonText="calculate" onClick={handleClickOpen} />
-						</FormWrapper>
-					</FormProvider>
-				</div>
-
-				{mediumScreenAndUp && (
-					<>
-						{warehouse && warehouse?.total ? (
-							<div className="w-full md:w-[30%] flex flex-col justify-between p-6">
-								<span className="text-2xl">STORAGE COST: ₹{warehouse?.storageCost}/-</span>
-								<span className="text-2xl">PACKAGE COST: ₹{warehouse?.packageCost}/-</span>
-								<span className="text-2xl">TOTAL: ₹{warehouse?.total}/-</span>
-							</div>
-						) : (
-							<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
-								<h1>Please enter the details to get calculated results</h1>
-							</div>
+			<FormProvider {...methods}>
+				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
+					<fieldset>
+						<label htmlFor="selectCity" className="text-[#f8bf02]">
+							Select a warehouse location
+						</label>
+						<select
+							name={"selectCity"}
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							{...register("selectCity", {
+								required: "Please enter a pickup address",
+							})}
+						>
+							<option value="">Select a warehouse location</option>
+							{[
+								"Ahmedabad",
+								"A&N Islands (UT)",
+								"Amritsar",
+								"Bangalore",
+								"Chennai",
+								"Calicut",
+								"Delhi",
+								"Goa",
+								"Guwahati",
+								"Hyderabad",
+								"Jaipur",
+								"Kolkata",
+								"Kochi",
+								"Mumbai",
+								"Nagpur",
+								"Srinagar",
+								"Thiruvananthapuram",
+							].map((item) => {
+								return (
+									<option key={item} value={item}>
+										{item.toUpperCase().replaceAll("_", " ")}
+									</option>
+								);
+							})}{" "}
+						</select>
+						{errors.goodsType && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.goodsType?.message}
+							</p>
 						)}
+					</fieldset>
 
-						{warehouse && warehouse?.message ? (
-							<div className="flex gap-4 mb-6">
-								<span className="text-2xl">{warehouse?.message}</span>
-							</div>
-						) : null}
-					</>
-				)}
-			</div>
+					<fieldset>
+						<label htmlFor="goodsType" className="text-[#f8bf02]">
+							Select the type of your goods
+						</label>
+						<select
+							name="goodsType"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							{...register("goodsType", {
+								required: "Choose one of the options based on your goods",
+							})}
+						>
+							<option value="">Choose your goods type</option>
+							{[
+								"industrial_machinery",
+								"household_goods",
+								"parcels_&_lugguage",
+								"fruits_&_vegetables",
+								"FMCG",
+								"Healthcare",
+								"Grocery",
+								"liquids_&_barrels",
+								"Chemicals",
+								"Fertilizers",
+							].map((item) => {
+								return (
+									<option key={item} value={item}>
+										{item.toUpperCase().replaceAll("_", " ")}
+									</option>
+								);
+							})}{" "}
+						</select>
+						{errors.goodsType && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.goodsType?.message}
+							</p>
+						)}
+					</fieldset>
 
-			{!mediumScreenAndUp && (
-				<Dialog fullScreen open={open} onClose={handleClose}>
-					<Box className="text-right mb-6">
-						<IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-							<Icon icon="lucide:x" />
-						</IconButton>
-					</Box>
+					<fieldset>
+						<label htmlFor="area" className="text-[#f8bf02]">
+							Select the area of your goods
+						</label>
+						<select
+							name="area"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							{...register("area", {
+								required: "Choose one of the options based on your goods",
+							})}
+						>
+							<option value="">Choose your area</option>
+							{CFT_SQFT?.map(({cft, name}, index) => {
+								return (
+									<option value={cft} key={index}>
+										{name}
+									</option>
+								);
+							})}
+						</select>
+						{errors.area && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.area?.message}
+							</p>
+						)}
+					</fieldset>
 
-					{warehouse && warehouse?.total ? (
-						<div className="w-full flex flex-col justify-between p-6">
-							<span className="text-2xl">STORAGE COST: ₹{warehouse?.storageCost}/-</span>
-							<span className="text-2xl">PACKAGE COST: ₹{warehouse?.packageCost}/-</span>
-							<span className="text-2xl">TOTAL: ₹{warehouse?.total}/-</span>
-						</div>
-					) : (
-						<div className="text-center border bg-slate-50 border-slate-200 border-solid rounded-sm p-4 uppercase flex items-center justify-center">
-							<h1>Please enter the details to get calculated results</h1>
-						</div>
-					)}
+					<fieldset>
+						<label htmlFor="durationInDays" className="text-[#f8bf02]">
+							Storage duration in days
+						</label>
+						<input
+							name="durationInDays"
+							placeholder="How long should your goods be stored"
+							type="number"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							{...register("durationInDays", {
+								required: "Provide your duration to be stored in the warehouse",
+							})}
+						/>
 
-					{warehouse && warehouse?.message ? (
-						<div className="flex gap-4 mb-6">
-							<span className="text-2xl">{warehouse?.message}</span>
-						</div>
-					) : null}
-				</Dialog>
-			)}
+						{errors.durationInDays && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.durationInDays?.message}
+							</p>
+						)}
+					</fieldset>
+
+					<fieldset>
+						<label htmlFor="packing" className="text-[#f8bf02]">
+							Packaging Type
+						</label>
+						<select
+							name="packing"
+							className="input-fields appearance-none focus:outline-[#dd3333]"
+							placeholder="Choose a packing type"
+							{...register("packing", {required: "Choose a packing type"})}
+						>
+							<option value="">Choose your packing</option>
+							{packageData.map(({_id, name}) => {
+								return (
+									<option key={_id} value={_id}>
+										{name}
+									</option>
+								);
+							})}
+						</select>
+						{errors.packingType && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1">
+								{errors.packingType?.message}
+							</p>
+						)}
+					</fieldset>
+
+					<Button buttonText="calculate" />
+				</FormWrapper>
+			</FormProvider>
+
+			<Modal onClose={onClose} open={open} serviceData={warehouse} />
 		</ServiceWrapper>
 	);
 };

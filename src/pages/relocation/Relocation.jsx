@@ -18,8 +18,7 @@ import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/Modal";
 import {Box} from "@mui/material";
 import {useEffect, useState} from "react";
-
-const isVerified = false;
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -39,6 +38,8 @@ const INITIAL_VALUES = {
 const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 	const {toggle: open, onOpen, onClose} = useToggle();
+	// eslint-disable-next-line no-unused-vars
+	const [storedValues, setValues] = useLocalStorage("userData");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -73,15 +74,18 @@ const Relocation = () => {
 	// * HANDLER FUNCTIONS
 
 	const onSubmit = async (data) => {
-		if (isValid && !isVerified) {
-			console.log("SUBMITTED");
-			onOpen();
-			return;
-		}
-
 		const responseData = await relocationCalculationService(data);
 		setRelocationData(responseData);
 		onOpen();
+		console.log("STORED VALUES", storedValues);
+
+		const isVerified = storedValues?.user?.isPhoneVerified;
+
+		if (isValid && !isVerified) {
+			console.log("SUBMITTED");
+
+			onOpen();
+		}
 	};
 
 	// const handleModal = () => {
@@ -227,7 +231,7 @@ const Relocation = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} isVerified={isVerified} serviceData={relocationData} />
+			<Modal onClose={onClose} open={open} serviceData={relocationData} />
 		</ServiceWrapper>
 	);
 };
@@ -239,25 +243,5 @@ export async function relocationLoader() {
 
 	return defer({relocationHouseTypes, packingTypes});
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-// export async function saveRelocationData({request}) {
-// 	const form = await request.formData();
-
-// 	const data = {
-// 		pickup: form.get("pickup"),
-// 		dropoff: form.get("dropoff"),
-// 		insurance: form.get("insurance"),
-// 		houseCapacity: form.get("houseCapacity"),
-// 		vehicle: form.get("vehicle"),
-// 		packing: form.get("packing"),
-// 		goodsValue: form.get("goodsValue"),
-// 		distance: form.get("distance"),
-// 	};
-
-// 	await relocationCalculationService(data);
-
-// 	return null;
-// }
 
 export default Relocation;

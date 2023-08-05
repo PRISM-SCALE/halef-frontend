@@ -7,7 +7,7 @@ const ModalForm = () => {
 	} = useFormContext();
 
 	return (
-		<div className="w-full flex flex-col gap-4">
+		<div className="w-full flex flex-col gap-4 p-6">
 			<fieldset>
 				<label htmlFor="name" className="text-[#f8bf02]">
 					Name
