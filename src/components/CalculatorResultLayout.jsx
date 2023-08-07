@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const CalculatorResultLayout = ({children, imageUrl, imageName}) => {
 	return (
-		<div className="bg-slate-50 flex flex-col">
+		<div className="bg-slate-50 flex flex-col w-full">
 			{/* IMAGE */}
 			<div className="relative">
 				<div
@@ -13,7 +13,7 @@ const CalculatorResultLayout = ({children, imageUrl, imageName}) => {
 					}}
 				></div>
 				<div
-					className={`w-72 h-72 bg-no-repeat bg-cover bg-center`}
+					className={`w-72 h-72 bg-no-repeat bg-cover bg-center bg-blend-screen mx-auto`}
 					style={{backgroundImage: `url(${imageUrl})`}}
 					alt="truck image"
 				>

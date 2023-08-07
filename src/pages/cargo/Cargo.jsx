@@ -81,18 +81,6 @@ const Cargo = () => {
 		<ServiceWrapper>
 			<Header caption="cost estimation for" title={header_name} />
 
-			{cargoCost ? (
-				<div className="flex gap-4 mb-6">
-					{/* <span className="text-2xl">TRANSPORT COST: ₹{cargoCost?.transportCost}/-</span> */}
-					<span className="text-2xl">
-						{cargoCost?.carrierCode?.toUpperCase().replaceAll("_", " ")} COST: ₹{cargoCost?.total}/-
-					</span>
-					<span className="text-2xl">
-						VOLUMETRIC WEIGHT: {Math.round(cargoCost?.volumetricWeight)}kg
-					</span>
-				</div>
-			) : null}
-
 			{/* FORM */}
 
 			<FormProvider {...methods}>

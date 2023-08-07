@@ -1,5 +1,12 @@
+import {useEffect, useState} from "react";
+import {Box} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
 import {defer, useLoaderData} from "react-router-dom";
+
+// * HOOKS
+import useLocalStorage from "../../hooks/useLocalStorage";
+import useToggle from "../../hooks/useToggle";
+import {useResponsive} from "../../hooks/useResponsive";
 
 // * UTILS
 import {
@@ -14,11 +21,8 @@ import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
-import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/Modal";
-import {Box} from "@mui/material";
-import {useEffect, useState} from "react";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import ResultWrapper from "../../components/ResultWrapper";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -40,6 +44,7 @@ const Relocation = () => {
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
 	const [storedValues, setValues] = useLocalStorage("userData");
+	const {mediumScreenAndUp} = useResponsive();
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -76,12 +81,12 @@ const Relocation = () => {
 	const onSubmit = async (data) => {
 		const responseData = await relocationCalculationService(data);
 		setRelocationData(responseData);
-		onOpen();
-		console.log("STORED VALUES", storedValues);
-
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
-		if (isValid && !isVerified) {
+		if (!mediumScreenAndUp) onOpen();
+		console.log("STORED VALUES", storedValues);
+
+		if (isValid && !isVerified && !mediumScreenAndUp) {
 			console.log("SUBMITTED");
 
 			onOpen();
@@ -104,131 +109,133 @@ const Relocation = () => {
 			<Header caption="cost estimation for" title={header_name} />
 
 			<FormProvider {...methods}>
-				<FormWrapper
-					onSubmit={handleSubmit(onSubmit)}
-					// method="post"
-					// action="/relocation"
-				>
-					<Box>{values.distance}</Box>
-					<GoogleDistanceFinder setDistance={setDistance} />
+				<ResultWrapper serviceData={relocationData}>
+					<FormWrapper
+						onSubmit={handleSubmit(onSubmit)}
+						// method="post"
+						// action="/relocation"
+					>
+						<Box>{values.distance}</Box>
+						<GoogleDistanceFinder setDistance={setDistance} />
 
-					{/* <GoogleAutocomplete /> */}
+						{/* <GoogleAutocomplete /> */}
 
-					<fieldset>
-						<label htmlFor="houseCapacity" className="text-[#f8bf02]">
-							House Type
-						</label>
-						<select
-							name="houseCapacity"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose your house capacity"
-							{...register("houseCapacity", {
-								required: "Please select your house capacity size",
-							})}
-						>
-							<option value="">Choose your house capacity</option>
-							{relocationHouseTypes?.map(({_id, type}) => {
-								return (
-									<option key={_id} value={_id}>
-										{type}
-									</option>
-								);
-							})}
-						</select>
-						{errors.houseCapacity && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.houseCapacity?.message}
-							</p>
-						)}
-					</fieldset>
-
-					<fieldset>
-						<label htmlFor="vehicle" className="text-[#f8bf02]">
-							Select vehicle
-						</label>
-						<select
-							disabled={!watch("houseCapacity")}
-							name="vehicle"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose your truck type"
-							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
-						>
-							<option value="">Choose your vehicle</option>
-							{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
-								return (
-									<option key={_id} value={_id}>
-										{name}
-									</option>
-								);
-							})}
-						</select>
-						{errors.vehicle && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.vehicle?.message}
-							</p>
-						)}
-					</fieldset>
-
-					<fieldset>
-						<label htmlFor="packing" className="text-[#f8bf02]">
-							Packaging Type
-						</label>
-						<select
-							name="packing"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
-							placeholder="Choose a packing type"
-							{...register("packing", {required: "Choose a packing type"})}
-						>
-							<option value="">Choose your packing</option>
-							{packingTypes.map(({_id, name}) => {
-								return (
-									<option key={_id} value={_id}>
-										{name}
-									</option>
-								);
-							})}
-						</select>
-						{errors.packing && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.packing?.message}
-							</p>
-						)}
-					</fieldset>
-
-					<fieldset className="flex items-center gap-2">
-						<label htmlFor="insurance">Insurance</label>
-						<input
-							type="checkbox"
-							name="insurance"
-							id="relocation-insurance"
-							{...register("insurance")}
-							checked={values.insurance}
-						/>
-					</fieldset>
-
-					{values.insurance && (
 						<fieldset>
-							<label htmlFor="goodsValue" className="text-[#f8bf02]">
-								Your Goods Value
+							<label htmlFor="houseCapacity" className="text-[#f8bf02]">
+								House Type
 							</label>
-							<input
-								name="goodsValue"
-								type="number"
-								className="input-fields focus:outline-[#dd3333] appearance-none"
-								placeholder="Enter your goods value"
-								{...register("goodsValue", {required: "Please enter your value of the goods"})}
-								aria-invalid={errors.goodsValue ? "true" : "false"}
-							/>
-							{errors.goodsValue && (
+							<select
+								name="houseCapacity"
+								className="input-fields appearance-none focus:outline-[#dd3333]"
+								placeholder="Choose your house capacity"
+								{...register("houseCapacity", {
+									required: "Please select your house capacity size",
+								})}
+							>
+								<option value="">Choose your house capacity</option>
+								{relocationHouseTypes?.map(({_id, type}) => {
+									return (
+										<option key={_id} value={_id}>
+											{type}
+										</option>
+									);
+								})}
+							</select>
+							{errors.houseCapacity && (
 								<p role="alert" className="text-[#ef4444] leading-none mt-1">
-									{errors.goodsValue?.message}
+									{errors.houseCapacity?.message}
 								</p>
 							)}
 						</fieldset>
-					)}
 
-					<Button buttonText="calculate" />
-				</FormWrapper>
+						<fieldset>
+							<label htmlFor="vehicle" className="text-[#f8bf02]">
+								Select vehicle
+							</label>
+							<select
+								disabled={!watch("houseCapacity")}
+								name="vehicle"
+								className="input-fields appearance-none focus:outline-[#dd3333]"
+								placeholder="Choose your truck type"
+								{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
+							>
+								<option value="">Choose your vehicle</option>
+								{truckData[0]?.allowedVehicles?.map(({_id, name}) => {
+									return (
+										<option key={_id} value={_id}>
+											{name}
+										</option>
+									);
+								})}
+							</select>
+							{errors.vehicle && (
+								<p role="alert" className="text-[#ef4444] leading-none mt-1">
+									{errors.vehicle?.message}
+								</p>
+							)}
+						</fieldset>
+
+						<fieldset>
+							<label htmlFor="packing" className="text-[#f8bf02]">
+								Packaging Type
+							</label>
+							<select
+								name="packing"
+								className="input-fields appearance-none focus:outline-[#dd3333]"
+								placeholder="Choose a packing type"
+								{...register("packing", {required: "Choose a packing type"})}
+							>
+								<option value="">Choose your packing</option>
+								{packingTypes.map(({_id, name}) => {
+									return (
+										<option key={_id} value={_id}>
+											{name}
+										</option>
+									);
+								})}
+							</select>
+							{errors.packing && (
+								<p role="alert" className="text-[#ef4444] leading-none mt-1">
+									{errors.packing?.message}
+								</p>
+							)}
+						</fieldset>
+
+						<fieldset className="flex items-center gap-2">
+							<label htmlFor="insurance">Insurance</label>
+							<input
+								type="checkbox"
+								name="insurance"
+								id="relocation-insurance"
+								{...register("insurance")}
+								checked={values.insurance}
+							/>
+						</fieldset>
+
+						{values.insurance && (
+							<fieldset>
+								<label htmlFor="goodsValue" className="text-[#f8bf02]">
+									Your Goods Value
+								</label>
+								<input
+									name="goodsValue"
+									type="number"
+									className="input-fields focus:outline-[#dd3333] appearance-none"
+									placeholder="Enter your goods value"
+									{...register("goodsValue", {required: "Please enter your value of the goods"})}
+									aria-invalid={errors.goodsValue ? "true" : "false"}
+								/>
+								{errors.goodsValue && (
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
+										{errors.goodsValue?.message}
+									</p>
+								)}
+							</fieldset>
+						)}
+
+						<Button buttonText="calculate" />
+					</FormWrapper>
+				</ResultWrapper>
 			</FormProvider>
 
 			<Modal onClose={onClose} open={open} serviceData={relocationData} />
