@@ -28,7 +28,7 @@ const INITIAL_VALUES = {
 };
 
 const UserDetails = ({open, onClose, serviceData}) => {
-	const {mediumScreenAndUp} = useResponsive();
+	const {largeScreenAndUp} = useResponsive();
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useLocalStorage("userData", null);
 
@@ -80,8 +80,8 @@ const UserDetails = ({open, onClose, serviceData}) => {
 	};
 
 	return (
-		<div className={`${!mediumScreenAndUp ? "block" : "hidden"}`}>
-			<Dialog fullScreen={!mediumScreenAndUp} maxWidth="lg" open={open} onClose={onClose}>
+		<div className={`${!largeScreenAndUp ? "block" : "hidden"}`}>
+			<Dialog fullScreen={!largeScreenAndUp} maxWidth="lg" open={open} onClose={onClose}>
 				<DialogTitle className="font-semibold">
 					{!USER_DATA
 						? "Fill the below form to get your calculated results"
@@ -134,10 +134,10 @@ UserDetails.propTypes = {
 // -----------------------------------------------------------------------------
 
 const Modal = ({open, onClose, serviceData}) => {
-	const {mediumScreenAndUp} = useResponsive();
+	const {largeScreenAndUp} = useResponsive();
 
 	return (
-		<div className={`${!mediumScreenAndUp ? "block" : "hidden"}`}>
+		<div className={`${!largeScreenAndUp ? "block" : "hidden"}`}>
 			<UserDetails open={open} onClose={onClose} serviceData={serviceData} />
 		</div>
 	);

@@ -44,7 +44,7 @@ const Relocation = () => {
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
 	const [storedValues, setValues] = useLocalStorage("userData");
-	const {mediumScreenAndUp} = useResponsive();
+	const {largeScreenAndUp} = useResponsive();
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -67,7 +67,9 @@ const Relocation = () => {
 		if (distance !== null) {
 			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 		}
-	}, [distance, setValue]);
+
+		if (largeScreenAndUp) onClose();
+	}, [distance, largeScreenAndUp, onClose, setValue]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
@@ -83,10 +85,10 @@ const Relocation = () => {
 		setRelocationData(responseData);
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
-		if (!mediumScreenAndUp) onOpen();
+		if (!largeScreenAndUp) onOpen();
 		console.log("STORED VALUES", storedValues);
 
-		if (isValid && !isVerified && !mediumScreenAndUp) {
+		if (isValid && !isVerified && !largeScreenAndUp) {
 			console.log("SUBMITTED");
 
 			onOpen();
