@@ -6,7 +6,7 @@ import {defer, useLoaderData} from "react-router-dom";
 // * HOOKS
 import useLocalStorage from "../../hooks/useLocalStorage";
 import useToggle from "../../hooks/useToggle";
-import {useResponsive} from "../../hooks/useResponsive";
+// import {useResponsive} from "../../hooks/useResponsive";
 
 // * UTILS
 import {
@@ -44,7 +44,7 @@ const Relocation = () => {
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
 	const [storedValues, setValues] = useLocalStorage("userData");
-	const {largeScreenAndUp} = useResponsive();
+	// const {largeScreenAndUp} = useResponsive();
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -68,8 +68,8 @@ const Relocation = () => {
 			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 		}
 
-		if (largeScreenAndUp) onClose();
-	}, [distance, largeScreenAndUp, onClose, setValue]);
+		// if (largeScreenAndUp) onClose();
+	}, [distance, setValue]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
@@ -85,10 +85,10 @@ const Relocation = () => {
 		setRelocationData(responseData);
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
-		if (!largeScreenAndUp) onOpen();
+		// if (!largeScreenAndUp) onOpen();
 		console.log("STORED VALUES", storedValues);
 
-		if (isValid && !isVerified && !largeScreenAndUp) {
+		if (isValid && !isVerified) {
 			console.log("SUBMITTED");
 
 			onOpen();
