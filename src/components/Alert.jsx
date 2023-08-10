@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const Alert = ({message, icon, bgColor, textColor}) => {
 	return (
 		<div className={`flex items-center gap-4 py-3 rounded-md ${bgColor} text-blue-950 h-14 px-6`}>
-			<Icon icon={icon} width={24} height={24} />
+			<Icon icon={icon} width={24} height={24} className={`${textColor}`} />
 			<span className={`text-md font-semibold ${textColor}`}>{message}</span>
 		</div>
 	);

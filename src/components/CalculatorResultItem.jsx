@@ -4,7 +4,7 @@ import {Typography} from "@mui/material";
 const CalculatorResultItem = ({title, value, unit}) => {
 	return (
 		<div
-			className={`p-4 bg-red-200 my-4 rounded-xl ${
+			className={`p-4 my-4 rounded-xl ${
 				title === "TOTAL" ? "bg-green-100 text-green-900" : "bg-zinc-100 text-zinc-950"
 			}`}
 		>

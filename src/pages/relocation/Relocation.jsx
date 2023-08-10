@@ -82,6 +82,7 @@ const Relocation = () => {
 	const onSubmit = async (data) => {
 		const responseData = await relocationCalculationService(data);
 		setRelocationData(responseData);
+		onOpen();
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
@@ -118,8 +119,8 @@ const Relocation = () => {
 				>
 					{values.distance && (
 						<Alert
-							bgColor="bg-blue-100"
-							textColor="text-blue-950"
+							bgColor="bg-blue-50"
+							textColor="text-blue-700"
 							icon="charm:info"
 							message={`Your distance calculated based on your location points is ${values.distance}km`}
 						/>
