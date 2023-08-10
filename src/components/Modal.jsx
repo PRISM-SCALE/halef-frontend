@@ -15,6 +15,7 @@ import FormWrapper from "./forms/FormWrapper";
 import useLocalStorage from "../hooks/useLocalStorage";
 import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
+import {Icon} from "@iconify-icon/react";
 
 // * INITIAL FORM VALUES
 
@@ -81,14 +82,33 @@ const UserDetails = ({open, onClose, serviceData}) => {
 	};
 
 	return (
-		<div className={`${!largeScreenAndUp ? "block" : "hidden"}`}>
-			<Dialog fullWidth fullScreen={!largeScreenAndUp} maxWidth="sm" open={open} onClose={onClose}>
-				<DialogTitle className="font-semibold">
+		<div className={`${!largeScreenAndUp ? "block" : "hidden"} relative`}>
+			<Dialog
+				fullWidth
+				fullScreen={!largeScreenAndUp}
+				maxWidth="sm"
+				open={open}
+				onClose={onClose}
+				PaperProps={{
+					sx: {
+						borderRadius: "15px",
+						position: "relative",
+					},
+				}}
+			>
+				<Icon
+					icon="heroicons-solid:x"
+					width={24}
+					height={24}
+					className="absolute right-4 top-4 cursor-pointer"
+					onClick={onClose}
+				/>
+				<DialogTitle sx={{fontWeight: 500}}>
 					{!USER_DATA
 						? "Fill the below form to get your calculated results"
 						: Boolean(USER_DATA) && !values?.user?.isPhoneVerified
 						? "Enter OTP to verify"
-						: "Here's Your Calculated Results"}
+						: "Cost Estimation"}
 				</DialogTitle>
 
 				<FormProvider {...methods}>
@@ -103,13 +123,7 @@ const UserDetails = ({open, onClose, serviceData}) => {
 							)}
 						</DialogContent>
 
-						{USER_DATA && values?.user?.isPhoneVerified ? (
-							<DialogActions sx={{py: 2}}>
-								<Button onClick={onClose} color="error">
-									Close
-								</Button>
-							</DialogActions>
-						) : (
+						{USER_DATA && values?.user?.isPhoneVerified ? null : (
 							<DialogActions sx={{py: 2}}>
 								<Button onClick={onClose} color="error">
 									Cancel

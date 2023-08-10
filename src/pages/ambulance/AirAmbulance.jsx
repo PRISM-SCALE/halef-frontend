@@ -79,7 +79,7 @@ const AirAmbulance = () => {
 						</label>
 						<select
 							name="region"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("region", {required: "Please select your region"})}
 						>
 							<option value="">Choose your region</option>
@@ -107,7 +107,7 @@ const AirAmbulance = () => {
 						<input
 							name="weight"
 							type="number"
-							className="input-fields focus:outline-[#dd3333] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+							className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 							placeholder="Enter your goods weight"
 							{...register("weight", {required: "Please enter the exact weight of your goods"})}
 							aria-invalid={errors.weight ? "true" : "false"}

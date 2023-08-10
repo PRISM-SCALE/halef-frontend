@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {Box} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
 import {defer, useLoaderData} from "react-router-dom";
 
@@ -22,6 +21,7 @@ import ServiceWrapper from "../../components/ServiceWrapper";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import Modal from "../../components/Modal";
+import Alert from "../../components/Alert";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -116,7 +116,14 @@ const Relocation = () => {
 					// method="post"
 					// action="/relocation"
 				>
-					<Box>{values.distance}</Box>
+					{values.distance && (
+						<Alert
+							bgColor="bg-blue-100"
+							textColor="text-blue-950"
+							icon="charm:info"
+							message={`Your distance calculated based on your location points is ${values.distance}km`}
+						/>
+					)}
 					<GoogleDistanceFinder setDistance={setDistance} />
 
 					{/* <GoogleAutocomplete /> */}
@@ -127,7 +134,7 @@ const Relocation = () => {
 						</label>
 						<select
 							name="houseCapacity"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose your house capacity"
 							{...register("houseCapacity", {
 								required: "Please select your house capacity size",
@@ -156,7 +163,7 @@ const Relocation = () => {
 						<select
 							disabled={!watch("houseCapacity")}
 							name="vehicle"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose your truck type"
 							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
@@ -182,7 +189,7 @@ const Relocation = () => {
 						</label>
 						<select
 							name="packing"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose a packing type"
 							{...register("packing", {required: "Choose a packing type"})}
 						>
@@ -221,7 +228,7 @@ const Relocation = () => {
 							<input
 								name="goodsValue"
 								type="number"
-								className="input-fields focus:outline-[#dd3333] appearance-none"
+								className="input-fields  appearance-none"
 								placeholder="Enter your goods value"
 								{...register("goodsValue", {required: "Please enter your value of the goods"})}
 								aria-invalid={errors.goodsValue ? "true" : "false"}

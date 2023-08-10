@@ -146,7 +146,7 @@ const Warehouse = () => {
 						</label>
 						<select
 							name={"selectCity"}
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("selectCity", {
 								required: "Please enter a pickup address",
 							})}
@@ -191,7 +191,7 @@ const Warehouse = () => {
 						</label>
 						<select
 							name="goodsType"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("goodsType", {
 								required: "Choose one of the options based on your goods",
 							})}
@@ -229,7 +229,7 @@ const Warehouse = () => {
 						</label>
 						<select
 							name="area"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("area", {
 								required: "Choose one of the options based on your goods",
 							})}
@@ -258,7 +258,7 @@ const Warehouse = () => {
 							name="durationInDays"
 							placeholder="How long should your goods be stored"
 							type="number"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("durationInDays", {
 								required: "Provide your duration to be stored in the warehouse",
 							})}
@@ -277,7 +277,7 @@ const Warehouse = () => {
 						</label>
 						<select
 							name="packing"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose a packing type"
 							{...register("packing", {required: "Choose a packing type"})}
 						>

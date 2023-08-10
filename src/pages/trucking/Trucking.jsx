@@ -16,7 +16,7 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import Modal from "../../components/Modal";
-import {Box} from "@mui/material";
+import Alert from "../../components/Alert";
 
 const INITIAL_VALUES = {
 	pickup: "",
@@ -83,7 +83,14 @@ const Trucking = () => {
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					<Box>{values.distance}</Box>
+					{values.distance && (
+						<Alert
+							bgColor="bg-blue-100"
+							textColor="text-blue-950"
+							icon="charm:info"
+							message={`Your distance calculated based on your location points is ${values.distance}km`}
+						/>
+					)}
 					<GoogleDistanceFinder setDistance={setDistance} />
 
 					<div>
@@ -92,7 +99,7 @@ const Trucking = () => {
 						</label>
 						<select
 							name="vehicle"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose your truck type"
 							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
@@ -118,7 +125,7 @@ const Trucking = () => {
 						</label>
 						<select
 							name="goodsType"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							placeholder="Choose your truck type"
 							{...register("goodsType", {
 								required: "Choose one of the options based on your goods",

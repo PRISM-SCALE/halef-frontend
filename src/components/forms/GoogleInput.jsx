@@ -7,7 +7,7 @@ const GoogleInput = forwardRef((props, ref) => {
 	return (
 		<input
 			ref={ref}
-			className="input-fields focus:outline-[#dd3333] appearance-none"
+			className="input-fields  appearance-none"
 			placeholder={placeholder}
 			{...otherProps}
 		/>

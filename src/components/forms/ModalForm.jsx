@@ -14,7 +14,7 @@ const ModalForm = () => {
 				</label>
 				<input
 					name="name"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
+					className="input-fields appearance-none "
 					placeholder="Enter Your Name"
 					{...register("name", {
 						required: "Please enter your first name",
@@ -34,7 +34,7 @@ const ModalForm = () => {
 				<input
 					name="email"
 					type="email"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
+					className="input-fields appearance-none "
 					placeholder="Enter Your First Name"
 					{...register("email", {
 						required: "Please enter your first name",
@@ -59,7 +59,7 @@ const ModalForm = () => {
 				</label>
 				<input
 					name="phone"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
+					className="input-fields appearance-none "
 					placeholder="Enter Your Mobile Number"
 					{...register("phone", {
 						required: "Please enter your mobile number",
@@ -81,7 +81,7 @@ const ModalForm = () => {
 				</label>
 				<select
 					name="service"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
+					className="input-fields appearance-none "
 					placeholder="Choose your house capacity"
 					{...register("service", {
 						required: "Please select your service",

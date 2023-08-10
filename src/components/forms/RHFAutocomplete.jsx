@@ -42,7 +42,7 @@ const RHFAutocomplete = ({
 							renderInput={(params) => (
 								<>
 									<TextField
-										className="input-fields focus:outline-[#dd3333] appearance-none rounded-none"
+										className="input-fields  appearance-none rounded-none"
 										{...params}
 										// {...field}
 										placeholder={placeholder}
@@ -56,7 +56,6 @@ const RHFAutocomplete = ({
 									/>
 								</>
 							)}
-							
 						/>
 					</>
 				);

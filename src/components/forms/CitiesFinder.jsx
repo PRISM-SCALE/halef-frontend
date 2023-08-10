@@ -155,7 +155,7 @@ const CitiesFinder = ({cities}) => {
 									renderInput={(params) => (
 										<>
 											<TextField
-												className="input-fields focus:outline-[#dd3333] appearance-none rounded-none"
+												className="input-fields  appearance-none rounded-none"
 												{...params}
 												placeholder="Choose a country"
 												inputProps={{
@@ -214,7 +214,7 @@ const CitiesFinder = ({cities}) => {
 									renderInput={(params) => (
 										<>
 											<TextField
-												className="input-fields focus:outline-[#dd3333] appearance-none"
+												className="input-fields  appearance-none"
 												{...params}
 												placeholder="Choose a country"
 												inputProps={{

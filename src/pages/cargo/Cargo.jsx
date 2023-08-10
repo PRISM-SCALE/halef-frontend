@@ -91,7 +91,7 @@ const Cargo = () => {
 						</label>
 						<select
 							name="region"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("region", {required: "Please select your region"})}
 						>
 							<option value="">Choose your region</option>
@@ -120,7 +120,7 @@ const Cargo = () => {
 							</label>
 							<select
 								name="docType"
-								className="input-fields appearance-none focus:outline-[#dd3333]"
+								className="input-fields appearance-none "
 								{...register("docType", {required: "Please select your document type"})}
 							>
 								<option value="">Choose your document type</option>
@@ -146,7 +146,7 @@ const Cargo = () => {
 							<input
 								name="weight"
 								type="number"
-								className="input-fields focus:outline-[#dd3333] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 								placeholder="Enter your goods weight"
 								{...register("weight", {
 									required: "Please enter the exact weight of your goods",
@@ -170,7 +170,7 @@ const Cargo = () => {
 							<input
 								name="length"
 								type="number"
-								className="input-fields focus:outline-[#dd3333] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
+								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
 								placeholder="Length of your cargo"
 								{...register("length", {required: "Please enter length of the goods"})}
 								aria-invalid={errors.length ? "true" : "false"}
@@ -189,7 +189,7 @@ const Cargo = () => {
 							<input
 								name="width"
 								type="number"
-								className="input-fields focus:outline-[#dd3333] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 								placeholder="Width of your cargo"
 								{...register("width", {required: "Please enter width of the goods"})}
 								aria-invalid={errors.width ? "true" : "false"}
@@ -208,7 +208,7 @@ const Cargo = () => {
 							<input
 								name="height"
 								type="number"
-								className="input-fields focus:outline-[#dd3333] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 								placeholder="Height of your cargo"
 								{...register("height", {required: "Please enter height of the goods"})}
 								aria-invalid={errors.height ? "true" : "false"}
@@ -227,7 +227,7 @@ const Cargo = () => {
 						</label>
 						<select
 							name="shipmentService"
-							className="input-fields appearance-none focus:outline-[#dd3333]"
+							className="input-fields appearance-none "
 							{...register("shipmentService", {
 								required: "Please select your shipment service",
 							})}

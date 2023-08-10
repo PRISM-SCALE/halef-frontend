@@ -24,7 +24,7 @@ const OTPForm = ({phone}) => {
 				<input
 					name="code"
 					type="number"
-					className="input-fields appearance-none focus:outline-[#dd3333]"
+					className="input-fields appearance-none "
 					placeholder="Enter OTP"
 					inputMode="numeric"
 					{...register("code", {
