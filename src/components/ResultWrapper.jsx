@@ -1,17 +1,25 @@
 import PropTypes from "prop-types";
 
 // * HOOKS
+import useLocalStorage from "../hooks/useLocalStorage";
 
 // * COMPONENTS
 import ResultView from "./ResultView";
 
 const ResultWrapper = ({children, serviceData}) => {
+	// eslint-disable-next-line no-unused-vars
+	const [values, setValues] = useLocalStorage("userData");
+
+	const USER_DATA = localStorage.getItem("userData");
+
+	console.log(values);
+
 	return (
 		<div className={`w-full justify-between gap-6 flex`}>
 			<div className="lg:w-[70%] w-full">{children}</div>
 
 			<div className="hidden lg:flex flex-col flex-1">
-				{serviceData ? (
+				{Boolean(USER_DATA) && Boolean(serviceData) && values?.user?.isPhoneVerified ? (
 					<div className={`flex justify-end`}>
 						<ResultView serviceData={serviceData} />
 					</div>

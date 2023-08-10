@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 
-const CalculatorResultLayout = ({children, imageUrl, imageName}) => {
+const CalculatorResultLayout = ({children}) => {
 	return (
 		<div className="bg-slate-50 flex flex-col w-full">
 			{/* IMAGE */}
-			<div className="relative">
+			{/* <div className="relative">
 				<div
 					className="absolute bottom-0 left-0 right-0"
 					style={{
@@ -16,13 +16,13 @@ const CalculatorResultLayout = ({children, imageUrl, imageName}) => {
 					className={`w-72 h-72 bg-no-repeat bg-cover bg-center bg-blend-screen mx-auto`}
 					style={{backgroundImage: `url(${imageUrl})`}}
 					alt="truck image"
-				>
-					{/* Truck Name */}
-					<div className="absolute bottom-0 left-0 right-0 p-4">
+				> */}
+			{/* Truck Name */}
+			{/* <div className="absolute bottom-0 left-0 right-0 p-4">
 						<p className="text-xl text-white">{imageName}</p>
 					</div>
 				</div>
-			</div>
+			</div> */}
 
 			{/* LOOP DATA */}
 			<div>{children}</div>

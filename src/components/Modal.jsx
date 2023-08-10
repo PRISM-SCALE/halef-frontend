@@ -68,20 +68,21 @@ const UserDetails = ({open, onClose, serviceData}) => {
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
 			const POST_DATA = {
 				phone: Number(values?.user?.phone),
-				code: data.code,
+				code: data?.code,
 			};
 
 			const response = await verifyOtp(POST_DATA);
 			setResponseData(response);
 			setUserData(response?.user);
 			setValues(response);
+
 			reset();
 		}
 	};
 
 	return (
 		<div className={`${!largeScreenAndUp ? "block" : "hidden"}`}>
-			<Dialog fullScreen={!largeScreenAndUp} maxWidth="lg" open={open} onClose={onClose}>
+			<Dialog fullWidth fullScreen={!largeScreenAndUp} maxWidth="sm" open={open} onClose={onClose}>
 				<DialogTitle className="font-semibold">
 					{!USER_DATA
 						? "Fill the below form to get your calculated results"
