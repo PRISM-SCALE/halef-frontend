@@ -66,6 +66,16 @@
     height: 20px;
   }
 
+  .active-menu_item::after {
+    content: "";
+    width: 6px;
+    height: 7px;
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    background: #171717;
+  }
+
   .service-card {
     @apply relative
   }

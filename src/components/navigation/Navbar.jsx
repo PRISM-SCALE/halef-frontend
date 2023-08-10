@@ -9,12 +9,17 @@ const Navbar = () => {
 				display: "flex",
 				justifyContent: "space-between",
 				alignItems: "center",
+				maxWidth: "1200px",
+				margin: "0 auto",
 			}}
 		>
 			<div>
 				{/* LOGO */}
 				<a href="https://halefinternational.com">
-					<Logo styles={{height: "140px", paddingTop: "5px"}} />
+					<Logo
+						styles={{height: "80px", paddingTop: "5px"}}
+						halefLogo="https://halefinternational.com/wp-content/uploads/2023/08/Black-Versiion.png"
+					/>
 				</a>
 			</div>
 			<div className="flex items-center gap-2">
