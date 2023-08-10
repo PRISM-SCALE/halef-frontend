@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 import Navbar from "../components/navigation/Navbar";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 // import PreloadImages from "../components/PreLoadImage";
 
 const RootLayout = () => {

@@ -122,7 +122,8 @@ const Relocation = () => {
 							bgColor="bg-blue-50"
 							textColor="text-blue-700"
 							icon="charm:info"
-							message={`Your distance calculated based on your location points is ${values.distance}km`}
+							message={`Your distance calculated based on your location points is`}
+							value={<strong>{`${values.distance}km`}</strong>}
 						/>
 					)}
 					<GoogleDistanceFinder setDistance={setDistance} />

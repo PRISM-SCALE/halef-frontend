@@ -18,7 +18,7 @@ const Footer = () => {
 				</div>
 				<div className="widget widget_nav_menu text-left ">
 					<div className="relative px-5 py-2">
-						<h5 className="active-menu_item text-white uppercase text-base font-barlow font-semibold">
+						<h5 className="footer-head_item text-white uppercase text-base font-barlow font-semibold">
 							Halef Hub
 						</h5>
 					</div>
