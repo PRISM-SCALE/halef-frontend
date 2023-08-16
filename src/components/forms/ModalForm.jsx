@@ -75,7 +75,7 @@ const ModalForm = () => {
 					</p>
 				)}
 			</fieldset>
-			<fieldset>
+			{/* <fieldset>
 				<label htmlFor="service" className="text-[#f8bf02]">
 					Services
 				</label>
@@ -109,7 +109,7 @@ const ModalForm = () => {
 						{errors.service?.message}
 					</p>
 				)}
-			</fieldset>
+			</fieldset> */}
 		</div>
 	);
 };

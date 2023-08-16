@@ -60,16 +60,9 @@ export async function getAllCities() {
 // * -------------------------------------------------------------------------
 // * USER INFO
 export async function createUser(data) {
-	const POST_DATA = {
-		name: data.name,
-		email: data.email,
-		phone: Number(data.phone),
-		service: data.service,
-	};
-
 	const response = await fetch(`${BASE_URL}/user/create`, {
 		method: "POST",
-		body: JSON.stringify(POST_DATA),
+		body: JSON.stringify(data),
 		headers: {
 			"Content-Type": "application/json",
 		},

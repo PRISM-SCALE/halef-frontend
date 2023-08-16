@@ -57,6 +57,15 @@ const Navbar = () => {
 						Home
 					</a>
 				</div>
+
+				{localStorage.getItem("useData") ? (
+					<button
+						className="rounded-md uppercase px-4 py-2 border-red-300 border-2 ml-2"
+						onClick={() => localStorage.removeItem("userData")}
+					>
+						Logout
+					</button>
+				) : null}
 			</div>
 		</div>
 	);

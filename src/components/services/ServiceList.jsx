@@ -17,7 +17,7 @@ const ServiceList = ({data}) => {
 			<Header caption="our services" title={header_name} />
 			{data.map(({name, _id, code, icon}) => {
 				return (
-					<Link to={`/${code.toLowerCase()}`} key={_id}>
+					<Link to={`/${code.toLowerCase()}?id=${_id}`} key={_id}>
 						<Card icon={icon} title={name} code={code} />
 					</Link>
 				);
@@ -37,4 +37,3 @@ ServiceList.propTypes = {
 };
 
 export default ServiceList;
-

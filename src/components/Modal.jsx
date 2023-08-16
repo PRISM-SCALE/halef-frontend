@@ -16,6 +16,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
+import {useLocation} from "react-router-dom";
 
 // * INITIAL FORM VALUES
 
@@ -25,11 +26,15 @@ const INITIAL_VALUES = {
 	name: "",
 	email: "",
 	phone: "",
-	service: "",
+	// service: "",
 };
 
 const UserDetails = ({open, onClose, serviceData}) => {
-	const {largeScreenAndUp} = useResponsive();
+	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
+	const location = useLocation();
+
+	const serviceId = location.search.replace(/^\?id=/, "");
+
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useLocalStorage("userData", null);
 
@@ -57,7 +62,14 @@ const UserDetails = ({open, onClose, serviceData}) => {
 		console.log("onSubmit userData Entry", userData);
 
 		if (!USER_DATA) {
-			const response = await createUser(data);
+			const POST_DATA = {
+				name: data.name,
+				email: data.email,
+				phone: Number(data.phone),
+				service: serviceId,
+			};
+
+			const response = await createUser(POST_DATA);
 			setResponseData(response);
 			setUserData(response?.user);
 			setValues(response);
@@ -82,10 +94,10 @@ const UserDetails = ({open, onClose, serviceData}) => {
 	};
 
 	return (
-		<div className={`${!largeScreenAndUp ? "block" : "hidden"} relative`}>
+		<div className={`${!mediumScreenAndUp ? "block" : "hidden"} relative`}>
 			<Dialog
 				fullWidth
-				fullScreen={!largeScreenAndUp}
+				fullScreen={!smallScreenAndUp}
 				maxWidth="sm"
 				open={open}
 				onClose={onClose}
@@ -149,10 +161,10 @@ UserDetails.propTypes = {
 // -----------------------------------------------------------------------------
 
 const Modal = ({open, onClose, serviceData}) => {
-	const {largeScreenAndUp} = useResponsive();
+	const {mediumScreenAndUp} = useResponsive();
 
 	return (
-		<div className={`${!largeScreenAndUp ? "block" : "hidden"}`}>
+		<div className={`${!mediumScreenAndUp ? "block" : "hidden"}`}>
 			<UserDetails open={open} onClose={onClose} serviceData={serviceData} />
 		</div>
 	);
