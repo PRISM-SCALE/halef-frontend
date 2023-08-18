@@ -85,10 +85,11 @@ const Trucking = () => {
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					{values.distance && (
 						<Alert
-							bgColor="bg-blue-100"
-							textColor="text-blue-950"
+							bgColor="bg-blue-50"
+							textColor="text-blue-700"
 							icon="charm:info"
-							message={`Your distance calculated based on your location points is ${values.distance}km`}
+							message={`Your distance calculated based on your location points is`}
+							value={<strong>{`${values.distance}km`}</strong>}
 						/>
 					)}
 					<GoogleDistanceFinder setDistance={setDistance} />
