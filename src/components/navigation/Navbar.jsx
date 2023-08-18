@@ -2,6 +2,8 @@ import {Link} from "react-router-dom";
 import Logo from "../Logo";
 
 const Navbar = () => {
+	const USER_DATA = localStorage.getItem("userData");
+
 	return (
 		<div
 			style={{
@@ -58,7 +60,7 @@ const Navbar = () => {
 					</a>
 				</div>
 
-				{localStorage.getItem("useData") ? (
+				{USER_DATA ? (
 					<button
 						className="rounded-md uppercase px-4 py-2 border-red-300 border-2 ml-2"
 						onClick={() => localStorage.removeItem("userData")}
