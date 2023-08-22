@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
@@ -16,7 +16,6 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
-import {useLocation} from "react-router-dom";
 
 // * INITIAL FORM VALUES
 
@@ -29,11 +28,8 @@ const INITIAL_VALUES = {
 	// service: "",
 };
 
-const UserDetails = ({open, onClose, serviceData}) => {
+const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
-	const location = useLocation();
-
-	const serviceId = location.search.replace(/^\?id=/, "");
 
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useLocalStorage("userData", null);
@@ -44,13 +40,12 @@ const UserDetails = ({open, onClose, serviceData}) => {
 
 	const USER_DATA = localStorage.getItem("userData");
 
-	// useEffect(() => {
-	// 	if (!userData) {
-	// 		setValues(responseData);
-	// 	}
-
-	// 	console.log("USER_DATA", responseData);
-	// }, [userData, setValues, responseData, USER_DATA?.user?._id, USER_DATA, values]);
+	useEffect(() => {
+		if (!USER_DATA) {
+			setValues(responseData);
+			console.log("USER_DATA", responseData);
+		}
+	}, [USER_DATA, responseData, setValues]);
 
 	const methods = useForm({
 		defaultValues: !values?.user?.isPhoneVerified ? {code: ""} : {...INITIAL_VALUES},
@@ -59,14 +54,16 @@ const UserDetails = ({open, onClose, serviceData}) => {
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-		console.log("onSubmit userData Entry", userData);
+		console.log("onSubmit data", data);
 
 		if (!USER_DATA) {
+			console.log("CALLBACK", await calculatorCallback);
+			console.log("DATA STORED IN LOCAL STORAGE", values);
 			const POST_DATA = {
 				name: data.name,
 				email: data.email,
 				phone: Number(data.phone),
-				service: serviceId,
+				// service: serviceId,
 			};
 
 			const response = await createUser(POST_DATA);
@@ -91,6 +88,7 @@ const UserDetails = ({open, onClose, serviceData}) => {
 
 			reset();
 		}
+		console.log("onSubmit userData Entry", userData);
 	};
 
 	return (
@@ -156,16 +154,22 @@ UserDetails.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	serviceData: PropTypes.object,
+	calculatorCallback: PropTypes.object,
 };
 
 // -----------------------------------------------------------------------------
 
-const Modal = ({open, onClose, serviceData}) => {
+const Modal = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {mediumScreenAndUp} = useResponsive();
 
 	return (
 		<div className={`${!mediumScreenAndUp ? "block" : "hidden"}`}>
-			<UserDetails open={open} onClose={onClose} serviceData={serviceData} />
+			<UserDetails
+				open={open}
+				onClose={onClose}
+				serviceData={serviceData}
+				calculatorCallback={calculatorCallback}
+			/>
 		</div>
 	);
 };
@@ -174,6 +178,7 @@ Modal.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	serviceData: PropTypes.object,
+	calculatorCallback: PropTypes.object,
 };
 
 export default Modal;

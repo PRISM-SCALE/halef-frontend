@@ -117,7 +117,11 @@ export async function verifyOtp(data) {
 // * -------------------------------------------------------------------------
 // * CALCULATOR APIs
 
-export async function relocationCalculationService(data) {
+export async function relocationCalculationService(data, serviceId) {
+	const USER_DATA = localStorage.getItem("userData");
+
+	console.log(USER_DATA);
+
 	const POST_DATA = {
 		distance: Math.round(data.distance),
 		goodsValue: Number(data.goodsValue),
@@ -125,21 +129,27 @@ export async function relocationCalculationService(data) {
 		requireInsurance: data.insurance,
 		packageType: data.packing,
 		vehicle: data.vehicle,
+		serviceId: serviceId,
+		userId: USER_DATA?.user?._id,
 	};
 
-	const response = await fetch(`${CALCULATE_URL}/relocation`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	if (USER_DATA?.userId) {
+		const response = await fetch(`${CALCULATE_URL}/relocation`, {
+			method: "POST",
+			body: JSON.stringify(POST_DATA),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
+		if (!response.ok) {
+			throw {message: "Failed to send data.", status: 500};
+		}
+
+		return response.json();
+	} else {
+		throw new Error("User Id not available");
 	}
-
-	return response.json();
 }
 
 export async function courierCargoCalculationService(data) {

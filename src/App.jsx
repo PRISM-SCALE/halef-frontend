@@ -21,7 +21,7 @@ import Warehouse, {warehouseLoader} from "./pages/warehouse/Warehouse";
 import AirAmbulance from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
-const lib = ["places", "geometry"];
+// const lib = ["places", "geometry"];
 // new Loader({
 // 	apiKey: API_KEY,
 // 	version: "weekly",
@@ -76,7 +76,7 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={lib}>
+			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={["places", "geometry"]}>
 				<RouterProvider router={router} />
 			</LoadScriptNext>
 		</ThemeProvider>

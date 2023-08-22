@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
-import {defer, useLoaderData} from "react-router-dom";
+import {defer, useLoaderData, useLocation} from "react-router-dom";
 
 // * HOOKS
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -44,6 +44,11 @@ const Relocation = () => {
 	// eslint-disable-next-line no-unused-vars
 	const [storedValues, setValues] = useLocalStorage("userData");
 	// const {largeScreenAndUp} = useResponsive();
+	const location = useLocation();
+
+	const [calculatorCallback, setCalculatorCallback] = useState();
+
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -56,7 +61,7 @@ const Relocation = () => {
 		watch,
 		setValue,
 	} = methods;
-	
+
 	const values = watch();
 
 	//* STATES
@@ -81,9 +86,17 @@ const Relocation = () => {
 	// * HANDLER FUNCTIONS
 
 	const onSubmit = async (data) => {
-		const responseData = await relocationCalculationService(data);
-		setRelocationData(responseData);
-		onOpen();
+		if (!storedValues) {
+			setCalculatorCallback(async () => {
+				const response = await relocationCalculationService(data, serviceId);
+				return response;
+			});
+			onOpen();
+		} else {
+			const responseData = await relocationCalculationService(data, serviceId);
+			setRelocationData(responseData);
+			onOpen();
+		}
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
@@ -248,7 +261,12 @@ const Relocation = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} serviceData={relocationData} />
+			<Modal
+				onClose={onClose}
+				open={open}
+				serviceData={relocationData}
+				calculatorCallback={calculatorCallback}
+			/>
 		</ServiceWrapper>
 	);
 };

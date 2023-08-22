@@ -1,15 +1,8 @@
 import {Link} from "react-router-dom";
 import Logo from "../Logo";
-import {useEffect} from "react";
 
 const Navbar = () => {
 	const USER_DATA = localStorage.getItem("userData");
-
-	useEffect(() => {
-		if (USER_DATA) {
-			return true;
-		}
-	}, [USER_DATA]);
 
 	return (
 		<div
