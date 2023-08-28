@@ -16,6 +16,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
+import {useLocation} from "react-router-dom";
 
 // * INITIAL FORM VALUES
 
@@ -30,6 +31,8 @@ const INITIAL_VALUES = {
 
 const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
+	const location = useLocation();
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useLocalStorage("userData", null);
@@ -38,7 +41,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	// eslint-disable-next-line no-unused-vars
 	const [responseData, setResponseData] = useState();
 
-	const USER_DATA = localStorage.getItem("userData");
+	const USER_DATA = Boolean(values);
 
 	useEffect(() => {
 		if (!USER_DATA) {
@@ -57,13 +60,12 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 		console.log("onSubmit data", data);
 
 		if (!USER_DATA) {
-			console.log("CALLBACK", await calculatorCallback);
-			console.log("DATA STORED IN LOCAL STORAGE", values);
+			console.log("Create");
 			const POST_DATA = {
 				name: data.name,
 				email: data.email,
 				phone: Number(data.phone),
-				// service: serviceId,
+				service: serviceId,
 			};
 
 			const response = await createUser(POST_DATA);
@@ -71,11 +73,16 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 			setUserData(response?.user);
 			setValues(response);
 
-			console.log("onSubmit userData", userData);
+			console.log("onSubmit userData", values);
+			console.log("onSubmit RESPONSE", response);
+			await calculatorCallback();
+
 			reset();
 		}
 
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
+			console.log("Verify");
+
 			const POST_DATA = {
 				phone: Number(values?.user?.phone),
 				code: data?.code,
@@ -85,9 +92,12 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 			setResponseData(response);
 			setUserData(response?.user);
 			setValues(response);
+			console.log("onSubmit userData", values);
+			await calculatorCallback();
 
 			reset();
 		}
+
 		console.log("onSubmit userData Entry", userData);
 	};
 
@@ -126,7 +136,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 						<DialogContent sx={{padding: 0}}>
 							{!USER_DATA ? (
 								<ModalForm />
-							) : Boolean(USER_DATA) && !values?.user?.isPhoneVerified ? (
+							) : USER_DATA && !values?.user?.isPhoneVerified ? (
 								<OTPForm phone={Number(values?.user?.phone)} />
 							) : (
 								<ResultView serviceData={serviceData} />
@@ -154,7 +164,7 @@ UserDetails.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	serviceData: PropTypes.object,
-	calculatorCallback: PropTypes.object,
+	calculatorCallback: PropTypes.func,
 };
 
 // -----------------------------------------------------------------------------
@@ -178,7 +188,7 @@ Modal.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	serviceData: PropTypes.object,
-	calculatorCallback: PropTypes.object,
+	calculatorCallback: PropTypes.func,
 };
 
 export default Modal;

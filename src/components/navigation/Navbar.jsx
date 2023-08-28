@@ -1,8 +1,10 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Navbar = () => {
-	const USER_DATA = localStorage.getItem("userData");
+	const navigate = useNavigate();
+	const [values] = useLocalStorage("userData");
 
 	return (
 		<div
@@ -60,10 +62,14 @@ const Navbar = () => {
 					</a>
 				</div>
 
-				{USER_DATA ? (
+				{values ? (
 					<button
 						className="rounded-md uppercase px-4 py-2 border-red-300 border-2 ml-2"
-						onClick={() => localStorage.removeItem("userData")}
+						onClick={() => {
+							localStorage.removeItem("userData");
+							localStorage.clear();
+							navigate("/");
+						}}
 					>
 						Logout
 					</button>

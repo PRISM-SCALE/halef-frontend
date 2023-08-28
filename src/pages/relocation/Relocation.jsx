@@ -42,7 +42,7 @@ const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData");
+	const [storedValues, setValues] = useLocalStorage("userData", null);
 	// const {largeScreenAndUp} = useResponsive();
 	const location = useLocation();
 
@@ -87,12 +87,14 @@ const Relocation = () => {
 
 	const onSubmit = async (data) => {
 		if (!storedValues) {
-			setCalculatorCallback(async () => {
-				const response = await relocationCalculationService(data, serviceId);
+			console.log("ON SUBMIT 1");
+			setCalculatorCallback(() => {
+				const response = async () => await relocationCalculationService(data, serviceId);
 				return response;
 			});
 			onOpen();
 		} else {
+			console.log("ON SUBMIT 2");
 			const responseData = await relocationCalculationService(data, serviceId);
 			setRelocationData(responseData);
 			onOpen();

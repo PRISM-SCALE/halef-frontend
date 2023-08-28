@@ -5,7 +5,13 @@ import {useState, useEffect} from "react";
 export default function useLocalStorage(key, defaultValue) {
 	const [value, setValue] = useState(() => {
 		const storedValue = localStorage.getItem(key);
-		return storedValue === null ? defaultValue : JSON.parse(storedValue);
+
+		try {
+			return JSON.parse(storedValue);
+		} catch (error) {
+			console.log(error);
+			return undefined;
+		}
 	});
 
 	useEffect(() => {
@@ -22,8 +28,10 @@ export default function useLocalStorage(key, defaultValue) {
 	}, [key, defaultValue]);
 
 	const setValueInLocalStorage = (newValue) => {
+		console.log("SET VALUES", newValue);
 		setValue((currentValue) => {
 			const result = typeof newValue === "function" ? newValue(currentValue) : newValue;
+			console.log("STRINGIFY RESULT", JSON.stringify(result));
 			localStorage.setItem(key, JSON.stringify(result));
 			return result;
 		});
