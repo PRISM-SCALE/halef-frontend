@@ -1,10 +1,20 @@
 import {Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import {useEffect, useState} from "react";
 
 const Navbar = () => {
 	const navigate = useNavigate();
 	const [values] = useLocalStorage("userData");
+	const [isLoggedOut, setIsLoggedOut] = useState(false);
+
+	console.log("NAVBAR", values);
+
+	useEffect(() => {
+		if (isLoggedOut && Boolean(values)) {
+			localStorage.removeItem("userData");
+		}
+	}, [isLoggedOut, values]);
 
 	return (
 		<div
@@ -62,13 +72,13 @@ const Navbar = () => {
 					</a>
 				</div>
 
-				{values ? (
+				{!isLoggedOut && Boolean(values) ? (
 					<button
 						className="rounded-md uppercase px-4 py-2 border-red-300 border-2 ml-2"
 						onClick={() => {
 							localStorage.removeItem("userData");
-							localStorage.clear();
-							navigate("/");
+							setIsLoggedOut(true);
+							navigate({pathname: "/"}, {replace: true});
 						}}
 					>
 						Logout

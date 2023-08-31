@@ -1,11 +1,10 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import {defer, useLoaderData, useLocation} from "react-router-dom";
 
 // * HOOKS
 import useLocalStorage from "../../hooks/useLocalStorage";
 import useToggle from "../../hooks/useToggle";
-// import {useResponsive} from "../../hooks/useResponsive";
 
 // * UTILS
 import {
@@ -41,12 +40,10 @@ const INITIAL_VALUES = {
 const Relocation = () => {
 	const {relocationHouseTypes, packingTypes} = useLoaderData();
 	const {toggle: open, onOpen, onClose} = useToggle();
-	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData", null);
-	// const {largeScreenAndUp} = useResponsive();
 	const location = useLocation();
 
-	const [calculatorCallback, setCalculatorCallback] = useState();
+	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
+	const [formValues, setFormValues] = useState(null);
 
 	const serviceId = location.search.replace(/^\?id=/, "");
 
@@ -85,24 +82,53 @@ const Relocation = () => {
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 
+	const calculatorCallback = useCallback(
+		(responseData) => {
+			console.log("--------------------------------------");
+			console.log("RELOCATION SET-CALLBACK", values);
+			console.log("INSIDE CALLBACK");
+
+			const response = async () =>
+				await relocationCalculationService(values, serviceId, responseData?.user?._id);
+
+			setRelocationData(response);
+			return response;
+		},
+		[serviceId, values]
+	);
+
 	const onSubmit = async (data) => {
+		console.log("SUBMIT FROM RELOCATION FILE", storedValues);
+
 		if (!storedValues) {
-			console.log("ON SUBMIT 1");
-			setCalculatorCallback(() => {
-				const response = async () => await relocationCalculationService(data, serviceId);
-				return response;
-			});
+			console.log("--------------------------------------");
+			console.log("NO STORED START");
+
+			//how should i make use of the calcCallback inside this if block
+			// use calcCallback here
+			calculatorCallback();
+
 			onOpen();
+			console.log("NO STORED COMPLETED");
+			console.log("--------------------------------------");
 		} else {
-			console.log("ON SUBMIT 2");
-			const responseData = await relocationCalculationService(data, serviceId);
-			setRelocationData(responseData);
+			console.log("--------------------------------------");
+
+			console.log("ON SUBMIT 2", storedValues?.user?._id);
+			const responseData = await relocationCalculationService(
+				data,
+				serviceId,
+				storedValues?.user?._id
+			);
+			setValueToLocalStorage(responseData);
 			onOpen();
+			console.log("ON SUBMIT 2 COMPLETED");
+
+			console.log("--------------------------------------");
 		}
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
-		// if (!largeScreenAndUp) onOpen();
 		console.log("STORED VALUES", storedValues);
 
 		if (isValid && !isVerified) {
@@ -111,11 +137,6 @@ const Relocation = () => {
 			onOpen();
 		}
 	};
-
-	// const handleModal = () => {
-	// 	console.log(isSubmitted);
-	// 	if (isSubmitted) onOpen();
-	// };
 
 	const header_name = (
 		<>

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
@@ -26,7 +26,6 @@ const INITIAL_VALUES = {
 	name: "",
 	email: "",
 	phone: "",
-	// service: "",
 };
 
 const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
@@ -34,21 +33,11 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const location = useLocation();
 	const serviceId = location.search.replace(/^\?id=/, "");
 
-	// eslint-disable-next-line no-unused-vars
-	const [values, setValues] = useLocalStorage("userData", null);
+	const [values, setValueToLocalStorage] = useLocalStorage("userData", null);
 
-	const [userData, setUserData] = useState(null);
-	// eslint-disable-next-line no-unused-vars
 	const [responseData, setResponseData] = useState();
 
 	const USER_DATA = Boolean(values);
-
-	useEffect(() => {
-		if (!USER_DATA) {
-			setValues(responseData);
-			console.log("USER_DATA", responseData);
-		}
-	}, [USER_DATA, responseData, setValues]);
 
 	const methods = useForm({
 		defaultValues: !values?.user?.isPhoneVerified ? {code: ""} : {...INITIAL_VALUES},
@@ -57,9 +46,12 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-		console.log("onSubmit data", data);
+		console.log("useLocalStorage HOOK", values);
 
 		if (!USER_DATA) {
+			console.log("--------------------------------------");
+			console.log("MODAL WHEN !USER_DATA");
+
 			console.log("Create");
 			const POST_DATA = {
 				name: data.name,
@@ -70,14 +62,15 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 			const response = await createUser(POST_DATA);
 			setResponseData(response);
-			setUserData(response?.user);
-			setValues(response);
-
-			console.log("onSubmit userData", values);
+			setValueToLocalStorage(response);
 			console.log("onSubmit RESPONSE", response);
-			await calculatorCallback();
+			console.log("USER_DATA FROM LOCAL STORAGE", values);
+
+			await calculatorCallback(response);
 
 			reset();
+			console.log("MODAL WHEN !USER_DATA");
+			console.log("--------------------------------------");
 		}
 
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
@@ -90,15 +83,11 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 			const response = await verifyOtp(POST_DATA);
 			setResponseData(response);
-			setUserData(response?.user);
-			setValues(response);
-			console.log("onSubmit userData", values);
-			await calculatorCallback();
+			setValueToLocalStorage(response);
+			console.log("USER_DATA FROM LOCAL STORAGE", values);
 
 			reset();
 		}
-
-		console.log("onSubmit userData Entry", userData);
 	};
 
 	return (
@@ -126,7 +115,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 				<DialogTitle sx={{fontWeight: 500}}>
 					{!USER_DATA
 						? "Fill the below form to get your calculated results"
-						: Boolean(USER_DATA) && !values?.user?.isPhoneVerified
+						: USER_DATA && !values?.user?.isPhoneVerified
 						? "Enter OTP to verify"
 						: "Cost Estimation"}
 				</DialogTitle>

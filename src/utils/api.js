@@ -117,7 +117,7 @@ export async function verifyOtp(data) {
 // * -------------------------------------------------------------------------
 // * CALCULATOR APIs
 
-const getLocalStorage = (key) => {
+export const getLocalStorage = (key) => {
 	const storedValue = localStorage.getItem(key);
 
 	try {
@@ -128,10 +128,8 @@ const getLocalStorage = (key) => {
 	}
 };
 
-export async function relocationCalculationService(data, serviceId) {
-	const USER_DATA = getLocalStorage("userData");
-
-	console.log("FROM API FILE", USER_DATA);
+export async function relocationCalculationService(data, serviceId, userId) {
+	console.log("FROM API", userId);
 
 	const POST_DATA = {
 		distance: Math.round(data.distance),
@@ -141,10 +139,10 @@ export async function relocationCalculationService(data, serviceId) {
 		packageType: data.packing,
 		vehicle: data.vehicle,
 		serviceId: serviceId,
-		userId: USER_DATA?.user?._id,
+		userId: userId,
 	};
 
-	if (USER_DATA?.user?._id) {
+	if (userId) {
 		const response = await fetch(`${CALCULATE_URL}/relocation`, {
 			method: "POST",
 			body: JSON.stringify(POST_DATA),

@@ -31,9 +31,9 @@ const CalculatorResultLayout = ({children}) => {
 };
 
 CalculatorResultLayout.propTypes = {
-	children: PropTypes.node.isRequired,
-	imageUrl: PropTypes.string.isRequired,
-	imageName: PropTypes.string.isRequired,
+	children: PropTypes.node,
+	imageUrl: PropTypes.string,
+	imageName: PropTypes.string,
 };
 
 export default CalculatorResultLayout;

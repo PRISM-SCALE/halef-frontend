@@ -9,7 +9,6 @@ export default function useLocalStorage(key, defaultValue) {
 		try {
 			return JSON.parse(storedValue);
 		} catch (error) {
-			console.log(error);
 			return undefined;
 		}
 	});
@@ -20,6 +19,7 @@ export default function useLocalStorage(key, defaultValue) {
 				setValue(JSON.parse(e.newValue));
 			}
 		};
+
 		window.addEventListener("storage", listener);
 
 		return () => {
@@ -28,10 +28,8 @@ export default function useLocalStorage(key, defaultValue) {
 	}, [key, defaultValue]);
 
 	const setValueInLocalStorage = (newValue) => {
-		console.log("SET VALUES", newValue);
 		setValue((currentValue) => {
 			const result = typeof newValue === "function" ? newValue(currentValue) : newValue;
-			console.log("STRINGIFY RESULT", JSON.stringify(result));
 			localStorage.setItem(key, JSON.stringify(result));
 			return result;
 		});
