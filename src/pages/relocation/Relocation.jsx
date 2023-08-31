@@ -43,7 +43,6 @@ const Relocation = () => {
 	const location = useLocation();
 
 	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
-	const [formValues, setFormValues] = useState(null);
 
 	const serviceId = location.search.replace(/^\?id=/, "");
 
@@ -86,7 +85,7 @@ const Relocation = () => {
 		(responseData) => {
 			console.log("--------------------------------------");
 			console.log("RELOCATION SET-CALLBACK", values);
-			console.log("INSIDE CALLBACK");
+			console.log("INSIDE CALLBACK", responseData);
 
 			const response = async () =>
 				await relocationCalculationService(values, serviceId, responseData?.user?._id);

@@ -1,4 +1,3 @@
-import {useState} from "react";
 import PropTypes from "prop-types";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
@@ -35,8 +34,6 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 	const [values, setValueToLocalStorage] = useLocalStorage("userData", null);
 
-	const [responseData, setResponseData] = useState();
-
 	const USER_DATA = Boolean(values);
 
 	const methods = useForm({
@@ -61,7 +58,6 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 			};
 
 			const response = await createUser(POST_DATA);
-			setResponseData(response);
 			setValueToLocalStorage(response);
 			console.log("onSubmit RESPONSE", response);
 			console.log("USER_DATA FROM LOCAL STORAGE", values);
@@ -82,9 +78,8 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 			};
 
 			const response = await verifyOtp(POST_DATA);
-			setResponseData(response);
 			setValueToLocalStorage(response);
-			console.log("USER_DATA FROM LOCAL STORAGE", values);
+			await calculatorCallback(response);
 
 			reset();
 		}
