@@ -32,6 +32,8 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const location = useLocation();
 	const serviceId = location.search.replace(/^\?id=/, "");
 
+	console.log("SERVICE DATA IN MODAL", serviceData);
+
 	const [values, setValueToLocalStorage] = useLocalStorage("userData", null);
 
 	const USER_DATA = Boolean(values);
