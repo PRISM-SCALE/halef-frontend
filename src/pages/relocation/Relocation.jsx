@@ -82,18 +82,22 @@ const Relocation = () => {
 	// * HANDLER FUNCTIONS
 
 	const calculatorCallback = useCallback(
-		(responseData) => {
+		async (responseData) => {
 			console.log("--------------------------------------");
-			console.log("RELOCATION SET-CALLBACK", values);
 			console.log("INSIDE CALLBACK", responseData);
+			console.log("RELOCATION VALUES", values);
+			setValueToLocalStorage(responseData);
 
-			const response = async () =>
-				await relocationCalculationService(values, serviceId, responseData?.user?._id);
+			const response = await relocationCalculationService(
+				values,
+				serviceId,
+				responseData?.user?._id
+			);
 
 			setRelocationData(response);
 			return response;
 		},
-		[serviceId, values]
+		[serviceId, setValueToLocalStorage, values]
 	);
 
 	const onSubmit = async (data) => {
@@ -114,12 +118,9 @@ const Relocation = () => {
 			console.log("--------------------------------------");
 
 			console.log("ON SUBMIT 2", storedValues?.user?._id);
-			const responseData = await relocationCalculationService(
-				data,
-				serviceId,
-				storedValues?.user?._id
-			);
-			setValueToLocalStorage(responseData);
+			const response = await relocationCalculationService(data, serviceId, storedValues?.user?._id);
+			setRelocationData(response);
+			setValueToLocalStorage(response);
 			onOpen();
 			console.log("ON SUBMIT 2 COMPLETED");
 

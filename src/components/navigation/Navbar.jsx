@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 const Navbar = () => {
 	const navigate = useNavigate();
@@ -10,11 +10,11 @@ const Navbar = () => {
 
 	console.log("NAVBAR", values);
 
-	useEffect(() => {
-		if (isLoggedOut && Boolean(values)) {
-			localStorage.removeItem("userData");
-		}
-	}, [isLoggedOut, values]);
+	// useEffect(() => {
+	// 	if (isLoggedOut && Boolean(values)) {
+	// 		localStorage.removeItem("userData");
+	// 	}
+	// }, [isLoggedOut, values]);
 
 	return (
 		<div
