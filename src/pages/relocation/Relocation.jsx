@@ -118,6 +118,7 @@ const Relocation = () => {
 			console.log("ON SUBMIT 2", storedValues?.user?._id);
 			const response = await relocationCalculationService(data, serviceId, storedValues?.user?._id);
 			setRelocationData(response);
+			setValueToLocalStorage(response);
 			onOpen();
 			console.log("ON SUBMIT 2 COMPLETED");
 

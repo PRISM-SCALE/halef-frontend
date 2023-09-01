@@ -80,7 +80,9 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 			};
 
 			const response = await verifyOtp(POST_DATA);
+
 			setValueToLocalStorage(response);
+
 			await calculatorCallback(response);
 
 			reset();
