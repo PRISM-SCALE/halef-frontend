@@ -2,9 +2,14 @@ import PropTypes from "prop-types";
 
 import CalculatorResultItem from "./CalculatorResultItem";
 import CalculatorResultLayout from "./CalculatorResultLayout";
+import {CircularProgress} from "@mui/material";
 
 const ResultView = ({serviceData}) => {
 	console.log("SERVICE DATA IN RESULT VIEW", serviceData);
+
+	if (!serviceData) {
+		return <CircularProgress color="#DD3333" />;
+	}
 
 	if (serviceData) {
 		const {name, image, costData} = serviceData;
