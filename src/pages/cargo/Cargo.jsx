@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * UTILS
@@ -15,6 +15,7 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import GooglePincodeForm from "../../components/forms/GooglePincodeForm";
 import Button from "../../components/forms/Button";
 import Modal from "../../components/Modal";
+import {useLocation} from "react-router-dom";
 
 const INITIAL_VALUES = {
 	region: "",
@@ -30,10 +31,11 @@ const INITIAL_VALUES = {
 
 const Cargo = () => {
 	const {toggle: open, onOpen, onClose} = useToggle();
-	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData");
-
+	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
 	const [cargoCost, setCargoCost] = useState(null);
+	const location = useLocation();
+
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -48,18 +50,56 @@ const Cargo = () => {
 		// reset,
 	} = methods;
 
+	const values = watch();
+
 	// useEffect(() => {
 	// 	if (formState.isSubmitSuccessful) {
 	// 		reset({...INITIAL_VALUES});
 	// 	}
 	// }, [formState, reset]);
 
+	const calculatorCallback = useCallback(
+		async (responseData) => {
+			console.log("--------------------------------------");
+			console.log("INSIDE CARGO CALLBACK", responseData);
+			console.log("CARGO VALUES", values);
+			setValueToLocalStorage(responseData);
+
+			const response = await courierCargoCalculationService(
+				values,
+				serviceId,
+				responseData?.user?._id
+			);
+
+			setCargoCost(response);
+			return response;
+		},
+		[serviceId, setValueToLocalStorage, values]
+	);
+
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		const responseData = await courierCargoCalculationService(data);
-		setCargoCost(responseData);
-		onOpen();
+		console.log("SUBMIT FROM CARGO FILE", storedValues);
+
+		if (!storedValues) {
+			calculatorCallback();
+			onOpen();
+		} else {
+			console.log("--------------------------------------");
+			console.log("ON SUBMIT 2", storedValues?.user?._id);
+
+			const response = await courierCargoCalculationService(
+				data,
+				serviceId,
+				storedValues?.user?._id
+			);
+			setCargoCost(response);
+			onOpen();
+
+			console.log("ON SUBMIT 2 COMPLETED");
+			console.log("--------------------------------------");
+		}
 
 		console.log("STORED VALUES", storedValues);
 
@@ -250,18 +290,23 @@ const Cargo = () => {
 
 					<Button
 						buttonText={
-							watch("region") === "international"
+							values.region === "international"
 								? "coming soon"
-								: watch("region") === "domestic"
+								: values.region === "domestic"
 								? "calculate"
 								: "calculate"
 						}
-						disabled={watch("region") === "international"}
+						disabled={values.region === "international"}
 					/>
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} serviceData={cargoCost} />
+			<Modal
+				onClose={onClose}
+				open={open}
+				serviceData={cargoCost}
+				calculatorCallback={calculatorCallback}
+			/>
 		</ServiceWrapper>
 	);
 };

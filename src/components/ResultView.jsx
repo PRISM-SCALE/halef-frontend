@@ -24,7 +24,11 @@ const ResultView = ({serviceData}) => {
 		);
 	}
 
-	return null;
+	return (
+		<div className="flex items-center justify-center p-6 mx-4 mb-4 border-dashed border-slate-300 border-2 mt-8">
+			<h2 className="text-xl">Uh-oh! There&apos;s nothing to show here.</h2>
+		</div>
+	);
 };
 
 ResultView.propTypes = {

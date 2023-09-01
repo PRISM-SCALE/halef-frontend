@@ -1,6 +1,6 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData, useLocation} from "react-router-dom";
 
 // * UTILS
 import {getPackageTypes, warehouseCalculationService} from "../../utils/api";
@@ -103,7 +103,10 @@ const Warehouse = () => {
 
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData");
+	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
+
+	const location = useLocation();
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -113,16 +116,43 @@ const Warehouse = () => {
 		register,
 		formState: {errors, isValid},
 		handleSubmit,
+		watch,
 		// formState,
 		// reset,
 	} = methods;
 
+	const values = watch();
+
+	const calculatorCallback = useCallback(
+		async (responseData) => {
+			console.log("--------------------------------------");
+			console.log("INSIDE CARGO CALLBACK", responseData);
+			console.log("CARGO VALUES", values);
+			setValueToLocalStorage(responseData);
+
+			const response = await warehouseCalculationService(
+				values,
+				serviceId,
+				responseData?.user?._id
+			);
+
+			setWarehouse(response);
+			return response;
+		},
+		[serviceId, setValueToLocalStorage, values]
+	);
+
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		const responseData = await warehouseCalculationService(data);
-		setWarehouse(responseData);
-		onOpen();
+		if (!storedValues) {
+			calculatorCallback();
+			onOpen();
+		} else {
+			const response = await warehouseCalculationService(data, serviceId, storedValues?.user?._id);
+			setWarehouse(response);
+			onOpen();
+		}
 		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
@@ -301,7 +331,12 @@ const Warehouse = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} serviceData={warehouse} />
+			<Modal
+				onClose={onClose}
+				open={open}
+				serviceData={warehouse}
+				calculatorCallback={calculatorCallback}
+			/>
 		</ServiceWrapper>
 	);
 };

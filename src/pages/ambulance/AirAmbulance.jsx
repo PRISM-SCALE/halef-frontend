@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * HOOKS
@@ -13,6 +13,7 @@ import Button from "../../components/forms/Button";
 import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import {airAmbulanceCalculationService} from "../../utils/api";
 import Modal from "../../components/Modal";
+import {useLocation} from "react-router-dom";
 
 const INITIAL_VALUES = {
 	region: "",
@@ -29,7 +30,9 @@ const AirAmbulance = () => {
 
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData");
+	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
+	const location = useLocation();
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -46,13 +49,41 @@ const AirAmbulance = () => {
 
 	const values = watch();
 
+	const calculatorCallback = useCallback(
+		async (responseData) => {
+			console.log("--------------------------------------");
+			console.log("INSIDE CARGO CALLBACK", responseData);
+			console.log("CARGO VALUES", values);
+			setValueToLocalStorage(responseData);
+
+			const response = await airAmbulanceCalculationService(
+				values,
+				serviceId,
+				responseData?.user?._id
+			);
+
+			setAirAmbulanceData(response);
+			return response;
+		},
+		[serviceId, setValueToLocalStorage, values]
+	);
+
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		const responseData = await airAmbulanceCalculationService(data);
-		setAirAmbulanceData(responseData);
+		if (!storedValues) {
+			calculatorCallback();
+			onOpen();
+		} else {
+			const response = await airAmbulanceCalculationService(
+				data,
+				serviceId,
+				storedValues?.user?._id
+			);
+			setAirAmbulanceData(response);
 
-		onOpen();
+			onOpen();
+		}
 		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
@@ -144,7 +175,12 @@ const AirAmbulance = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} serviceData={airAmbulanceData} />
+			<Modal
+				onClose={onClose}
+				open={open}
+				serviceData={airAmbulanceData}
+				calculatorCallback={calculatorCallback}
+			/>
 		</ServiceWrapper>
 	);
 };

@@ -107,8 +107,6 @@ const Relocation = () => {
 			console.log("--------------------------------------");
 			console.log("NO STORED START");
 
-			//how should i make use of the calcCallback inside this if block
-			// use calcCallback here
 			calculatorCallback();
 
 			onOpen();
@@ -120,10 +118,10 @@ const Relocation = () => {
 			console.log("ON SUBMIT 2", storedValues?.user?._id);
 			const response = await relocationCalculationService(data, serviceId, storedValues?.user?._id);
 			setRelocationData(response);
-			setValueToLocalStorage(response);
 			onOpen();
 			console.log("ON SUBMIT 2 COMPLETED");
 
+			console.log("--------------------------------------");
 			console.log("--------------------------------------");
 		}
 

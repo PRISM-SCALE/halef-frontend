@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
-import {useLoaderData} from "react-router-dom";
+import {useLoaderData, useLocation} from "react-router-dom";
 
 // * UTILS
 import {getVehicles, truckingCalculationService} from "../../utils/api";
@@ -33,7 +33,11 @@ const Trucking = () => {
 
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
-	const [storedValues, setValues] = useLocalStorage("userData");
+	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
+
+	const location = useLocation();
+
+	const serviceId = location.search.replace(/^\?id=/, "");
 
 	const methods = useForm({
 		defaultValues: {...INITIAL_VALUES},
@@ -59,13 +63,33 @@ const Trucking = () => {
 		}
 	}, [distance, setValue]);
 
+	const calculatorCallback = useCallback(
+		async (responseData) => {
+			console.log("--------------------------------------");
+			console.log("INSIDE CARGO CALLBACK", responseData);
+			console.log("CARGO VALUES", values);
+			setValueToLocalStorage(responseData);
+
+			const response = await truckingCalculationService(values, serviceId, responseData?.user?._id);
+
+			setTruckingData(response);
+			return response;
+		},
+		[serviceId, setValueToLocalStorage, values]
+	);
+
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		const responseData = await truckingCalculationService(data);
-		setTruckingData(responseData);
+		if (!storedValues) {
+			calculatorCallback();
+			onOpen();
+		} else {
+			const response = await truckingCalculationService(data, serviceId, storedValues?.user?._id);
+			setTruckingData(response);
 
-		onOpen();
+			onOpen();
+		}
 		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
@@ -163,7 +187,12 @@ const Trucking = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<Modal onClose={onClose} open={open} serviceData={truckingData} />
+			<Modal
+				onClose={onClose}
+				open={open}
+				serviceData={truckingData}
+				calculatorCallback={calculatorCallback}
+			/>
 		</ServiceWrapper>
 	);
 };

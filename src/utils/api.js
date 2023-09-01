@@ -161,7 +161,9 @@ export async function relocationCalculationService(data, serviceId, userId) {
 	}
 }
 
-export async function courierCargoCalculationService(data) {
+export async function courierCargoCalculationService(data, serviceId, userId) {
+	console.log("FROM API", userId);
+
 	const POST_DATA = {
 		weight: Number(data.weight),
 		length: Number(data.length),
@@ -169,86 +171,109 @@ export async function courierCargoCalculationService(data) {
 		height: Number(data.height),
 		carrierCode: data.shipmentService,
 		docType: data.docType,
+		serviceId: serviceId,
+		userId: userId,
 	};
 
-	const response = await fetch(`${CALCULATE_URL}/couriercargo`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	if (userId) {
+		const response = await fetch(`${CALCULATE_URL}/couriercargo`, {
+			method: "POST",
+			body: JSON.stringify(POST_DATA),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
+		if (!response.ok) {
+			throw {message: "Failed to send data.", status: 500};
+		}
+
+		return response.json();
+	} else {
+		throw new Error("User Id not available");
 	}
-
-	return response.json();
 }
 
-export async function truckingCalculationService(data) {
+export async function truckingCalculationService(data, serviceId, userId) {
 	const POST_DATA = {
 		distance: Math.round(data.distance),
 		vehicle: data.vehicle,
+		serviceId: serviceId,
+		userId: userId,
 	};
+	if (userId) {
+		const response = await fetch(`${CALCULATE_URL}/trucking`, {
+			method: "POST",
+			body: JSON.stringify(POST_DATA),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-	const response = await fetch(`${CALCULATE_URL}/trucking`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+		if (!response.ok) {
+			throw {message: "Failed to send data.", status: 500};
+		}
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
+		return response.json();
+	} else {
+		throw new Error("User Id not available");
 	}
-
-	return response.json();
 }
 
-export async function warehouseCalculationService(data) {
+export async function warehouseCalculationService(data, serviceId, userId) {
 	const POST_DATA = {
 		cft: Number(data.area),
 		packageType: data.packing,
 		durationInDays: Number(data.durationInDays),
+		serviceId: serviceId,
+		userId: userId,
 	};
 
-	const response = await fetch(`${CALCULATE_URL}/warehouse`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	if (userId) {
+		const response = await fetch(`${CALCULATE_URL}/warehouse`, {
+			method: "POST",
+			body: JSON.stringify(POST_DATA),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
+		if (!response.ok) {
+			throw {message: "Failed to send data.", status: 500};
+		}
+
+		return response.json();
+	} else {
+		throw new Error("User Id not available");
 	}
-
-	return response.json();
 }
 
-export async function airAmbulanceCalculationService(data) {
+export async function airAmbulanceCalculationService(data, serviceId, userId) {
 	const POST_DATA = {
 		destinationCity: data.dropoff,
 		sourceCity: data.pickup,
 		isPackingRequired: data.isPackingRequired,
 		region: data.region,
 		weight: data.weight,
+		serviceId: serviceId,
+		userId: userId,
 	};
 
-	const response = await fetch(`${CALCULATE_URL}/airambulance`, {
-		method: "POST",
-		body: JSON.stringify(POST_DATA),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+	if (userId) {
+		const response = await fetch(`${CALCULATE_URL}/airambulance`, {
+			method: "POST",
+			body: JSON.stringify(POST_DATA),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-	if (!response.ok) {
-		throw {message: "Failed to send data.", status: 500};
+		if (!response.ok) {
+			throw {message: "Failed to send data.", status: 500};
+		}
+
+		return response.json();
+	} else {
+		throw new Error("User Id not available");
 	}
-
-	return response.json();
 }
