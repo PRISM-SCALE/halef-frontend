@@ -9,7 +9,7 @@ const ResultView = ({serviceData}) => {
 
 	if (!serviceData) {
 		return (
-			<Box sx={{margin: "0 auto"}}>
+			<Box sx={{display: "flex", justifyContent: "center", my: 10}}>
 				<CircularProgress size={60} sx={{color: "#DD3333"}} />
 			</Box>
 		);
