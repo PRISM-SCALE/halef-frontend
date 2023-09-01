@@ -5,7 +5,7 @@ import {useState} from "react";
 
 const Navbar = () => {
 	const navigate = useNavigate();
-	const [values] = useLocalStorage("userData");
+	const [values, setValueToLocalStorage] = useLocalStorage("userData");
 	const [isLoggedOut, setIsLoggedOut] = useState(false);
 
 	console.log("NAVBAR", values);
@@ -77,6 +77,7 @@ const Navbar = () => {
 						className="rounded-md uppercase px-4 py-2 border-red-300 border-2 ml-2"
 						onClick={() => {
 							localStorage.removeItem("userData");
+							setValueToLocalStorage(null);
 							setIsLoggedOut(true);
 							navigate({pathname: "/"}, {replace: true});
 						}}
