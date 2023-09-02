@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Controller, useFormContext, useWatch} from "react-hook-form";
 
 import GoogleInput from "./GoogleInput";
@@ -23,68 +23,9 @@ const GooglePincodeForm = () => {
 	const [validDestinationPincodeCity, setValidDestinationPincodeCity] = useState();
 
 	// * ---------------------------------------------------------------------------------
-	// * GETTING LOCATION DETAILS BASED ON PIN CODES
-	useEffect(() => {
-		if (originPincode) {
-			geocodePincode(originPincode, (originLocation) => {
-				console.log("Origin Location Details:");
-				console.log(originLocation);
-
-				const validCity = originLocation.location.address_components;
-
-				setValidOriginPincodeCity(validCity[1].long_name);
-
-				// console.log("Latitude:", originLocation.lat);
-				// console.log("Longitude:", originLocation.lng);
-			});
-		}
-	}, [originPincode]);
-
-	useEffect(() => {
-		if (destinationPincode) {
-			geocodePincode(destinationPincode, function (destinationLocation) {
-				console.log("Destination Location Details:");
-				console.log(destinationLocation);
-
-				const validCity = destinationLocation.location.address_components;
-
-				setValidDestinationPincodeCity(validCity[1].long_name);
-
-				// console.log("Latitude:", destinationLocation.lat);
-				// console.log("Longitude:", destinationLocation.lng);
-			});
-		}
-	}, [destinationPincode]);
-
-	//#region
-	// useEffect(() => {
-	// 	const handlePincodeChange = () => {
-	// 		if (originPincode && destinationPincode) {
-	// 			geocodePincode(originPincode, function (originLocation) {
-	// 				console.log("Origin Location Details:");
-	// 				console.log(originLocation);
-	// 				// console.log("Latitude:", originLocation.lat);
-	// 				// console.log("Longitude:", originLocation.lng);
-	// 				geocodePincode(destinationPincode, function (destinationLocation) {
-	// 					console.log("Destination Location Details:");
-	// 					console.log(destinationLocation);
-	// 					// console.log("Latitude:", destinationLocation.lat);
-	// 					// console.log("Longitude:", destinationLocation.lng);
-	// 				});
-	// 			});
-	// 		}
-	// 	};
-
-	// 	if (originPincode && destinationPincode) {
-	// 		handlePincodeChange();
-	// 	}
-	// }, [originPincode, destinationPincode]);
-	//#endregion
-
-	// * ---------------------------------------------------------------------------------
 	// * ---------------------------------------------------------------------------------
 
-	function geocodePincode(pincode, callback) {
+	const geocodePincode = useCallback((pincode, callback) => {
 		var geocoder = new window.google.maps.Geocoder();
 
 		geocoder.geocode(
@@ -96,44 +37,65 @@ const GooglePincodeForm = () => {
 						// var location = results[0].geometry.location;
 						var location = results[0];
 
+						setError("pickup", {message: ""});
+						setError("dropoff", {message: ""});
+
 						// * SEND WHATEVER
 						callback({location});
 					} else {
-						console.log("No results found for the pincode:", pincode);
-						setError(
-							"pickup",
-							{message: `No location is found for the pincode: ${pincode}`},
-							{
-								shouldFocus: true,
-							}
-						);
-						setError(
-							"dropoff",
-							{message: `No location is found for the pincode: ${pincode}`},
-							{
-								shouldFocus: true,
-							}
-						);
+						setError("pickup", {message: `No location is found for the pincode: ${pincode}`});
+						setError("dropoff", {message: `No location is found for the pincode: ${pincode}`});
 					}
 				} else {
-					console.log("Geocode request failed for the pincode:", pincode);
-					setError(
-						"pickup",
-						{message: `Request failed for pincode: ${pincode}`},
-						{shouldFocus: true}
-					);
-					setError(
-						"dropoff",
-						{message: `Request failed for pincode: ${pincode}`},
-						{shouldFocus: true}
-					);
-					// setValidDestinationPincodeCity("");
-					// setValidOriginPincodeCity("");
+					setError("pickup", {message: `Request failed for pincode: ${pincode}`});
+					setError("dropoff", {message: `Request failed for pincode: ${pincode}`});
 				}
 			}
 		);
-	}
-	console.log("ERRORS", errors);
+	}, []);
+
+	// * ---------------------------------------------------------------------------------
+	// * GETTING LOCATION DETAILS BASED ON PIN CODES
+	useEffect(() => {
+		if (originPincode) {
+			geocodePincode(originPincode, (originLocation) => {
+				console.log("Origin Location Details:");
+				console.log(originLocation);
+
+				const validCity = originLocation.location.address_components;
+
+				console.log("VALID CITY", validCity);
+				if (validCity?.length !== 0) {
+					setValidOriginPincodeCity(validCity[1].long_name);
+				} else {
+					setValidOriginPincodeCity(null);
+					setError("pickup", {message: ""});
+					setError("dropoff", {message: ""});
+				}
+			});
+		}
+	}, [geocodePincode, originPincode, setError]);
+
+	useEffect(() => {
+		if (destinationPincode) {
+			geocodePincode(destinationPincode, function (destinationLocation) {
+				console.log("Destination Location Details:");
+				console.log(destinationLocation);
+
+				const validCity = destinationLocation.location.address_components;
+
+				console.log("VALID CITY", validCity);
+
+				if (validCity?.length !== 0) {
+					setValidDestinationPincodeCity(validCity[1].long_name);
+				} else {
+					setValidDestinationPincodeCity(null);
+				}
+			});
+		}
+	}, [destinationPincode, geocodePincode, setError]);
+
+	console.log("ERROR", errors);
 
 	return (
 		<>
@@ -162,6 +124,7 @@ const GooglePincodeForm = () => {
 								<GoogleInput
 									type={watch("region") !== "domestic" ? "text" : "number"}
 									placeholder="Origin Pincode"
+									disabled={!watch("region")}
 									ref={field.ref}
 									{...field}
 								/>
@@ -202,6 +165,7 @@ const GooglePincodeForm = () => {
 							<GoogleInput
 								type={watch("region") !== "domestic" ? "text" : "number"}
 								placeholder="Destination Pincode"
+								disabled={!watch("region")}
 								ref={field.ref}
 								{...field}
 							/>
