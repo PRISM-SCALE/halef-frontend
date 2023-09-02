@@ -17,11 +17,12 @@ import Button from "../../components/forms/Button";
 import GoogleDistanceFinder from "../../components/forms/GoogleDistanceFinder";
 import Modal from "../../components/Modal";
 import Alert from "../../components/Alert";
+import CustomDropdown from "../../components/forms/CustomDropdown";
 
 const INITIAL_VALUES = {
 	pickup: "",
 	dropoff: "",
-	vehicle: "",
+	vehicle: null,
 	goodsType: "",
 	distance: "",
 };
@@ -146,7 +147,7 @@ const Trucking = () => {
 					) : null}
 					<GoogleDistanceFinder setDistance={setDistance} />
 
-					<div>
+					{/* <fieldset>
 						<label htmlFor="vehicle" className="text-[#f8bf02]">
 							Select vehicle
 						</label>
@@ -177,9 +178,14 @@ const Trucking = () => {
 								{errors.vehicle?.message}
 							</p>
 						)}
-					</div>
+					</fieldset> */}
 
-					<div>
+					<CustomDropdown
+						options={allowedVehiclesBasedOnDistance[0]?.allowedVehicles}
+						name={"vehicle"}
+					/>
+
+					<fieldset>
 						<label htmlFor="goodsType" className="text-[#f8bf02]">
 							Select the type of your goods
 						</label>
@@ -216,7 +222,7 @@ const Trucking = () => {
 								{errors.goodsType?.message}
 							</p>
 						)}
-					</div>
+					</fieldset>
 
 					<Button buttonText="calculate" />
 				</FormWrapper>

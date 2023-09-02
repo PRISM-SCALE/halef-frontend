@@ -16,6 +16,8 @@ const GooglePincodeForm = () => {
 		watch,
 	} = useFormContext();
 
+	const values = watch();
+
 	const originPincode = useWatch({name: "pickup", control});
 	const destinationPincode = useWatch({name: "dropoff", control});
 
@@ -25,34 +27,57 @@ const GooglePincodeForm = () => {
 	// * ---------------------------------------------------------------------------------
 	// * ---------------------------------------------------------------------------------
 
-	const geocodePincode = useCallback((pincode, callback) => {
-		var geocoder = new window.google.maps.Geocoder();
+	const geocodePincode = useCallback(
+		(pincode, callback) => {
+			var geocoder = new window.google.maps.Geocoder();
 
-		geocoder.geocode(
-			{address: pincode, componentRestrictions: {country: "IN", postalCode: pincode}},
+			if (originPincode === destinationPincode) {
+				setError("pickup", {message: "Origin pincode cannot be the same as Destination pincode"});
+				setError("dropoff", {message: "Destination pincode cannot be the same as Origin pincode"});
+			} else {
+				geocoder.geocode(
+					{address: pincode, componentRestrictions: {country: "IN", postalCode: pincode}},
 
-			function (results, status) {
-				if (status === window.google.maps.GeocoderStatus.OK) {
-					if (results.length > 0) {
-						// var location = results[0].geometry.location;
-						var location = results[0];
+					function (results, status) {
+						if (status === window.google.maps.GeocoderStatus.OK) {
+							if (results.length > 0) {
+								// var location = results[0].geometry.location;
+								var location = results[0];
 
-						setError("pickup", {message: ""});
-						setError("dropoff", {message: ""});
+								setError("pickup", {message: ""});
+								setError("dropoff", {message: ""});
 
-						// * SEND WHATEVER
-						callback({location});
-					} else {
-						setError("pickup", {message: `No location is found for the pincode: ${pincode}`});
-						setError("dropoff", {message: `No location is found for the pincode: ${pincode}`});
+								// * SEND WHATEVER
+								callback({location});
+							} else {
+								if (!originPincode) {
+									setValidOriginPincodeCity();
+								}
+
+								if (!destinationPincode) {
+									setValidDestinationPincodeCity();
+								}
+
+								setError("pickup", {message: `No location is found for the pincode: ${pincode}`});
+								setError("dropoff", {message: `No location is found for the pincode: ${pincode}`});
+							}
+						} else {
+							if (!originPincode) {
+								setValidOriginPincodeCity();
+							}
+
+							if (!destinationPincode) {
+								setValidDestinationPincodeCity();
+							}
+							setError("pickup", {message: `Request failed for pincode: ${pincode}`});
+							setError("dropoff", {message: `Request failed for pincode: ${pincode}`});
+						}
 					}
-				} else {
-					setError("pickup", {message: `Request failed for pincode: ${pincode}`});
-					setError("dropoff", {message: `Request failed for pincode: ${pincode}`});
-				}
+				);
 			}
-		);
-	}, []);
+		},
+		[destinationPincode, originPincode, setError]
+	);
 
 	// * ---------------------------------------------------------------------------------
 	// * GETTING LOCATION DETAILS BASED ON PIN CODES
@@ -73,6 +98,8 @@ const GooglePincodeForm = () => {
 					setError("dropoff", {message: ""});
 				}
 			});
+		} else {
+			setValidOriginPincodeCity();
 		}
 	}, [geocodePincode, originPincode, setError]);
 
@@ -92,10 +119,10 @@ const GooglePincodeForm = () => {
 					setValidDestinationPincodeCity(null);
 				}
 			});
+		} else {
+			setValidDestinationPincodeCity();
 		}
 	}, [destinationPincode, geocodePincode, setError]);
-
-	console.log("ERROR", errors);
 
 	return (
 		<>
@@ -124,7 +151,7 @@ const GooglePincodeForm = () => {
 								<GoogleInput
 									type={watch("region") !== "domestic" ? "text" : "number"}
 									placeholder="Origin Pincode"
-									disabled={!watch("region")}
+									disabled={!watch("region") || values.region === "international"}
 									ref={field.ref}
 									{...field}
 								/>
@@ -165,7 +192,7 @@ const GooglePincodeForm = () => {
 							<GoogleInput
 								type={watch("region") !== "domestic" ? "text" : "number"}
 								placeholder="Destination Pincode"
-								disabled={!watch("region")}
+								disabled={!watch("region") || values.region === "international"}
 								ref={field.ref}
 								{...field}
 							/>

@@ -159,6 +159,7 @@ const Cargo = () => {
 								Select Document Type
 							</label>
 							<select
+								disabled={values.region === "international"}
 								name="docType"
 								className="input-fields appearance-none "
 								{...register("docType", {required: "Please select your document type"})}
@@ -184,6 +185,7 @@ const Cargo = () => {
 								Weight (kg)
 							</label>
 							<input
+								disabled={values.region === "international"}
 								name="weight"
 								type="number"
 								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -208,6 +210,7 @@ const Cargo = () => {
 								Length (cm)
 							</label>
 							<input
+								disabled={values.region === "international"}
 								name="length"
 								type="number"
 								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
@@ -227,6 +230,7 @@ const Cargo = () => {
 								Width (cm)
 							</label>
 							<input
+								disabled={values.region === "international"}
 								name="width"
 								type="number"
 								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -246,6 +250,7 @@ const Cargo = () => {
 								Height (cm)
 							</label>
 							<input
+								disabled={values.region === "international"}
 								name="height"
 								type="number"
 								className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -266,6 +271,7 @@ const Cargo = () => {
 							Select Shipment Service
 						</label>
 						<select
+							disabled={values.region === "international"}
 							name="shipmentService"
 							className="input-fields appearance-none "
 							{...register("shipmentService", {
