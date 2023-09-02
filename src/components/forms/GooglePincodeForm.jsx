@@ -12,6 +12,7 @@ const GooglePincodeForm = () => {
 	const {
 		control,
 		formState: {errors},
+		setError,
 		watch,
 	} = useFormContext();
 
@@ -99,15 +100,40 @@ const GooglePincodeForm = () => {
 						callback({location});
 					} else {
 						console.log("No results found for the pincode:", pincode);
+						setError(
+							"pickup",
+							{message: `No location is found for the pincode: ${pincode}`},
+							{
+								shouldFocus: true,
+							}
+						);
+						setError(
+							"dropoff",
+							{message: `No location is found for the pincode: ${pincode}`},
+							{
+								shouldFocus: true,
+							}
+						);
 					}
 				} else {
 					console.log("Geocode request failed for the pincode:", pincode);
+					setError(
+						"pickup",
+						{message: `Request failed for pincode: ${pincode}`},
+						{shouldFocus: true}
+					);
+					setError(
+						"dropoff",
+						{message: `Request failed for pincode: ${pincode}`},
+						{shouldFocus: true}
+					);
 					// setValidDestinationPincodeCity("");
 					// setValidOriginPincodeCity("");
 				}
 			}
 		);
 	}
+	console.log("ERRORS", errors);
 
 	return (
 		<>

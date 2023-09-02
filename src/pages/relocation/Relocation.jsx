@@ -103,36 +103,44 @@ const Relocation = () => {
 	const onSubmit = async (data) => {
 		console.log("SUBMIT FROM RELOCATION FILE", storedValues);
 
-		if (!storedValues) {
-			console.log("--------------------------------------");
-			console.log("NO STORED START");
+		if (isNaN(values.distance)) {
+			if (!storedValues) {
+				console.log("--------------------------------------");
+				console.log("NO STORED START");
 
-			calculatorCallback();
+				calculatorCallback();
 
-			onOpen();
-			console.log("NO STORED COMPLETED");
-			console.log("--------------------------------------");
+				onOpen();
+				console.log("NO STORED COMPLETED");
+				console.log("--------------------------------------");
+			} else {
+				console.log("--------------------------------------");
+
+				console.log("ON SUBMIT 2", storedValues?.user?._id);
+				const response = await relocationCalculationService(
+					data,
+					serviceId,
+					storedValues?.user?._id
+				);
+				setRelocationData(response);
+				onOpen();
+				console.log("ON SUBMIT 2 COMPLETED");
+
+				console.log("--------------------------------------");
+				console.log("--------------------------------------");
+			}
+
+			const isVerified = storedValues?.user?.isPhoneVerified;
+
+			console.log("STORED VALUES", storedValues);
+
+			if (isValid && !isVerified) {
+				console.log("SUBMITTED");
+
+				onOpen();
+			}
 		} else {
-			console.log("--------------------------------------");
-
-			console.log("ON SUBMIT 2", storedValues?.user?._id);
-			const response = await relocationCalculationService(data, serviceId, storedValues?.user?._id);
-			setRelocationData(response);
-			onOpen();
-			console.log("ON SUBMIT 2 COMPLETED");
-
-			console.log("--------------------------------------");
-			console.log("--------------------------------------");
-		}
-
-		const isVerified = storedValues?.user?.isPhoneVerified;
-
-		console.log("STORED VALUES", storedValues);
-
-		if (isValid && !isVerified) {
-			console.log("SUBMITTED");
-
-			onOpen();
+			throw new Error("Uh-Oh, looks like something went wrong calculating the distance");
 		}
 	};
 
@@ -152,7 +160,8 @@ const Relocation = () => {
 					// method="post"
 					// action="/relocation"
 				>
-					{values.distance && (
+					{console.log(isNaN(values.distance))}
+					{values.distance ? (
 						<Alert
 							bgColor="bg-blue-50"
 							textColor="text-blue-700"
@@ -160,7 +169,14 @@ const Relocation = () => {
 							message={`Your distance calculated based on your location points is`}
 							value={<strong>{`${values.distance}km`}</strong>}
 						/>
-					)}
+					) : isNaN(values.distance) ? (
+						<Alert
+							bgColor="bg-red-50"
+							textColor="text-red-700"
+							icon="ic:round-error-outline"
+							message={`Your locations cannot be the same, please provide a valid pick-up and drop location`}
+						/>
+					) : null}
 					<GoogleDistanceFinder setDistance={setDistance} />
 
 					{/* <GoogleAutocomplete /> */}
