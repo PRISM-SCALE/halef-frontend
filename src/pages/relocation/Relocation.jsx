@@ -102,8 +102,9 @@ const Relocation = () => {
 
 	const onSubmit = async (data) => {
 		console.log("SUBMIT FROM RELOCATION FILE", storedValues);
+		console.log(values.distance);
 
-		if (isNaN(values.distance)) {
+		if (!isNaN(values.distance)) {
 			if (!storedValues) {
 				console.log("--------------------------------------");
 				console.log("NO STORED START");
@@ -160,7 +161,6 @@ const Relocation = () => {
 					// method="post"
 					// action="/relocation"
 				>
-					{console.log(isNaN(values.distance))}
 					{values.distance ? (
 						<Alert
 							bgColor="bg-blue-50"

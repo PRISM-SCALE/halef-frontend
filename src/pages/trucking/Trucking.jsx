@@ -43,7 +43,9 @@ const Trucking = () => {
 		defaultValues: {...INITIAL_VALUES},
 	});
 
-	const removeEICHER18FEET = data?.filter(({name}) => name !== "EICHER 18 FEET");
+	const removeEICHER18FEET = data?.filter(
+		({name}) => name !== "EICHER 18 FEET" && name !== "EICHER 19 FEET"
+	);
 
 	const {
 		register,
@@ -81,21 +83,25 @@ const Trucking = () => {
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		if (!storedValues) {
-			calculatorCallback();
-			onOpen();
+		if (!isNaN(values.distance)) {
+			if (!storedValues) {
+				calculatorCallback();
+				onOpen();
+			} else {
+				const response = await truckingCalculationService(data, serviceId, storedValues?.user?._id);
+				setTruckingData(response);
+
+				onOpen();
+			}
+			console.log("STORED VALUES", storedValues);
+
+			const isVerified = storedValues?.user?.isPhoneVerified;
+
+			if (isValid && !isVerified) {
+				onOpen();
+			}
 		} else {
-			const response = await truckingCalculationService(data, serviceId, storedValues?.user?._id);
-			setTruckingData(response);
-
-			onOpen();
-		}
-		console.log("STORED VALUES", storedValues);
-
-		const isVerified = storedValues?.user?.isPhoneVerified;
-
-		if (isValid && !isVerified) {
-			onOpen();
+			throw new Error("Uh-Oh, looks like something went wrong calculating the distance");
 		}
 	};
 
@@ -107,7 +113,7 @@ const Trucking = () => {
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-					{values.distance && (
+					{values.distance ? (
 						<Alert
 							bgColor="bg-blue-50"
 							textColor="text-blue-700"
@@ -115,7 +121,14 @@ const Trucking = () => {
 							message={`Your distance calculated based on your location points is`}
 							value={<strong>{`${values.distance}km`}</strong>}
 						/>
-					)}
+					) : isNaN(values.distance) ? (
+						<Alert
+							bgColor="bg-red-50"
+							textColor="text-red-700"
+							icon="ic:round-error-outline"
+							message={`Your locations cannot be the same, please provide a valid pick-up and drop location`}
+						/>
+					) : null}
 					<GoogleDistanceFinder setDistance={setDistance} />
 
 					<div>
@@ -129,13 +142,19 @@ const Trucking = () => {
 							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
 							<option value="">Choose your vehicle</option>
-							{removeEICHER18FEET?.map(({_id, name}) => {
-								return (
-									<option key={_id} value={_id}>
-										{name}
-									</option>
-								);
-							})}
+							{removeEICHER18FEET ? (
+								<>
+									{removeEICHER18FEET?.map(({_id, name}) => {
+										return (
+											<option key={_id} value={_id}>
+												{name}
+											</option>
+										);
+									})}
+								</>
+							) : (
+								<option>Nothing to show here</option>
+							)}
 						</select>
 						{errors.vehicle && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">

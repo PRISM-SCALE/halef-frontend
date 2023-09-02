@@ -17,7 +17,7 @@ Alert.propTypes = {
 	bgColor: PropTypes.string.isRequired,
 	textColor: PropTypes.string.isRequired,
 	icon: PropTypes.node.isRequired,
-	value: PropTypes.node.isRequired,
+	value: PropTypes.node,
 };
 
 export default Alert;
