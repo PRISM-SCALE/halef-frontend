@@ -16,6 +16,7 @@ import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
 import {useLocation} from "react-router-dom";
+import {useAuth} from "../context/LogoutProvider";
 
 // * INITIAL FORM VALUES
 
@@ -29,6 +30,8 @@ const INITIAL_VALUES = {
 
 const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
+	const {login} = useAuth();
+
 	const location = useLocation();
 	const serviceId = location.search.replace(/^\?id=/, "");
 
@@ -48,6 +51,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 		console.log("useLocalStorage HOOK", values);
 
 		if (!USER_DATA) {
+			login();
 			console.log("--------------------------------------");
 			console.log("MODAL WHEN !USER_DATA");
 
@@ -73,6 +77,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
 			console.log("Verify");
+			login();
 
 			const POST_DATA = {
 				phone: Number(values?.user?.phone),
