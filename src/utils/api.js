@@ -26,6 +26,16 @@ export async function getRelocationHouseType() {
 	return response.json();
 }
 
+export async function getTruckingVehicleRange() {
+	const response = await fetch(`${BASE_URL}/vehiclerange`);
+
+	if (!response.ok) {
+		throw {message: "Failed to fetch house types.", status: 500};
+	}
+
+	return response.json();
+}
+
 export async function getPackageTypes() {
 	const response = await fetch(`${BASE_URL}/packagetypes`);
 

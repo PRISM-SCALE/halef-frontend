@@ -3,7 +3,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useLoaderData, useLocation} from "react-router-dom";
 
 // * UTILS
-import {getVehicles, truckingCalculationService} from "../../utils/api";
+import {getTruckingVehicleRange, truckingCalculationService} from "../../utils/api";
 
 // * HOOKS
 import useToggle from "../../hooks/useToggle";
@@ -43,10 +43,6 @@ const Trucking = () => {
 		defaultValues: {...INITIAL_VALUES},
 	});
 
-	const removeEICHER18FEET = data?.filter(
-		({name}) => name !== "EICHER 18 FEET" && name !== "EICHER 19 FEET"
-	);
-
 	const {
 		register,
 		formState: {errors, isValid},
@@ -58,6 +54,25 @@ const Trucking = () => {
 	} = methods;
 
 	const values = watch();
+
+	const vehiclesBasedOnDistance = (data, values) => {
+		if (!data || !values || typeof values.distance === "undefined") {
+			return [];
+		}
+
+		const filteredVehicles = data?.filter(({minDistance, maxDistance, allowedVehicles}) => {
+			return (
+				values.distance >= minDistance &&
+				values.distance <= maxDistance &&
+				allowedVehicles?.some((vehicle) => vehicle?.isActive)
+			);
+		});
+
+		return filteredVehicles;
+	};
+
+	const allowedVehiclesBasedOnDistance = vehiclesBasedOnDistance(data, values);
+	console.log(allowedVehiclesBasedOnDistance);
 
 	useEffect(() => {
 		if (distance !== null) {
@@ -137,14 +152,15 @@ const Trucking = () => {
 						</label>
 						<select
 							name="vehicle"
+							disabled={!values.distance}
 							className="input-fields appearance-none "
 							placeholder="Choose your truck type"
 							{...register("vehicle", {required: "Choose a vehicle based on your needs"})}
 						>
 							<option value="">Choose your vehicle</option>
-							{removeEICHER18FEET ? (
+							{allowedVehiclesBasedOnDistance[0]?.allowedVehicles?.length !== 0 ? (
 								<>
-									{removeEICHER18FEET?.map(({_id, name}) => {
+									{allowedVehiclesBasedOnDistance[0]?.allowedVehicles?.map(({_id, name}) => {
 										return (
 											<option key={_id} value={_id}>
 												{name}
@@ -218,9 +234,9 @@ const Trucking = () => {
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function truckingLoader() {
-	const vehicles = await getVehicles();
+	const vehicleRange = await getTruckingVehicleRange();
 
-	return vehicles;
+	return vehicleRange;
 }
 
 export default Trucking;
