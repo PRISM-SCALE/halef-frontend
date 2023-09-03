@@ -2,11 +2,11 @@ import {useEffect} from "react";
 import {useLocation} from "react-router-dom";
 
 const imagePaths = [
-	"https://i.ibb.co/p1mj42L/air-ambulance.png",
-	"https://i.ibb.co/2k3QkQp/cargo.png",
-	"https://i.ibb.co/nBTVDvr/relocation.png",
-	"https://i.ibb.co/mFynM5V/trucking.png",
-	"https://i.ibb.co/qB99swK/warehouse.png",
+	"https://i.ibb.co/p1mj42L/air-ambulance.webp",
+	"https://i.ibb.co/2k3QkQp/cargo.webp",
+	"https://i.ibb.co/nBTVDvr/relocation.webp",
+	"https://i.ibb.co/mFynM5V/trucking.webp",
+	"https://i.ibb.co/qB99swK/warehouse.webp",
 ];
 
 const PreloadImages = () => {
