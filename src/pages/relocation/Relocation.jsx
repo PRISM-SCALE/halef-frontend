@@ -155,7 +155,17 @@ const Relocation = () => {
 							message={`Your locations cannot be the same, please provide a valid pick-up and drop location`}
 						/>
 					) : null}
-					<GoogleDistanceFinder setDistance={setDistance} />
+					<GoogleDistanceFinder
+						setDistance={setDistance}
+						originOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
+						destinationOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
+					/>
 
 					{/* <GoogleAutocomplete /> */}
 

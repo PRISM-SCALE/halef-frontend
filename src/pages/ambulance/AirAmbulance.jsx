@@ -124,6 +124,14 @@ const AirAmbulance = () => {
 						setDistance={null}
 						// originOptions={{types: ["airport"]}}
 						// destinationOptions={{types: ["airport"]}}
+						originOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
+						destinationOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
 					/>
 					{/* <CitiesFinder cities={cities} /> */}
 
