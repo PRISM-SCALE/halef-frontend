@@ -58,8 +58,6 @@ const Trucking = () => {
 
 	const values = watch();
 
-	console.log(values);
-
 	const getStateFromLocation = (location) => {
 		if (!location || !location.address_components) {
 			return "";

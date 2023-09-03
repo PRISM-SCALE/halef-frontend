@@ -206,6 +206,7 @@ export async function truckingCalculationService(data, serviceId, userId) {
 		vehicle: data.vehicle,
 		serviceId: serviceId,
 		userId: userId,
+		isDifferentState: data.isDifferentState,
 	};
 	if (userId) {
 		const response = await fetch(`${CALCULATE_URL}/trucking`, {
