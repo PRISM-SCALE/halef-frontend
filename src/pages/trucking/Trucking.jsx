@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import {useLoaderData, useLocation} from "react-router-dom";
 
@@ -58,26 +58,65 @@ const Trucking = () => {
 
 	const values = watch();
 
-	const vehiclesBasedOnDistance = (data, values) => {
-		if (!data || !values || typeof values.distance === "undefined") {
-			return [];
+	const getStateFromLocation = (location) => {
+		if (!location || !location.address_components) {
+			return "";
 		}
 
-		console.log("ORIGIN", values.originLocation);
-		console.log("DESTINATION", values.destinationLocation);
+		const stateComponent = location.address_components.find((component) =>
+			component.types.includes("administrative_area_level_1")
+		);
 
-		const filteredVehicles = data?.filter(({minDistance, maxDistance, allowedVehicles}) => {
-			return (
-				values.distance >= minDistance &&
-				values.distance <= maxDistance &&
-				allowedVehicles?.some((vehicle) => vehicle?.isActive)
-			);
-		});
-
-		return filteredVehicles;
+		return stateComponent ? stateComponent.short_name : "";
 	};
 
-	const allowedVehiclesBasedOnDistance = vehiclesBasedOnDistance(data, values);
+	const originState = getStateFromLocation(values.originLocation);
+	const destinationState = getStateFromLocation(values.destinationLocation);
+	const checkOriginLocation = Object.keys(values.originLocation).length !== 0;
+	const checkDestinationLocation = Object.keys(values.destinationLocation).length !== 0;
+
+	const allowedVehiclesBasedOnDistance = useMemo(() => {
+		if (checkOriginLocation && checkDestinationLocation) {
+			if (!data || !values || typeof values.distance === "undefined") {
+				return [];
+			}
+
+			return data?.filter(({minDistance, maxDistance}) => {
+				return values.distance >= minDistance && values.distance <= maxDistance;
+			});
+		} else return;
+	}, [checkDestinationLocation, checkOriginLocation, data, values]);
+
+	const filterIfIsInterStateAllowed = () => {
+		if (checkOriginLocation && checkDestinationLocation) {
+			const isStatesSame = originState === destinationState;
+
+			let allowedVehicles;
+			let filteredAllowedVehicles;
+
+			if (allowedVehiclesBasedOnDistance && allowedVehiclesBasedOnDistance[0]?.allowedVehicles) {
+				allowedVehicles = allowedVehiclesBasedOnDistance[0]?.allowedVehicles;
+			}
+
+			if (isStatesSame) {
+				setValue("isDifferentState", false);
+				filteredAllowedVehicles = allowedVehicles?.filter(({isActive}) => {
+					return isActive;
+				});
+			} else {
+				setValue("isDifferentState", true);
+				filteredAllowedVehicles = allowedVehicles?.filter(({isActive, isInterStateAllowed}) => {
+					return isActive && isInterStateAllowed;
+				});
+			}
+
+			return filteredAllowedVehicles;
+		} else return [];
+	};
+
+	const options = filterIfIsInterStateAllowed();
+
+	// console.log(options);
 
 	useEffect(() => {
 		if (distance !== null) {
@@ -190,14 +229,7 @@ const Trucking = () => {
 						)}
 					</fieldset> */}
 
-					<CustomDropdown
-						options={
-							allowedVehiclesBasedOnDistance
-								? allowedVehiclesBasedOnDistance[0]?.allowedVehicles
-								: []
-						}
-						name={"vehicle"}
-					/>
+					<CustomDropdown options={options} name={"vehicle"} />
 
 					<fieldset>
 						<label htmlFor="goodsType" className="text-[#f8bf02]">

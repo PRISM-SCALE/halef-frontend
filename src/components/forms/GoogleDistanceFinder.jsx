@@ -3,6 +3,7 @@ import {useEffect, useRef} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 import {Autocomplete} from "@react-google-maps/api";
 import PropTypes from "prop-types";
+import debounce from "lodash/debounce";
 
 import GoogleInput from "./GoogleInput";
 import {calculateDistance} from "../../utils/distanceCalculation";
@@ -78,6 +79,20 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 		}
 	};
 
+	// Create a debounced version of the onPlaceChangedForPickup function
+	const debouncedOnPlaceChangedForPickup = useRef(
+		debounce(() => {
+			onPlaceChangedForPickup();
+		}, 500) // Adjust the debounce delay as needed (e.g., 500 milliseconds)
+	);
+
+	// Create a debounced version of the onPlaceChangedForDropoff function
+	const debouncedOnPlaceChangedForDropoff = useRef(
+		debounce(() => {
+			onPlaceChangedForDropoff();
+		}, 500) // Adjust the debounce delay as needed (e.g., 500 milliseconds)
+	);
+
 	return (
 		<>
 			<div>
@@ -94,7 +109,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 							<>
 								<Autocomplete
 									onLoad={onLoadPickup}
-									onPlaceChanged={onPlaceChangedForPickup}
+									onPlaceChanged={() => debouncedOnPlaceChangedForPickup.current()}
 									options={originOptions}
 								>
 									<GoogleInput placeholder="Pickup Address" ref={field.ref} {...field} />
@@ -123,7 +138,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 						<>
 							<Autocomplete
 								onLoad={onLoadDropoff}
-								onPlaceChanged={onPlaceChangedForDropoff}
+								onPlaceChanged={() => debouncedOnPlaceChangedForDropoff.current()}
 								options={destinationOptions}
 							>
 								<GoogleInput placeholder="Destination Address" ref={field.ref} {...field} />

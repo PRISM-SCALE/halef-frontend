@@ -41,21 +41,34 @@ const CustomDropdown = ({name, options}) => {
 
 			{isOpen && !isDisabled && (
 				<div className="absolute mt-2 max-h-80 overflow-y-scroll w-full bg-white border rounded shadow-md z-10">
-					{options?.map((option) => (
+					{options ? (
+						<>
+							{options?.map((option) => (
+								<div
+									key={option?._id}
+									className={`cursor-pointer hover:bg-gray-100 transition duration-300 ${
+										isDisabled ? "opacity-50 cursor-not-allowed" : ""
+									}`}
+									onClick={() => handleOptionClick(option)}
+									disabled={isDisabled}
+								>
+									<div className="flex items-center px-4 py-2">
+										<img src={option?.imageUrl} alt={option?.name} className="w-14 h-14" />
+										<span className="ml-2">{option?.name}</span>
+									</div>
+								</div>
+							))}
+						</>
+					) : (
 						<div
-							key={option?._id}
 							className={`cursor-pointer hover:bg-gray-100 transition duration-300 ${
-								isDisabled ? "opacity-50 cursor-not-allowed" : ""
+								!isDisabled ? "opacity-50 cursor-not-allowed" : ""
 							}`}
-							onClick={() => handleOptionClick(option)}
-							disabled={isDisabled}
+							disabled={true}
 						>
-							<div className="flex items-center px-4 py-2">
-								<img src={option?.imageUrl} alt={option?.name} className="w-14 h-14" />
-								<span className="ml-2">{option?.name}</span>
-							</div>
+							<div className="flex items-center px-4 py-2">Uh-oh! there&apos;s Nothing here</div>
 						</div>
-					))}
+					)}
 				</div>
 			)}
 		</div>
