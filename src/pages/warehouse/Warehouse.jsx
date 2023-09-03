@@ -1,5 +1,5 @@
 import {useCallback, useState} from "react";
-import {FormProvider, useForm} from "react-hook-form";
+import {FormProvider, useForm, Controller} from "react-hook-form";
 import {useLoaderData, useLocation} from "react-router-dom";
 
 // * UTILS
@@ -117,6 +117,7 @@ const Warehouse = () => {
 		formState: {errors, isValid},
 		handleSubmit,
 		watch,
+		control,
 		// formState,
 		// reset,
 	} = methods;
@@ -156,6 +157,13 @@ const Warehouse = () => {
 		if (isValid && !isVerified) {
 			onOpen();
 		}
+	};
+
+	const validateDuration = (value) => {
+		if (value > 999) {
+			return "Duration cannot exceed 999 days";
+		}
+		return true;
 	};
 
 	const header_name = <strong className="text-[#DD3333]">Warehousing</strong>;
@@ -280,14 +288,22 @@ const Warehouse = () => {
 						<label htmlFor="durationInDays" className="text-[#f8bf02]">
 							Storage duration in days
 						</label>
-						<input
+						<Controller
 							name="durationInDays"
-							placeholder="How long should your goods be stored"
-							type="number"
-							className="input-fields appearance-none "
-							{...register("durationInDays", {
+							control={control}
+							defaultValue=""
+							render={({field}) => (
+								<input
+									{...field}
+									placeholder="How long should your goods be stored"
+									type="number"
+									className="input-fields appearance-none"
+								/>
+							)}
+							rules={{
 								required: "Provide your duration to be stored in the warehouse",
-							})}
+								validate: validateDuration, // Custom validation function
+							}}
 						/>
 
 						{errors.durationInDays && (
