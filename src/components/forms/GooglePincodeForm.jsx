@@ -84,12 +84,8 @@ const GooglePincodeForm = () => {
 	useEffect(() => {
 		if (originPincode) {
 			geocodePincode(originPincode, (originLocation) => {
-				console.log("Origin Location Details:");
-				console.log(originLocation);
-
 				const validCity = originLocation.location.address_components;
 
-				console.log("VALID CITY", validCity);
 				if (validCity?.length !== 0) {
 					setValidOriginPincodeCity(validCity[1].long_name);
 				} else {
@@ -106,12 +102,7 @@ const GooglePincodeForm = () => {
 	useEffect(() => {
 		if (destinationPincode) {
 			geocodePincode(destinationPincode, function (destinationLocation) {
-				console.log("Destination Location Details:");
-				console.log(destinationLocation);
-
 				const validCity = destinationLocation.location.address_components;
-
-				console.log("VALID CITY", validCity);
 
 				if (validCity?.length !== 0) {
 					setValidDestinationPincodeCity(validCity[1].long_name);

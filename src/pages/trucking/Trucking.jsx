@@ -22,21 +22,23 @@ import CustomDropdown from "../../components/forms/CustomDropdown";
 const INITIAL_VALUES = {
 	pickup: "",
 	dropoff: "",
+	originLocation: {},
+	destinationLocation: {},
 	vehicle: null,
 	goodsType: "",
 	distance: "",
+	isDifferentState: false,
 };
 
 const Trucking = () => {
 	const data = useLoaderData();
+	const location = useLocation();
 	const [truckingData, setTruckingData] = useState(null);
 	const [distance, setDistance] = useState(null);
 
 	const {toggle: open, onOpen, onClose} = useToggle();
 	// eslint-disable-next-line no-unused-vars
 	const [storedValues, setValueToLocalStorage] = useLocalStorage("userData");
-
-	const location = useLocation();
 
 	const serviceId = location.search.replace(/^\?id=/, "");
 
@@ -73,7 +75,6 @@ const Trucking = () => {
 	};
 
 	const allowedVehiclesBasedOnDistance = vehiclesBasedOnDistance(data, values);
-	console.log(allowedVehiclesBasedOnDistance);
 
 	useEffect(() => {
 		if (distance !== null) {
@@ -83,9 +84,6 @@ const Trucking = () => {
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {
-			console.log("--------------------------------------");
-			console.log("INSIDE CARGO CALLBACK", responseData);
-			console.log("CARGO VALUES", values);
 			setValueToLocalStorage(responseData);
 
 			const response = await truckingCalculationService(values, serviceId, responseData?.user?._id);
@@ -109,7 +107,6 @@ const Trucking = () => {
 
 				onOpen();
 			}
-			console.log("STORED VALUES", storedValues);
 
 			const isVerified = storedValues?.user?.isPhoneVerified;
 
@@ -145,7 +142,17 @@ const Trucking = () => {
 							message={`Your locations cannot be the same, please provide a valid pick-up and drop location`}
 						/>
 					) : null}
-					<GoogleDistanceFinder setDistance={setDistance} />
+					<GoogleDistanceFinder
+						setDistance={setDistance}
+						originOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
+						destinationOptions={{
+							types: ["(regions)"],
+							componentRestrictions: {country: "in"}, // Restrict to India
+						}}
+					/>
 
 					{/* <fieldset>
 						<label htmlFor="vehicle" className="text-[#f8bf02]">
@@ -181,7 +188,11 @@ const Trucking = () => {
 					</fieldset> */}
 
 					<CustomDropdown
-						options={allowedVehiclesBasedOnDistance[0]?.allowedVehicles}
+						options={
+							allowedVehiclesBasedOnDistance
+								? allowedVehiclesBasedOnDistance[0]?.allowedVehicles
+								: []
+						}
 						name={"vehicle"}
 					/>
 

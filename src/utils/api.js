@@ -139,8 +139,6 @@ export const getLocalStorage = (key) => {
 };
 
 export async function relocationCalculationService(data, serviceId, userId) {
-	console.log("FROM API", userId);
-
 	const POST_DATA = {
 		distance: Math.round(data.distance),
 		goodsValue: Number(data.goodsValue),
@@ -172,7 +170,6 @@ export async function relocationCalculationService(data, serviceId, userId) {
 }
 
 export async function courierCargoCalculationService(data, serviceId, userId) {
-	console.log("FROM API", userId);
 
 	const POST_DATA = {
 		weight: Number(data.weight),

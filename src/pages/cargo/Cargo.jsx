@@ -60,9 +60,6 @@ const Cargo = () => {
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {
-			console.log("--------------------------------------");
-			console.log("INSIDE CARGO CALLBACK", responseData);
-			console.log("CARGO VALUES", values);
 			setValueToLocalStorage(responseData);
 
 			const response = await courierCargoCalculationService(
@@ -80,15 +77,10 @@ const Cargo = () => {
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
 	const onSubmit = async (data) => {
-		console.log("SUBMIT FROM CARGO FILE", storedValues);
-
 		if (!storedValues) {
 			calculatorCallback();
 			onOpen();
 		} else {
-			console.log("--------------------------------------");
-			console.log("ON SUBMIT 2", storedValues?.user?._id);
-
 			const response = await courierCargoCalculationService(
 				data,
 				serviceId,
@@ -96,18 +88,11 @@ const Cargo = () => {
 			);
 			setCargoCost(response);
 			onOpen();
-
-			console.log("ON SUBMIT 2 COMPLETED");
-			console.log("--------------------------------------");
 		}
-
-		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 
 		if (isValid && !isVerified) {
-			console.log("SUBMITTED");
-
 			onOpen();
 		}
 	};

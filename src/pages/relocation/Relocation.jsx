@@ -83,9 +83,6 @@ const Relocation = () => {
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {
-			console.log("--------------------------------------");
-			console.log("INSIDE CALLBACK", responseData);
-			console.log("RELOCATION VALUES", values);
 			setValueToLocalStorage(responseData);
 
 			const response = await relocationCalculationService(
@@ -101,23 +98,12 @@ const Relocation = () => {
 	);
 
 	const onSubmit = async (data) => {
-		console.log("SUBMIT FROM RELOCATION FILE", storedValues);
-		console.log(values.distance);
-
 		if (!isNaN(values.distance)) {
 			if (!storedValues) {
-				console.log("--------------------------------------");
-				console.log("NO STORED START");
-
 				calculatorCallback();
 
 				onOpen();
-				console.log("NO STORED COMPLETED");
-				console.log("--------------------------------------");
 			} else {
-				console.log("--------------------------------------");
-
-				console.log("ON SUBMIT 2", storedValues?.user?._id);
 				const response = await relocationCalculationService(
 					data,
 					serviceId,
@@ -125,19 +111,11 @@ const Relocation = () => {
 				);
 				setRelocationData(response);
 				onOpen();
-				console.log("ON SUBMIT 2 COMPLETED");
-
-				console.log("--------------------------------------");
-				console.log("--------------------------------------");
 			}
 
 			const isVerified = storedValues?.user?.isPhoneVerified;
 
-			console.log("STORED VALUES", storedValues);
-
 			if (isValid && !isVerified) {
-				console.log("SUBMITTED");
-
 				onOpen();
 			}
 		} else {

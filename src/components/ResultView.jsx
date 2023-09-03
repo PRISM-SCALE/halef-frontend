@@ -5,7 +5,6 @@ import CalculatorResultItem from "./CalculatorResultItem";
 import CalculatorResultLayout from "./CalculatorResultLayout";
 
 const ResultView = ({serviceData}) => {
-	console.log("SERVICE DATA IN RESULT VIEW", serviceData);
 
 	if (!serviceData) {
 		return (

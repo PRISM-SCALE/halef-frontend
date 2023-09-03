@@ -8,8 +8,6 @@ const OTPForm = ({phone}) => {
 		formState: {errors},
 	} = useFormContext();
 
-	console.log("OTP FORM", phone);
-
 	const handleResendOTP = async (e) => {
 		e.preventDefault();
 		await resendOTP(phone);

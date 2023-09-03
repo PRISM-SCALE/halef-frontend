@@ -12,7 +12,6 @@ const ResultWrapper = ({children, serviceData}) => {
 
 	const USER_DATA = localStorage.getItem("userData");
 
-	console.log(values);
 
 	return (
 		<div className={`w-full justify-between gap-6 flex`}>

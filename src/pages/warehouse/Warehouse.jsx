@@ -125,9 +125,6 @@ const Warehouse = () => {
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {
-			console.log("--------------------------------------");
-			console.log("INSIDE CARGO CALLBACK", responseData);
-			console.log("CARGO VALUES", values);
 			setValueToLocalStorage(responseData);
 
 			const response = await warehouseCalculationService(
@@ -153,7 +150,6 @@ const Warehouse = () => {
 			setWarehouse(response);
 			onOpen();
 		}
-		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 

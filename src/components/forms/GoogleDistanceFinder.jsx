@@ -16,8 +16,6 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 	const pickupAutocomplete = useRef();
 	const dropoffAutocomplete = useRef();
 
-	// console.log(distance);
-
 	const {
 		control,
 		formState: {errors},
@@ -31,19 +29,11 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 		}
 	}, [pickupAutocomplete.current, dropoffAutocomplete.current]);
 
-	// useEffect(() => {
-	// 	if (isSubmitSuccessful) {
-	// 		setDistance(null);
-	// 	}
-	// }, [isSubmitSuccessful]);
-
 	const onLoadPickup = (autocomplete) => {
-		// console.log("pickup autocomplete: ", autocomplete);
 		pickupAutocomplete.current = autocomplete;
 	};
 
 	const onLoadDropoff = (autocomplete) => {
-		// console.log("dropoff autocomplete: ", autocomplete);
 		dropoffAutocomplete.current = autocomplete;
 		// calculateDistance();
 	};
@@ -51,7 +41,6 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 	const onPlaceChangedForPickup = () => {
 		if (pickupAutocomplete.current !== null) {
 			const place = pickupAutocomplete.current.getPlace();
-			console.log(place);
 			if (place && checkPathIsAirAmbulance) {
 				setValue("pickup", place?.address_components[0]?.long_name);
 				return;
@@ -59,6 +48,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 
 			if (place) {
 				setValue("pickup", place.formatted_address);
+				setValue("originLocation", place);
 
 				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
 			}
@@ -70,17 +60,15 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 	const onPlaceChangedForDropoff = () => {
 		if (dropoffAutocomplete.current !== null) {
 			const place = dropoffAutocomplete.current.getPlace();
-			console.log(place);
 
 			if (place && checkPathIsAirAmbulance) {
 				setValue("dropoff", place.vicinity);
-				console.log("in air_ambulance");
 				return;
 			}
 
 			if (place) {
 				setValue("dropoff", place.formatted_address);
-				console.log("in other pages");
+				setValue("destinationLocation", place);
 
 				// * Calculate Distance
 				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);

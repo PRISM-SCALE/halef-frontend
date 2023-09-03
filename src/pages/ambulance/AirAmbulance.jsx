@@ -51,9 +51,6 @@ const AirAmbulance = () => {
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {
-			console.log("--------------------------------------");
-			console.log("INSIDE CARGO CALLBACK", responseData);
-			console.log("CARGO VALUES", values);
 			setValueToLocalStorage(responseData);
 
 			const response = await airAmbulanceCalculationService(
@@ -84,7 +81,6 @@ const AirAmbulance = () => {
 
 			onOpen();
 		}
-		console.log("STORED VALUES", storedValues);
 
 		const isVerified = storedValues?.user?.isPhoneVerified;
 

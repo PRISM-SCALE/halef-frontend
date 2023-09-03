@@ -7,18 +7,16 @@ const CustomDropdown = ({name, options}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const selectedOption = watch(name);
 	const values = watch();
+	const isDisabled = !values.distance; // Check if values.distance is falsy
 
 	const toggleDropdown = () => {
-		setIsOpen(!isOpen);
+		if (!isDisabled) setIsOpen(!isOpen);
 	};
 
 	const handleOptionClick = (optionValue) => {
-		console.log(optionValue);
 		toggleDropdown();
 		setValue(name, optionValue);
 	};
-
-	const isDisabled = !values.distance; // Check if values.distance is falsy
 
 	return (
 		<div className="relative">
@@ -41,7 +39,7 @@ const CustomDropdown = ({name, options}) => {
 				)}
 			</div>
 
-			{isOpen && (
+			{isOpen && !isDisabled && (
 				<div className="absolute mt-2 max-h-80 overflow-y-scroll w-full bg-white border rounded shadow-md z-10">
 					{options?.map((option) => (
 						<div

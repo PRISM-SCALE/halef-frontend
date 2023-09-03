@@ -35,7 +35,6 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const location = useLocation();
 	const serviceId = location.search.replace(/^\?id=/, "");
 
-	console.log("SERVICE DATA IN MODAL", serviceData);
 
 	const [values, setValueToLocalStorage] = useLocalStorage("userData", null);
 
@@ -48,14 +47,9 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-		console.log("useLocalStorage HOOK", values);
 
 		if (!USER_DATA) {
 			login();
-			console.log("--------------------------------------");
-			console.log("MODAL WHEN !USER_DATA");
-
-			console.log("Create");
 			const POST_DATA = {
 				name: data.name,
 				email: data.email,
@@ -65,18 +59,13 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 			const response = await createUser(POST_DATA);
 			setValueToLocalStorage(response);
-			console.log("onSubmit RESPONSE", response);
-			console.log("USER_DATA FROM LOCAL STORAGE", values);
 
 			await calculatorCallback(response);
 
 			reset();
-			console.log("MODAL WHEN !USER_DATA");
-			console.log("--------------------------------------");
 		}
 
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
-			console.log("Verify");
 			login();
 
 			const POST_DATA = {
