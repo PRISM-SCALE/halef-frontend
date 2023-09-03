@@ -170,7 +170,6 @@ export async function relocationCalculationService(data, serviceId, userId) {
 }
 
 export async function courierCargoCalculationService(data, serviceId, userId) {
-
 	const POST_DATA = {
 		weight: Number(data.weight),
 		length: Number(data.length),

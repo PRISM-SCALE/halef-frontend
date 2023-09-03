@@ -1,3 +1,4 @@
+import {useMemo} from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ThemeProvider} from "@mui/material";
 // import {Loader} from "@googlemaps/js-api-loader";
@@ -21,14 +22,15 @@ import Warehouse, {warehouseLoader} from "./pages/warehouse/Warehouse";
 import AirAmbulance from "./pages/ambulance/AirAmbulance";
 import Cargo from "./pages/cargo/Cargo";
 
-// const lib = ["places", "geometry"];
 // new Loader({
 // 	apiKey: API_KEY,
 // 	version: "weekly",
 // 	libraries: lib,
 // });
 
-function App() {
+const App = () => {
+	const libraries = useMemo(() => ["places", "geometry"], []);
+
 	const router = createBrowserRouter([
 		{
 			path: "/",
@@ -76,11 +78,11 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={["places", "geometry"]}>
+			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={libraries}>
 				<RouterProvider router={router} />
 			</LoadScriptNext>
 		</ThemeProvider>
 	);
-}
+};
 
 export default App;

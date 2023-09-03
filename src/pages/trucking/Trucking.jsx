@@ -63,6 +63,9 @@ const Trucking = () => {
 			return [];
 		}
 
+		console.log("ORIGIN", values.originLocation);
+		console.log("DESTINATION", values.destinationLocation);
+
 		const filteredVehicles = data?.filter(({minDistance, maxDistance, allowedVehicles}) => {
 			return (
 				values.distance >= minDistance &&
