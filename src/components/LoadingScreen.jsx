@@ -3,7 +3,6 @@
 import {styled} from "@mui/material/styles";
 //
 // import Logo from "./Logo";
-import ProgressBar from "./ProgressBar";
 import {Box} from "@mui/material";
 
 // ----------------------------------------------------------------------
@@ -30,8 +29,6 @@ const RootStyle = styled("div")(({theme}) => ({
 export default function LoadingScreen({...other}) {
 	return (
 		<>
-			<ProgressBar />
-
 			<RootStyle {...other}>
 				<Box component="img" src="/loading_screen.gif" alt="loading" sx={{height: 280}} />
 			</RootStyle>

@@ -169,13 +169,13 @@ const AirAmbulance = () => {
 
 					<Button
 						buttonText={
-							watch("region") === "international"
+							values.region === "international"
 								? "coming soon"
-								: watch("region") === "domestic"
+								: values.region === "domestic"
 								? "calculate"
 								: "calculate"
 						}
-						disabled={watch("region") === "international"}
+						disabled={!watch("region") || values.region === "international"}
 					/>
 				</FormWrapper>
 			</FormProvider>
