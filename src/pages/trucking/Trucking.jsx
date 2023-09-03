@@ -58,6 +58,8 @@ const Trucking = () => {
 
 	const values = watch();
 
+	console.log(values);
+
 	const getStateFromLocation = (location) => {
 		if (!location || !location.address_components) {
 			return "";
@@ -74,6 +76,13 @@ const Trucking = () => {
 	const destinationState = getStateFromLocation(values.destinationLocation);
 	const checkOriginLocation = Object.keys(values.originLocation).length !== 0;
 	const checkDestinationLocation = Object.keys(values.destinationLocation).length !== 0;
+	const isStatesSame = originState === destinationState;
+
+	useEffect(() => {
+		if (checkOriginLocation && checkDestinationLocation && !isStatesSame) {
+			setValue("isDifferentState", true);
+		}
+	}, [checkDestinationLocation, checkOriginLocation, isStatesSame, setValue]);
 
 	const allowedVehiclesBasedOnDistance = useMemo(() => {
 		if (checkOriginLocation && checkDestinationLocation) {
@@ -87,10 +96,8 @@ const Trucking = () => {
 		} else return;
 	}, [checkDestinationLocation, checkOriginLocation, data, values]);
 
-	const filterIfIsInterStateAllowed = () => {
+	const filterIfIsInterStateAllowed = useMemo(() => {
 		if (checkOriginLocation && checkDestinationLocation) {
-			const isStatesSame = originState === destinationState;
-
 			let allowedVehicles;
 			let filteredAllowedVehicles;
 
@@ -99,12 +106,10 @@ const Trucking = () => {
 			}
 
 			if (isStatesSame) {
-				setValue("isDifferentState", false);
 				filteredAllowedVehicles = allowedVehicles?.filter(({isActive}) => {
 					return isActive;
 				});
 			} else {
-				setValue("isDifferentState", true);
 				filteredAllowedVehicles = allowedVehicles?.filter(({isActive, isInterStateAllowed}) => {
 					return isActive && isInterStateAllowed;
 				});
@@ -112,9 +117,9 @@ const Trucking = () => {
 
 			return filteredAllowedVehicles;
 		} else return [];
-	};
+	}, [allowedVehiclesBasedOnDistance, checkDestinationLocation, checkOriginLocation, isStatesSame]);
 
-	const options = filterIfIsInterStateAllowed();
+	const options = filterIfIsInterStateAllowed;
 
 	// console.log(options);
 
