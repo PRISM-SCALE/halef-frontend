@@ -140,6 +140,7 @@ const AirAmbulance = () => {
 							Weight (kg)
 						</label>
 						<input
+							disabled={!watch("region") || values.region === "international"}
 							name="weight"
 							type="number"
 							className="input-fields  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"

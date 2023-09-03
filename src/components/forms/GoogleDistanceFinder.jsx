@@ -12,7 +12,7 @@ import {useLocation} from "react-router-dom";
 const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) => {
 	const location = useLocation();
 
-	const checkPathIsAirAmbulance = location.pathname === "/airambulance";
+	const checkPathIsAirAmbulance = location.pathname.includes("/airambulance");
 
 	const pickupAutocomplete = useRef();
 	const dropoffAutocomplete = useRef();
@@ -21,7 +21,10 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 		control,
 		formState: {errors},
 		setValue,
+		watch,
 	} = useFormContext();
+
+	const values = watch();
 
 	useEffect(() => {
 		// Calculate distance whenever the pickup or drop-off locations change
@@ -63,7 +66,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 			const place = dropoffAutocomplete.current.getPlace();
 
 			if (place && checkPathIsAirAmbulance) {
-				setValue("dropoff", place.vicinity);
+				setValue("dropoff", place.address_components[0]?.long_name);
 				return;
 			}
 
@@ -112,7 +115,12 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 									onPlaceChanged={() => debouncedOnPlaceChangedForPickup.current()}
 									options={originOptions}
 								>
-									<GoogleInput placeholder="Pickup Address" ref={field.ref} {...field} />
+									<GoogleInput
+										placeholder="Pickup Address"
+										ref={field.ref}
+										{...field}
+										disabled={!watch("region") || values.region === "international"}
+									/>
 								</Autocomplete>
 								{errors.pickup && (
 									<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -141,7 +149,12 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 								onPlaceChanged={() => debouncedOnPlaceChangedForDropoff.current()}
 								options={destinationOptions}
 							>
-								<GoogleInput placeholder="Destination Address" ref={field.ref} {...field} />
+								<GoogleInput
+									placeholder="Destination Address"
+									ref={field.ref}
+									{...field}
+									disabled={!watch("region") || values.region === "international"}
+								/>
 							</Autocomplete>
 							{errors.dropoff && (
 								<p role="alert" className="text-[#ef4444] leading-none mt-1">
