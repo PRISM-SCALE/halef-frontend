@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {FormProvider, useForm} from "react-hook-form";
+import {Controller, FormProvider, useForm} from "react-hook-form";
 import {useLoaderData, useLocation} from "react-router-dom";
 
 // * UTILS
@@ -52,6 +52,7 @@ const Trucking = () => {
 		handleSubmit,
 		watch,
 		setValue,
+		control,
 		// formState,
 		// reset,
 	} = methods;
@@ -231,8 +232,25 @@ const Trucking = () => {
 							</p>
 						)}
 					</fieldset> */}
-
-					<CustomDropdown options={options} name={"vehicle"} />
+					<Controller
+						name={"vehicle"}
+						id={"vehicle"}
+						control={control}
+						rules={{required: "Choose a vehicle based on your needs"}}
+						render={({field}) => {
+							return (
+								<>
+									<CustomDropdown
+										ref={field.ref}
+										{...field}
+										options={options}
+										name={"vehicle"}
+										isDisabled={!values.distance}
+									/>
+								</>
+							);
+						}}
+					/>
 
 					<fieldset>
 						<label htmlFor="goodsType" className="text-[#f8bf02]">

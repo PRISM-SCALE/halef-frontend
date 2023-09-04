@@ -2,12 +2,14 @@ import {useState} from "react";
 import PropTypes from "prop-types";
 import {useFormContext} from "react-hook-form";
 
-const CustomDropdown = ({name, options}) => {
-	const {watch, setValue} = useFormContext();
+const CustomDropdown = ({name, options, isDisabled}) => {
+	const {
+		watch,
+		setValue,
+		formState: {errors},
+	} = useFormContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const selectedOption = watch(name);
-	const values = watch();
-	const isDisabled = !values.distance; // Check if values.distance is falsy
 
 	const toggleDropdown = () => {
 		if (!isDisabled) setIsOpen(!isOpen);
@@ -79,6 +81,11 @@ const CustomDropdown = ({name, options}) => {
 						)}
 					</div>
 				)}
+				{errors.vehicle && (
+					<p role="alert" className="text-[#ef4444] leading-none">
+						{errors.vehicle?.message}
+					</p>
+				)}
 			</div>
 		</>
 	);
@@ -87,6 +94,7 @@ const CustomDropdown = ({name, options}) => {
 CustomDropdown.propTypes = {
 	name: PropTypes.string.isRequired,
 	options: PropTypes.array,
+	isDisabled: PropTypes.bool,
 };
 
 export default CustomDropdown;

@@ -1,5 +1,5 @@
 import {useEffect, useState, useCallback} from "react";
-import {FormProvider, useForm} from "react-hook-form";
+import {Controller, FormProvider, useForm} from "react-hook-form";
 import {defer, useLoaderData, useLocation} from "react-router-dom";
 
 // * HOOKS
@@ -21,6 +21,7 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
 import Modal from "../../components/Modal";
 import Alert from "../../components/Alert";
+import CustomDropdown from "../../components/forms/CustomDropdown";
 
 // * INITIAL FORM VALUES
 const INITIAL_VALUES = {
@@ -56,6 +57,7 @@ const Relocation = () => {
 		handleSubmit,
 		watch,
 		setValue,
+		control,
 	} = methods;
 
 	const values = watch();
@@ -197,7 +199,7 @@ const Relocation = () => {
 						)}
 					</fieldset>
 
-					<fieldset>
+					{/* <fieldset>
 						<label htmlFor="vehicle" className="text-[#f8bf02]">
 							Select vehicle
 						</label>
@@ -222,7 +224,27 @@ const Relocation = () => {
 								{errors.vehicle?.message}
 							</p>
 						)}
-					</fieldset>
+					</fieldset> */}
+
+					<Controller
+						name={"vehicle"}
+						id={"vehicle"}
+						control={control}
+						rules={{required: "Choose a vehicle based on your needs"}}
+						render={({field}) => {
+							return (
+								<>
+									<CustomDropdown
+										ref={field.ref}
+										{...field}
+										options={truckData[0]?.allowedVehicles}
+										name={"vehicle"}
+										isDisabled={!watch("houseCapacity")}
+									/>
+								</>
+							);
+						}}
+					/>
 
 					<fieldset>
 						<label htmlFor="packing" className="text-[#f8bf02]">
