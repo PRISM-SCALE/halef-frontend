@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const ServiceWrapper = ({children}) => {
-	return <div className="py-8">{children}</div>;
+	return <div className="py-20">{children}</div>;
 };
 
 ServiceWrapper.propTypes = {

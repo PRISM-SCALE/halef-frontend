@@ -26,7 +26,7 @@
   }
 
   .service-layout {
-    @apply flex gap-4 flex-col md: flex-row
+    @apply flex gap-4 flex-col md:flex-row
   }
 }
 
@@ -85,6 +85,31 @@
     right: 0;
     bottom: 8px;
     background: #171717;
+  }
+
+  .footer-title {
+    color: #DD3333;
+  }
+
+  .footer-title::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background-color: #fff;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    transition: all .5s ease-in;
+  }
+
+  .footer-title::after {
+    content: "";
+    width: 6px;
+    height: 7px;
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    background: #DD3333;
   }
 
   .service-card {

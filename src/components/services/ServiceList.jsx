@@ -8,13 +8,13 @@ import Card from "../layout/Card";
 const ServiceList = ({data}) => {
 	const header_name = (
 		<>
-			Cost <strong className="text-[#DD3333]">Estimator</strong>
+			Choose Your <strong className="text-[#DD3333]">Service</strong>
 		</>
 	);
 
 	return (
-		<div className="py-8">
-			<Header caption="our services" title={header_name} />
+		<div className="py-20">
+			<Header caption="30 second Cost calculator" title={header_name} />
 			{data.map(({name, _id, code, icon}) => {
 				return (
 					<Link to={`/${code.toLowerCase()}?id=${_id}`} key={_id}>

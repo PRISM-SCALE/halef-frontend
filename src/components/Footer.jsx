@@ -1,13 +1,20 @@
 import PropTypes from "prop-types";
 
+import {halefHub, services} from "../mock/footer";
+
 // * COMPONENTS
 import Logo from "./Logo";
+import {Icon} from "@iconify-icon/react";
+import SocialIcons from "./SocialIcons";
 
 const Footer = () => {
 	return (
-		<div className="bg-[#171717]">
-			<div style={{maxWidth: "1200px", margin: "0 auto"}} className="py-14">
-				<div>
+		<footer className="bg-[#171717] px-8">
+			<div
+				style={{maxWidth: "1200px", margin: "0 auto"}}
+				className="py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+			>
+				<div className="my-auto">
 					{/* LOGO */}
 					<a href="https://halefinternational.com">
 						<Logo
@@ -16,78 +23,84 @@ const Footer = () => {
 						/>
 					</a>
 				</div>
-				<div className="widget widget_nav_menu text-left ">
-					<div className="relative px-5 py-2">
-						<h5 className="footer-head_item text-white uppercase text-base font-barlow font-semibold">
-							Halef Hub
-						</h5>
-					</div>
-					<div className="menu-footer-menu-container">
-						<ul id="menu-footer-menu" className="menu">
-							<li
-								id="menu-item-723"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-723"
-							>
-								<a href="https://halefinternational.com/about-us/">About Us</a>
-							</li>
-							<li
-								id="menu-item-7078"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-7078"
-							>
-								<a href="https://halefinternational.com/contact-us/">Contact Us</a>
-							</li>
-							<li
-								id="menu-item-4926"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-4926"
-							>
-								<a href="https://halefinternational.com/faq-2/">FAQ</a>
-							</li>
-							<li
-								id="menu-item-7882"
-								className="menu-item menu-item-type-custom menu-item-object-custom menu-item-7882"
-							>
-								<a href="#">Pay Now</a>
-							</li>
-							<li
-								id="menu-item-7883"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-7883"
-							>
-								<a rel="privacy-policy" href="https://halefinternational.com/privacy-policy-3/">
-									Privacy Policy
-								</a>
-							</li>
-							<li
-								id="menu-item-8541"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-8541"
-							>
-								<a href="https://halefinternational.com/services-and-pricings/">
-									Services and Pricings
-								</a>
-							</li>
-							<li
-								id="menu-item-8542"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-8542"
-							>
-								<a href="https://halefinternational.com/refund-policy/">Refund Policy</a>
-							</li>
-							<li
-								id="menu-item-8546"
-								className="menu-item menu-item-type-post_type menu-item-object-page menu-item-8546"
-							>
-								<a href="https://halefinternational.com/terms-and-conditions/">
-									Terms and Conditions
-								</a>
-							</li>
+
+				<div className="mb-4 sm:mb-0">
+					<h5 className="relative mb-8 pr-4 pl-4 inline-block footer-title text-xl">
+						{halefHub.title}
+					</h5>
+					<div>
+						<ul className="text-[#DD3333]">
+							{halefHub.data.map(({href, name}, index) => (
+								<LinkHref key={index} href={href} name={name} />
+							))}
 						</ul>
 					</div>
 				</div>
-				<div>{/* SERVICES */}</div>
-				<div>{/* GET IN TOUCH */}</div>
+
+				<div className="mb-4 sm:mb-0">
+					<h5 className="relative mb-8 pr-4 pl-4 inline-block footer-title text-xl">
+						{services.title}
+					</h5>
+					<div>
+						<ul className="text-[#DD3333]">
+							{services.data.map(({href, name}, index) => (
+								<LinkHref key={index} href={href} name={name} />
+							))}
+						</ul>
+					</div>
+				</div>
+
+				<div className="mb-4 sm:mb-0">
+					<h5 className="relative mb-8 pr-4 pl-4 inline-block footer-title text-xl">
+						Get in touch
+					</h5>
+					<div className="mb-4">
+						<p className="text-white">Need help?</p>
+						<a href="tel:08029915864" className="text-[#DD3333]">
+							08029915864
+						</a>
+					</div>
+
+					<div className="mb-6">
+						<p className="text-white">Email Us At:</p>
+						<a href="mailto:enquiry@halefinternational.com" className="text-[#DD3333]">
+							enquiry@halefinternational.com
+						</a>
+					</div>
+
+					<div>
+						<SocialIcons size={32} />
+					</div>
+				</div>
 			</div>
-		</div>
+
+			<div className="border border-gray-600" />
+
+			<div className="text-center py-6">
+				<p className="font-barlow text-white text-lg">
+					© 2023 Halef International Private Limited. All Rights Reserved. Designed by PrismScale
+				</p>
+			</div>
+		</footer>
 	);
 };
 
 Footer.propTypes = {};
+
+const LinkHref = ({href, name}) => {
+	return (
+		<a href={href} className="text-white   cursor-pointer flex items-center gap-2 space-y-2">
+			<Icon icon="radix-icons:dot-filled" width={20} height={20} style={{color: "#DD3333"}} />
+			<li className="hover:text-[#DD3333] capitalize text-xl transition-all ease-in delay-200 ">
+				{name}
+			</li>
+		</a>
+	);
+};
+
+LinkHref.propTypes = {
+	href: PropTypes.string,
+	name: PropTypes.name,
+};
 
 export default Footer;
