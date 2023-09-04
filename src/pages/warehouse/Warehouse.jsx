@@ -182,7 +182,7 @@ const Warehouse = () => {
 							name={"selectCity"}
 							className="input-fields appearance-none "
 							{...register("selectCity", {
-								required: "Please enter a pickup address",
+								required: "Please select a city to store your goods",
 							})}
 						>
 							<option value="">Select a warehouse location</option>
@@ -212,9 +212,9 @@ const Warehouse = () => {
 								);
 							})}{" "}
 						</select>
-						{errors.goodsType && (
+						{errors.selectCity && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.goodsType?.message}
+								{errors.selectCity?.message}
 							</p>
 						)}
 					</fieldset>
@@ -332,9 +332,9 @@ const Warehouse = () => {
 								);
 							})}
 						</select>
-						{errors.packingType && (
+						{errors.packing && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.packingType?.message}
+								{errors.packing?.message}
 							</p>
 						)}
 					</fieldset>
