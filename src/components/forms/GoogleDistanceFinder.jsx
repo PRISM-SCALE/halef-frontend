@@ -9,7 +9,7 @@ import GoogleInput from "./GoogleInput";
 import {calculateDistance} from "../../utils/distanceCalculation";
 import {useLocation} from "react-router-dom";
 
-const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) => {
+const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance, disabled}) => {
 	const location = useLocation();
 
 	const checkPathIsAirAmbulance = location.pathname.includes("/airambulance");
@@ -21,10 +21,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 		control,
 		formState: {errors},
 		setValue,
-		watch,
 	} = useFormContext();
-
-	const values = watch();
 
 	useEffect(() => {
 		// Calculate distance whenever the pickup or drop-off locations change
@@ -119,7 +116,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 										placeholder="Pickup Address"
 										ref={field.ref}
 										{...field}
-										disabled={!watch("region") || values.region === "international"}
+										disabled={disabled}
 									/>
 								</Autocomplete>
 								{errors.pickup && (
@@ -153,7 +150,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance}) 
 									placeholder="Destination Address"
 									ref={field.ref}
 									{...field}
-									disabled={!watch("region") || values.region === "international"}
+									disabled={disabled}
 								/>
 							</Autocomplete>
 							{errors.dropoff && (
@@ -173,6 +170,7 @@ GoogleDistanceFinder.propTypes = {
 	originOptions: PropTypes.object,
 	destinationOptions: PropTypes.object,
 	setDistance: PropTypes.func,
+	disabled: PropTypes.bool,
 };
 
 export default GoogleDistanceFinder;

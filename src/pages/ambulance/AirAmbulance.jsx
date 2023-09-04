@@ -124,6 +124,7 @@ const AirAmbulance = () => {
 						setDistance={null}
 						// originOptions={{types: ["airport"]}}
 						// destinationOptions={{types: ["airport"]}}
+						disabled={!watch("region") || values.region === "international"}
 						originOptions={{
 							types: ["(regions)"],
 							componentRestrictions: {country: "in"}, // Restrict to India

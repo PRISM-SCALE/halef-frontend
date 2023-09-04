@@ -142,7 +142,7 @@ const GooglePincodeForm = () => {
 								<GoogleInput
 									type={watch("region") !== "domestic" ? "text" : "number"}
 									placeholder="Origin Pincode"
-									disabled={!watch("region") || values.region === "international"}
+									disabled={!watch("region") || values.region === "international" || false}
 									ref={field.ref}
 									{...field}
 								/>
@@ -183,7 +183,7 @@ const GooglePincodeForm = () => {
 							<GoogleInput
 								type={watch("region") !== "domestic" ? "text" : "number"}
 								placeholder="Destination Pincode"
-								disabled={!watch("region") || values.region === "international"}
+								disabled={!watch("region") || values.region === "international" || false}
 								ref={field.ref}
 								{...field}
 							/>
