@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 
 // * HOOKS
@@ -43,11 +43,21 @@ const AirAmbulance = () => {
 		formState: {errors, isValid},
 		handleSubmit,
 		watch,
+		reset,
+		setValue,
 		// setError,
 		// getValues,
 	} = methods;
 
 	const values = watch();
+
+	useEffect(() => {
+		if (values.region === "international") {
+			reset();
+
+			setValue("region", "international");
+		}
+	}, [reset, setValue, values.region]);
 
 	const calculatorCallback = useCallback(
 		async (responseData) => {

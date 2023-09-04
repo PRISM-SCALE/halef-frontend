@@ -27,12 +27,15 @@ import CustomDropdown from "../../components/forms/CustomDropdown";
 const INITIAL_VALUES = {
 	pickup: "",
 	dropoff: "",
+	originLocation: {},
+	destinationLocation: {},
 	insurance: false,
 	houseCapacity: "",
 	vehicle: "",
 	packing: "",
 	goodsValue: "",
 	distance: "",
+	isDifferentState: false,
 };
 
 // ---------------------------------------------------------------------
@@ -70,19 +73,42 @@ const Relocation = () => {
 		if (distance !== null) {
 			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 		}
-
 		// if (largeScreenAndUp) onClose();
 	}, [distance, setValue]);
+
+	const getStateFromLocation = (location) => {
+		if (!location || !location.address_components) {
+			return "";
+		}
+
+		const stateComponent = location.address_components.find((component) =>
+			component.types.includes("administrative_area_level_1")
+		);
+
+		return stateComponent ? stateComponent.short_name : "";
+	};
+
+	const originState = getStateFromLocation(values.originLocation);
+	const destinationState = getStateFromLocation(values.destinationLocation);
+	const checkOriginLocation = Object.keys(values.originLocation).length !== 0;
+	const checkDestinationLocation = Object.keys(values.destinationLocation).length !== 0;
+	const isStatesSame = originState === destinationState;
+
+	useEffect(() => {
+		if (checkOriginLocation && checkDestinationLocation && !isStatesSame) {
+			setValue("isDifferentState", true);
+		}
+	}, [checkDestinationLocation, checkOriginLocation, isStatesSame, setValue]);
 
 	const selectedHouseCapacity = watch("houseCapacity");
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
+
 	const truckData = relocationHouseTypes.filter(({_id}) => _id === selectedHouseCapacity);
 
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
-
 	const calculatorCallback = useCallback(
 		async (responseData) => {
 			setValueToLocalStorage(responseData);
