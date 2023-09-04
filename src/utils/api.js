@@ -148,6 +148,7 @@ export async function relocationCalculationService(data, serviceId, userId) {
 		vehicle: data.vehicle,
 		serviceId: serviceId,
 		userId: userId,
+		estimates: JSON.stringify(data),
 	};
 
 	if (userId) {
@@ -179,6 +180,7 @@ export async function courierCargoCalculationService(data, serviceId, userId) {
 		docType: data.docType,
 		serviceId: serviceId,
 		userId: userId,
+		estimates: JSON.stringify(data),
 	};
 
 	if (userId) {
@@ -207,6 +209,7 @@ export async function truckingCalculationService(data, serviceId, userId) {
 		serviceId: serviceId,
 		userId: userId,
 		isDifferentState: data.isDifferentState,
+		estimates: JSON.stringify(data),
 	};
 	if (userId) {
 		const response = await fetch(`${CALCULATE_URL}/trucking`, {
@@ -234,6 +237,7 @@ export async function warehouseCalculationService(data, serviceId, userId) {
 		durationInDays: Number(data.durationInDays),
 		serviceId: serviceId,
 		userId: userId,
+		estimates: JSON.stringify(data),
 	};
 
 	if (userId) {
@@ -264,6 +268,7 @@ export async function airAmbulanceCalculationService(data, serviceId, userId) {
 		weight: data.weight,
 		serviceId: serviceId,
 		userId: userId,
+		estimates: JSON.stringify(data),
 	};
 
 	if (userId) {
