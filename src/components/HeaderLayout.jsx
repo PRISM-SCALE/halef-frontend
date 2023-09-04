@@ -13,7 +13,7 @@ const HeaderLayout = () => {
 					<span className="text-[#DD3333] text-lg">Cost estimator</span>
 				</div>
 				<div className="text-right">
-					<p className="text-6xl font-semibold">
+					<p className="md:text-7xl text-xl font-medium">
 						Cost <span className="text-[#DD3333]">Estimator</span>
 					</p>
 				</div>

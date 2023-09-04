@@ -13,7 +13,7 @@ const SocialIcons = ({size}) => {
 };
 
 SocialIcons.propTypes = {
-	size: PropTypes.string.isRequired || PropTypes.number.isRequired,
+	size: PropTypes.number.isRequired,
 };
 
 export default SocialIcons;

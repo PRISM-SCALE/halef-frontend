@@ -100,7 +100,7 @@ const LinkHref = ({href, name}) => {
 
 LinkHref.propTypes = {
 	href: PropTypes.string,
-	name: PropTypes.name,
+	name: PropTypes.string,
 };
 
 export default Footer;

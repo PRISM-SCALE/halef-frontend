@@ -1,8 +1,9 @@
 import {useState} from "react";
 import PropTypes from "prop-types";
 import {useFormContext} from "react-hook-form";
+import {forwardRef} from "react";
 
-const CustomDropdown = ({name, options, isDisabled}) => {
+const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 	const {
 		watch,
 		setValue,
@@ -29,7 +30,7 @@ const CustomDropdown = ({name, options, isDisabled}) => {
 			{isOpen ? (
 				<div className="absolute inset-0 bg-black opacity-0 z-10" onClick={handleClose} />
 			) : null}
-			<div className="relative">
+			<div className="relative" ref={ref}>
 				<label htmlFor="vehicle" className="text-[#f8bf02] mb-4">
 					Select vehicle
 				</label>
@@ -89,7 +90,9 @@ const CustomDropdown = ({name, options, isDisabled}) => {
 			</div>
 		</>
 	);
-};
+});
+
+CustomDropdown.displayName = "CustomDropdown";
 
 CustomDropdown.propTypes = {
 	name: PropTypes.string.isRequired,
