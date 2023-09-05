@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import {/*createBrowserRouter,*/ RouterProvider} from "react-router-dom";
 import {ThemeProvider} from "@mui/material";
 // import {Loader} from "@googlemaps/js-api-loader";
@@ -12,15 +12,6 @@ import {theme} from "./theme";
 // * UTILS
 import {API_KEY} from "./utils/variables";
 
-// // * PAGES
-// import NotFound from "./pages/NotFound";
-// import RootLayout from "./pages/RootLayout";
-// import Home, {servicesLoader} from "./pages/home/Home";
-// import Relocation, {relocationLoader} from "./pages/relocation/Relocation";
-// import Trucking, {truckingLoader} from "./pages/trucking/Trucking";
-// import Warehouse, {warehouseLoader} from "./pages/warehouse/Warehouse";
-// import AirAmbulance from "./pages/ambulance/AirAmbulance";
-// import Cargo from "./pages/cargo/Cargo";
 import {router} from "./routes/Routes";
 
 // new Loader({
@@ -32,50 +23,21 @@ import {router} from "./routes/Routes";
 const App = () => {
 	const libraries = useMemo(() => ["places", "geometry"], []);
 
-	// const router = createBrowserRouter([
-	// 	{
-	// 		path: "/",
-	// 		element: <RootLayout />,
-	// 		// errorElement: <ErrorPage />,
-	// 		children: [
-	// 			{
-	// 				index: true,
-	// 				element: <Home />,
-	// 				loader: servicesLoader,
-	// 			},
-	// 			{
-	// 				path: "/relocation",
-	// 				element: <Relocation />,
-	// 				loader: relocationLoader,
-	// 				// action: saveRelocationData,
-	// 			},
-	// 			{
-	// 				path: "/couriercargo",
-	// 				element: <Cargo />,
-	// 			},
-	// 			{
-	// 				path: "/trucking",
-	// 				element: <Trucking />,
-	// 				loader: truckingLoader,
-	// 			},
-	// 			{
-	// 				path: "/warehouse",
-	// 				element: <Warehouse />,
-	// 				loader: warehouseLoader,
-	// 			},
-	// 			{
-	// 				path: "/airambulance",
-	// 				element: <AirAmbulance />,
-	// 				// loader: airAmbulanceLoader,
-	// 			},
-	// 		],
-	// 	},
+	// * TEMPORARY CODE, REMOVE LATER
+	useEffect(() => {
+		// Add an event listener to the beforeunload event
+		const handleBeforeUnload = () => {
+			// Clear the localStorage
+			localStorage.clear();
+		};
 
-	// 	{
-	// 		path: "*",
-	// 		element: <NotFound />,
-	// 	},
-	// ]);
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		// Clean up the event listener when the component unmounts
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+		};
+	}, []);
 
 	return (
 		<ThemeProvider theme={theme}>
