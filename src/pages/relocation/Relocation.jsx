@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react";
+import {useEffect, useState, useCallback, useMemo} from "react";
 import {Controller, FormProvider, useForm} from "react-hook-form";
 import {defer, useLoaderData, useLocation} from "react-router-dom";
 
@@ -76,6 +76,16 @@ const Relocation = () => {
 		// if (largeScreenAndUp) onClose();
 	}, [distance, setValue]);
 
+	// SELECTED HOUSE TYPE
+	const selectedHouseCapacity = watch("houseCapacity");
+
+	useEffect(() => {
+		if (selectedHouseCapacity) {
+			setValue("vehicle", "");
+		}
+		// if (largeScreenAndUp) onClose();
+	}, [selectedHouseCapacity, setValue]);
+
 	const getStateFromLocation = (location) => {
 		if (!location || !location.address_components) {
 			return "";
@@ -92,7 +102,7 @@ const Relocation = () => {
 	const destinationState = getStateFromLocation(values.destinationLocation);
 	const checkOriginLocation = Object.keys(values.originLocation).length !== 0;
 	const checkDestinationLocation = Object.keys(values.destinationLocation).length !== 0;
-	const isStatesSame = originState === destinationState;
+	const isStatesSame = originState === destinationState; // will give true if States are same
 
 	useEffect(() => {
 		if (checkOriginLocation && checkDestinationLocation && !isStatesSame) {
@@ -100,15 +110,66 @@ const Relocation = () => {
 		}
 	}, [checkDestinationLocation, checkOriginLocation, isStatesSame, setValue]);
 
-	const selectedHouseCapacity = watch("houseCapacity");
+	const vehiclesBasedOnDistance = useMemo(() => {
+		if (checkOriginLocation && checkDestinationLocation) {
+			let selectedHouseType;
+
+			if (!selectedHouseType || !values.houseCapacity || typeof values.distance === "undefined") {
+				// return [];
+				selectedHouseType = relocationHouseTypes?.filter(({_id}) => _id === selectedHouseCapacity);
+
+				return selectedHouseType[0]?.allowedVehicles?.filter(({relocationRange}) => {
+					return relocationRange?.some(({minDistance, maxDistance}) => {
+						if (minDistance && maxDistance) {
+							return values.distance >= minDistance && values.distance <= maxDistance;
+						}
+					});
+				});
+			}
+		} else return;
+	}, [
+		checkDestinationLocation,
+		checkOriginLocation,
+		relocationHouseTypes,
+		selectedHouseCapacity,
+		values.distance,
+		values.houseCapacity,
+	]);
+
+	const filterIfIsInterStateAllowed = useMemo(() => {
+		if (checkOriginLocation && checkDestinationLocation) {
+			let vehicles;
+			let filteredAllowedVehicles;
+
+			if (vehiclesBasedOnDistance?.length !== 0) {
+				vehicles = vehiclesBasedOnDistance;
+				console.log("vehiclesBasedOnDistance".vehiclesBasedOnDistance);
+			}
+
+			if (isStatesSame) {
+				filteredAllowedVehicles = vehicles?.filter(({isActive}) => {
+					return isActive;
+				});
+			} else {
+				filteredAllowedVehicles = vehicles?.filter(({isActive, isInterStateAllowed}) => {
+					return isActive && isInterStateAllowed;
+				});
+			}
+
+			return filteredAllowedVehicles;
+		} else return;
+	}, [checkDestinationLocation, checkOriginLocation, isStatesSame, vehiclesBasedOnDistance]);
+
+	const options = filterIfIsInterStateAllowed;
+
+	console.log("OPTIONS", options);
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);
 
-	const truckData = relocationHouseTypes.filter(({_id}) => _id === selectedHouseCapacity);
-
 	// ------------------------------------------------------
 	// * HANDLER FUNCTIONS
+	// #region
 	const calculatorCallback = useCallback(
 		async (responseData) => {
 			setValueToLocalStorage(responseData);
@@ -150,6 +211,7 @@ const Relocation = () => {
 			throw new Error("Uh-Oh, looks like something went wrong calculating the distance");
 		}
 	};
+	//#endregion
 
 	const header_name = (
 		<>
@@ -210,7 +272,8 @@ const Relocation = () => {
 							})}
 						>
 							<option value="">Choose your house capacity</option>
-							{relocationHouseTypes?.map(({_id, type}) => {
+							{relocationHouseTypes?.map((houseType) => {
+								const {_id, type} = houseType;
 								return (
 									<option key={_id} value={_id}>
 										{type}
@@ -263,7 +326,7 @@ const Relocation = () => {
 									<CustomDropdown
 										ref={field.ref}
 										{...field}
-										options={truckData[0]?.allowedVehicles}
+										options={options || []}
 										name={"vehicle"}
 										isDisabled={!watch("houseCapacity")}
 									/>

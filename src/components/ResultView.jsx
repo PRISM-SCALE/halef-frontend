@@ -5,7 +5,6 @@ import CalculatorResultItem from "./CalculatorResultItem";
 import CalculatorResultLayout from "./CalculatorResultLayout";
 
 const ResultView = ({serviceData}) => {
-
 	if (!serviceData) {
 		return (
 			<Box sx={{display: "flex", justifyContent: "center", my: 10}}>

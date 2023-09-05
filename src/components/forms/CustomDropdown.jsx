@@ -52,7 +52,7 @@ const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 
 				{isOpen && !isDisabled && (
 					<div className="absolute mt-2 max-h-60 overflow-y-scroll w-full bg-white border rounded shadow-md z-10">
-						{options ? (
+						{options?.length !== 0 ? (
 							<>
 								{options?.map((option) => (
 									<div
@@ -77,7 +77,9 @@ const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 								}`}
 								disabled={true}
 							>
-								<div className="flex items-center px-4 py-2">Uh-oh! there&apos;s Nothing here</div>
+								<div className="flex items-center px-4 py-2">
+									Uh-oh! there&apos;s no vehicle available, Please try different options
+								</div>
 							</div>
 						)}
 					</div>
