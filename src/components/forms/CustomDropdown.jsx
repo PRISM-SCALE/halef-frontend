@@ -28,7 +28,7 @@ const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 	return (
 		<>
 			{isOpen ? (
-				<div className="absolute inset-0 bg-black opacity-0 z-10" onClick={handleClose} />
+				<div className="fixed inset-0 bg-black opacity-0 z-10" onClick={handleClose} />
 			) : null}
 			<div className="relative" ref={ref}>
 				<label htmlFor="vehicle" className="text-[#f8bf02] mb-4">
