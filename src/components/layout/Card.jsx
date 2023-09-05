@@ -4,7 +4,7 @@ import iconRightArrow from "/arrow-right.svg";
 const Card = ({title, icon, code}) => {
 	return (
 		<div className="service-card">
-			<div className="w-full flex justify-between items-center cursor-pointer shadow-sm px-8 py-6 rounded-md mb-6 hover:shadow-md transition-shadow ">
+			<div className="w-full flex justify-between items-center cursor-pointer shadow-sm px-8 py-6 rounded-md mb-6 hover:shadow-md transition-shadow delay-200 ease-in-out">
 				<div className="flex items-center gap-10">
 					{/* <span className="text-4xl text-[#dd3333] ">{icon}</span> */}
 					<img src={icon} alt={code} className="h-12 md:h-20" />
