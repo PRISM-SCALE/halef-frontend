@@ -18,7 +18,7 @@ const Header = ({caption, title}) => {
 				)}
 				<span className="uppercase font-barlow tracking-[0.2rem] font-medium">{caption}</span>
 			</div>
-			<h2 className="text-6xl font-light my-2">{title}</h2>
+			<h2 className="text-4xl md:text-6xl font-light my-2">{title}</h2>
 		</div>
 	);
 };
