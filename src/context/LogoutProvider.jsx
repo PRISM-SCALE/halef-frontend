@@ -9,7 +9,7 @@ AuthProvider.propTypes = {
 	children: PropTypes.node,
 };
 
-export function AuthProvider({children}) {
+function AuthProvider({children}) {
 	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
 	const [values, setValueToLocalStorage] = useLocalStorage("userData");
 	const navigate = useNavigate();
@@ -48,3 +48,5 @@ export function AuthProvider({children}) {
 		<AuthContext.Provider value={{isLoggedIn, login, logout}}>{children}</AuthContext.Provider>
 	);
 }
+
+export {AuthContext, AuthProvider};

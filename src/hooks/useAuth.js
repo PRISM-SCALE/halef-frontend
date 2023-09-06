@@ -1,11 +1,11 @@
 import {useContext} from "react";
 //
-import {AuthProvider} from "../context/LogoutProvider";
+import {AuthContext} from "../context/LogoutProvider";
 
 // ----------------------------------------------------------------------
 
 const useAuth = () => {
-	const context = useContext(AuthProvider);
+	const context = useContext(AuthContext);
 
 	if (!context) throw new Error("Auth context must be use inside AuthProvider");
 
