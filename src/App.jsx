@@ -23,22 +23,6 @@ import {router} from "./routes/Routes";
 const App = () => {
 	const libraries = useMemo(() => ["places", "geometry"], []);
 
-	// * TEMPORARY CODE, REMOVE LATER
-	// useEffect(() => {
-	// 	// Add an event listener to the beforeunload event
-	// 	const handleBeforeUnload = () => {
-	// 		// Clear the localStorage
-	// 		localStorage.clear();
-	// 	};
-
-	// 	window.addEventListener("beforeunload", handleBeforeUnload);
-
-	// 	// Clean up the event listener when the component unmounts
-	// 	return () => {
-	// 		window.removeEventListener("beforeunload", handleBeforeUnload);
-	// 	};
-	// }, []);
-
 	return (
 		<ThemeProvider theme={theme}>
 			<LoadScriptNext googleMapsApiKey={API_KEY} libraries={libraries}>
