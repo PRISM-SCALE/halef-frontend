@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import Logo from "../Logo";
-import {useAuth} from "../../context/LogoutProvider";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
 	const {isLoggedIn, logout} = useAuth();

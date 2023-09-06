@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {createContext, useContext, useState, useEffect, useCallback} from "react";
+import {createContext, useState, useEffect, useCallback} from "react";
 import {useNavigate} from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 
@@ -47,8 +47,4 @@ export function AuthProvider({children}) {
 	return (
 		<AuthContext.Provider value={{isLoggedIn, login, logout}}>{children}</AuthContext.Provider>
 	);
-}
-
-export function useAuth() {
-	return useContext(AuthContext);
 }

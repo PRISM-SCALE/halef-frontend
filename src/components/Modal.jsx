@@ -16,7 +16,7 @@ import OTPForm from "./forms/OTPForm";
 import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
 import {useLocation} from "react-router-dom";
-import {useAuth} from "../context/LogoutProvider";
+import useAuth from "../hooks/useAuth";
 
 // * INITIAL FORM VALUES
 
