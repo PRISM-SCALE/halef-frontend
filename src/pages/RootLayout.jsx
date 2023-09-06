@@ -3,11 +3,13 @@ import Navbar from "../components/navigation/Navbar";
 import {AuthProvider} from "../context/LogoutProvider";
 import Footer from "../components/Footer";
 import HeaderLayout from "../components/HeaderLayout";
+import ScrollToTop from "../components/ScrollToTop";
 // import PreloadImages from "../components/PreLoadImage";
 
 const RootLayout = () => {
 	return (
 		<AuthProvider>
+			<ScrollToTop />
 			<div>
 				<Navbar />
 				<HeaderLayout />
