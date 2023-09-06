@@ -25,6 +25,8 @@ const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 		setValue(name, optionValue);
 	};
 
+	console.log(options);
+
 	return (
 		<>
 			{isOpen ? (
@@ -99,7 +101,7 @@ CustomDropdown.displayName = "CustomDropdown";
 CustomDropdown.propTypes = {
 	name: PropTypes.string.isRequired,
 	options: PropTypes.array,
-	isDisabled: PropTypes.bool,
+	isDisabled: PropTypes.bool.isRequired,
 };
 
 export default CustomDropdown;

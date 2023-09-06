@@ -70,6 +70,13 @@ const Relocation = () => {
 	const [distance, setDistance] = useState(null);
 
 	useEffect(() => {
+		if (values.pickup || values.dropoff) {
+			setValue("vehicle", "");
+			setValue("distance", "");
+		}
+	}, [setValue, values.dropoff, values.pickup]);
+
+	useEffect(() => {
 		if (distance !== null) {
 			setValue("distance", Number(distance.replace(" km", "").replace(",", "")));
 		}
@@ -161,8 +168,6 @@ const Relocation = () => {
 	}, [checkDestinationLocation, checkOriginLocation, isStatesSame, vehiclesBasedOnDistance]);
 
 	const options = filterIfIsInterStateAllowed;
-
-	console.log("OPTIONS", options);
 
 	// * So use filter method to show vehicles based on house type
 	// * Check if field value === json value	console.log(watch("houseCapcity") === json value);

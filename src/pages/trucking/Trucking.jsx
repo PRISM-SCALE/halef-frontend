@@ -59,6 +59,13 @@ const Trucking = () => {
 
 	const values = watch();
 
+	useEffect(() => {
+		if (values.pickup || values.dropoff) {
+			setValue("vehicle", "");
+			setValue("distance", "");
+		}
+	}, [setValue, values.dropoff, values.pickup]);
+
 	const getStateFromLocation = (location) => {
 		if (!location || !location.address_components) {
 			return "";
@@ -119,10 +126,12 @@ const Trucking = () => {
 			}
 
 			return filteredAllowedVehicles;
-		} else return [];
+		} else return;
 	}, [vehiclesBasedOnDistance, checkDestinationLocation, checkOriginLocation, isStatesSame]);
 
-	const options = filterIfIsInterStateAllowed;
+	const options = filterIfIsInterStateAllowed?.filter(
+		({name}) => name !== "EICHER 18 FEET" && name !== "EICHER 19 FEET"
+	);
 
 	useEffect(() => {
 		if (distance !== null) {
@@ -167,6 +176,7 @@ const Trucking = () => {
 	};
 
 	const header_name = <strong className="text-[#DD3333]">Trucking</strong>;
+	const isDisabled = Boolean(values.distance) && Boolean(values.pickup) && Boolean(values.dropoff);
 
 	return (
 		<ServiceWrapper>
@@ -247,7 +257,7 @@ const Trucking = () => {
 										{...field}
 										options={options}
 										name={"vehicle"}
-										isDisabled={!values.distance}
+										isDisabled={!isDisabled}
 									/>
 								</>
 							);
