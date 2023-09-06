@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react";
+import {useState, useEffect} from "react";
 
 // ----------------------------------------------------------------------
 
@@ -28,24 +28,24 @@ export default function useLocalStorage(key, defaultValue) {
 	}, [key, defaultValue]);
 
 	// Function to clear localStorage every 1 hour
-	const clearLocalStorageEveryHour = useCallback(() => {
-		const lastUpdateTime = localStorage.getItem(`${key}_last_update_time`);
-		const currentTime = new Date().getTime();
+	// const clearLocalStorageEveryHour = useCallback(() => {
+	// 	const lastUpdateTime = localStorage.getItem(`${key}_last_update_time`);
+	// 	const currentTime = new Date().getTime();
 
-		if (!lastUpdateTime || currentTime - Number(lastUpdateTime) >= 3600000) {
-			localStorage.clear();
-			localStorage.setItem(`${key}_last_update_time`, currentTime);
-		}
-	}, [key]);
+	// 	if (!lastUpdateTime || currentTime - Number(lastUpdateTime) >= 3600000) {
+	// 		localStorage.clear();
+	// 		localStorage.setItem(`${key}_last_update_time`, currentTime);
+	// 	}
+	// }, [key]);
 
-	// Call the clearLocalStorageEveryHour function every minute (adjust the interval as needed)
-	useEffect(() => {
-		const interval = setInterval(clearLocalStorageEveryHour, 60000);
+	// // Call the clearLocalStorageEveryHour function every minute (adjust the interval as needed)
+	// useEffect(() => {
+	// 	const interval = setInterval(clearLocalStorageEveryHour, 600);
 
-		return () => {
-			clearInterval(interval);
-		};
-	}, [clearLocalStorageEveryHour]);
+	// 	return () => {
+	// 		clearInterval(interval);
+	// 	};
+	// }, [clearLocalStorageEveryHour]);
 
 	const setValueInLocalStorage = (newValue) => {
 		setValue((currentValue) => {

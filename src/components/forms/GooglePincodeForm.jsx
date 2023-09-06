@@ -137,10 +137,14 @@ const GooglePincodeForm = () => {
 						},
 					}}
 					render={({field}) => {
+						const {value} = field;
 						return (
 							<>
 								<GoogleInput
 									type={watch("region") !== "domestic" ? "text" : "number"}
+									// onChange={handleOriginPincodeChange}
+									onKeyDown={(event) => event.keyCode !== 69}
+									value={value}
 									placeholder="Origin Pincode"
 									disabled={!watch("region") || values.region === "international" || false}
 									ref={field.ref}
@@ -178,22 +182,28 @@ const GooglePincodeForm = () => {
 							message: "Pincode must be of 6 digit value",
 						},
 					}}
-					render={({field}) => (
-						<>
-							<GoogleInput
-								type={watch("region") !== "domestic" ? "text" : "number"}
-								placeholder="Destination Pincode"
-								disabled={!watch("region") || values.region === "international" || false}
-								ref={field.ref}
-								{...field}
-							/>
-							{errors.dropoff && (
-								<p role="alert" className="text-[#ef4444] leading-none mt-1">
-									{errors.dropoff.message}
-								</p>
-							)}
-						</>
-					)}
+					render={({field}) => {
+						const {value} = field;
+						return (
+							<>
+								<GoogleInput
+									type={watch("region") !== "domestic" ? "text" : "number"}
+									// onChange={handleDestinationPincodeChange}
+									value={value}
+									onKeyDown={(event) => event.keyCode !== 69}
+									placeholder="Destination Pincode"
+									disabled={!watch("region") || values.region === "international" || false}
+									ref={field.ref}
+									{...field}
+								/>
+								{errors.dropoff && (
+									<p role="alert" className="text-[#ef4444] leading-none mt-1">
+										{errors.dropoff.message}
+									</p>
+								)}
+							</>
+						);
+					}}
 				/>
 			</fieldset>
 		</>

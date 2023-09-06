@@ -25,8 +25,6 @@ const CustomDropdown = forwardRef(({name, options, isDisabled}, ref) => {
 		setValue(name, optionValue);
 	};
 
-	console.log(options);
-
 	return (
 		<>
 			{isOpen ? (

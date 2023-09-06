@@ -21,6 +21,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance, d
 		control,
 		formState: {errors},
 		setValue,
+		setError,
 	} = useFormContext();
 
 	useEffect(() => {
@@ -54,7 +55,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance, d
 				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
 			}
 		} else {
-			console.log("Pickup Autocomplete is not loaded yet!");
+			setError("pickup", "Pickup Autocomplete is not loaded yet!");
 		}
 	};
 
@@ -75,7 +76,7 @@ const GoogleDistanceFinder = ({originOptions, destinationOptions, setDistance, d
 				calculateDistance(pickupAutocomplete.current, dropoffAutocomplete.current, setDistance);
 			}
 		} else {
-			console.log("Dropoff Autocomplete is not loaded yet!");
+			setError("dropoff", "Dropoff Autocomplete is not loaded yet!");
 		}
 	};
 

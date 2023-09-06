@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 import {/*createBrowserRouter,*/ RouterProvider} from "react-router-dom";
 import {ThemeProvider} from "@mui/material";
 // import {Loader} from "@googlemaps/js-api-loader";
@@ -24,20 +24,20 @@ const App = () => {
 	const libraries = useMemo(() => ["places", "geometry"], []);
 
 	// * TEMPORARY CODE, REMOVE LATER
-	useEffect(() => {
-		// Add an event listener to the beforeunload event
-		const handleBeforeUnload = () => {
-			// Clear the localStorage
-			localStorage.clear();
-		};
+	// useEffect(() => {
+	// 	// Add an event listener to the beforeunload event
+	// 	const handleBeforeUnload = () => {
+	// 		// Clear the localStorage
+	// 		localStorage.clear();
+	// 	};
 
-		window.addEventListener("beforeunload", handleBeforeUnload);
+	// 	window.addEventListener("beforeunload", handleBeforeUnload);
 
-		// Clean up the event listener when the component unmounts
-		return () => {
-			window.removeEventListener("beforeunload", handleBeforeUnload);
-		};
-	}, []);
+	// 	// Clean up the event listener when the component unmounts
+	// 	return () => {
+	// 		window.removeEventListener("beforeunload", handleBeforeUnload);
+	// 	};
+	// }, []);
 
 	return (
 		<ThemeProvider theme={theme}>

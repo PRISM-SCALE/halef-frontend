@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useState, useEffect, useCallback} from "react";
 import {useNavigate} from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 
@@ -14,6 +14,15 @@ export function AuthProvider({children}) {
 	const [values, setValueToLocalStorage] = useLocalStorage("userData");
 	const navigate = useNavigate();
 
+	// Function to clear local storage
+	const clearLocalStorage = useCallback(() => {
+		localStorage.removeItem("isLoggedIn");
+		localStorage.removeItem("userData");
+		setValueToLocalStorage(null);
+		localStorage.clear();
+		setIsLoggedIn(false);
+	}, [setValueToLocalStorage]);
+
 	const login = () => {
 		localStorage.setItem("isLoggedIn", "true");
 		console.log(values);
@@ -21,13 +30,19 @@ export function AuthProvider({children}) {
 	};
 
 	const logout = () => {
-		localStorage.removeItem("isLoggedIn");
-		localStorage.removeItem("userData");
-		setValueToLocalStorage(null);
-		localStorage.clear();
+		clearLocalStorage();
 		navigate({pathname: "/"}, {replace: true});
-		setIsLoggedIn(false);
 	};
+
+	// Set up a timer to clear local storage every hour
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			clearLocalStorage();
+		}, 3600000); // 3600000 milliseconds = 1 hour
+
+		// Clean up the timer when the component unmounts
+		return () => clearInterval(intervalId);
+	}, [clearLocalStorage]);
 
 	return (
 		<AuthContext.Provider value={{isLoggedIn, login, logout}}>{children}</AuthContext.Provider>
