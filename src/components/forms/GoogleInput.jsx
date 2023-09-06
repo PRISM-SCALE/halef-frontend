@@ -8,6 +8,7 @@ const GoogleInput = forwardRef((props, ref) => {
 		<input
 			ref={ref}
 			className="input-fields  appearance-none"
+			
 			placeholder={placeholder}
 			{...otherProps}
 		/>

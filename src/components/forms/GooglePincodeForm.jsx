@@ -115,6 +115,9 @@ const GooglePincodeForm = () => {
 		}
 	}, [destinationPincode, geocodePincode, setError]);
 
+	const fixingExponentInInputTypeNumber = (e) =>
+		["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+
 	return (
 		<>
 			<fieldset>
@@ -143,7 +146,9 @@ const GooglePincodeForm = () => {
 								<GoogleInput
 									type={watch("region") !== "domestic" ? "text" : "number"}
 									// onChange={handleOriginPincodeChange}
-									onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
+									onKeyDown={fixingExponentInInputTypeNumber}
+									onCopy={fixingExponentInInputTypeNumber}
+									onPaste={fixingExponentInInputTypeNumber}
 									value={value}
 									placeholder="Origin Pincode"
 									disabled={!watch("region") || values.region === "international" || false}
@@ -190,7 +195,9 @@ const GooglePincodeForm = () => {
 									type={watch("region") !== "domestic" ? "text" : "number"}
 									// onChange={handleDestinationPincodeChange}
 									value={value}
-									onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
+									onKeyDown={fixingExponentInInputTypeNumber}
+									onCopy={fixingExponentInInputTypeNumber}
+									onPaste={fixingExponentInInputTypeNumber}
 									placeholder="Destination Pincode"
 									disabled={!watch("region") || values.region === "international" || false}
 									ref={field.ref}
