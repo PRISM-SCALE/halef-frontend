@@ -10,7 +10,7 @@ const Home = () => {
 			{data ? (
 				<ServiceList data={data} />
 			) : (
-				<div className="flex items-center justify-center p-14 border-dashed border-slate-300 border-2 mt-8">
+				<div className="flex items-center justify-center p-14 border-dashed border-slate-300 border-2 my-20">
 					<h2 className="text-xl">Uh-oh! There&apos;s nothing to show here.</h2>
 				</div>
 			)}

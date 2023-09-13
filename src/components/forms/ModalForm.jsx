@@ -35,9 +35,9 @@ const ModalForm = () => {
 					name="email"
 					type="email"
 					className="input-fields appearance-none "
-					placeholder="Enter Your First Name"
+					placeholder="Enter Your Email"
 					{...register("email", {
-						required: "Please enter your first name",
+						required: "Please enter your Email",
 						validate: {
 							maxLength: (v) => v.length <= 50 || "The email should have at most 50 characters",
 							matchPattern: (v) =>

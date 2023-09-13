@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 //
 import Logo from "../Logo";
 // HOOKS
@@ -11,6 +11,7 @@ import {IconButton, Menu} from "@mui/material";
 import {useState} from "react";
 
 const Navbar = () => {
+	const {pathname: urlName} = useLocation();
 	const {isLoggedIn, logout} = useAuth();
 
 	const [anchorEl, setAnchorEl] = useState(null);

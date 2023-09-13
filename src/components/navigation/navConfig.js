@@ -43,6 +43,11 @@ export const navigations = [
 		active: true,
 	},
 	{
+		pathname: "PAY ONLINE",
+		url: "/pay-online", //"https://calculator.halefinternational.com",
+		active: false,
+	},
+	{
 		pathname: "TRACK SHIPMENT",
 		url: "https://halefinternational.com/track-shipment/",
 	},

@@ -7,6 +7,7 @@ import {warehouseLoader} from "../pages/warehouse/Warehouse";
 // NOT FOUND
 import NotFound from "../pages/NotFound";
 import {AirAmbulance, Cargo, Home, Relocation, RootLayout, Trucking, Warehouse} from "./LazyLoad";
+import Payment from "../pages/payment/Payment";
 
 export const router = createBrowserRouter([
 	{
@@ -42,6 +43,11 @@ export const router = createBrowserRouter([
 			{
 				path: "/airambulance",
 				element: <AirAmbulance />,
+				// loader: airAmbulanceLoader,
+			},
+			{
+				path: "/pay-online",
+				element: <Payment />,
 				// loader: airAmbulanceLoader,
 			},
 		],
