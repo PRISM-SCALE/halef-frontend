@@ -68,6 +68,29 @@ export async function getAllCities() {
 
 // * -------------------------------------------------------------------------
 // * -------------------------------------------------------------------------
+// * PAY NOW
+export async function requestOTP(phone) {
+	const POST_DATA = {
+		phone: Number(phone),
+	};
+
+	const response = await fetch(`${BASE_URL}/otp/request_otp`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to create a user.", status: 500};
+	}
+
+	return response.json();
+}
+
+// * -------------------------------------------------------------------------
+// * -------------------------------------------------------------------------
 // * USER INFO
 export async function createUser(data) {
 	const response = await fetch(`${BASE_URL}/user/create`, {

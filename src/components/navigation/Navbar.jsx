@@ -1,4 +1,4 @@
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 //
 import Logo from "../Logo";
 // HOOKS
@@ -7,21 +7,20 @@ import useAuth from "../../hooks/useAuth";
 //
 import {navigations} from "./navConfig";
 import {Icon} from "@iconify-icon/react";
-import {IconButton, Menu} from "@mui/material";
-import {useState} from "react";
+import {IconButton} from "@mui/material";
 
 const Navbar = () => {
 	const {isLoggedIn, logout} = useAuth();
 
-	const [isHovered, setIsHovered] = useState(null);
+	// const [isHovered, setIsHovered] = useState(null);
 
-	const handleMouseEnter = (index) => {
-		setIsHovered(index);
-	};
+	// const handleMouseEnter = (index) => {
+	// 	setIsHovered(index);
+	// };
 
-	const handleMouseLeave = () => {
-		setIsHovered(null);
-	};
+	// const handleMouseLeave = () => {
+	// 	setIsHovered(null);
+	// };
 
 	const handleLogout = () => {
 		logout();
@@ -51,7 +50,7 @@ const Navbar = () => {
 
 			<div className="lg:flex items-center gap-2 hidden">
 				{navigations?.length !== 0 &&
-					navigations?.map(({pathname, url, active}, index) => {
+					navigations?.map(({pathname, url, active}) => {
 						return (
 							<div className="relative px-5 py-2" key={pathname}>
 								<Link

@@ -27,6 +27,7 @@ const Payment = () => {
 		register,
 		formState: {errors},
 		handleSubmit,
+		trigger,
 		watch,
 	} = methods;
 
@@ -48,7 +49,14 @@ const Payment = () => {
 							type="text"
 							className="input-fields"
 							placeholder="Your name"
-							{...register("name", {required: "Please enter your name"})}
+							onInput={() => trigger("name")}
+							{...register("name", {
+								required: "Please enter your name",
+								minLength: {
+									value: 3,
+									message: "The Name should have 3 or more letters",
+								},
+							})}
 							aria-invalid={errors.name ? "true" : "false"}
 						/>
 						{errors.name && (
@@ -69,14 +77,17 @@ const Payment = () => {
 							placeholder="youremail@domain.com"
 							{...register("email", {
 								required: "Please enter your email",
-								validate: {
-									maxLength: (v) => v.length <= 50 || "The email should have at most 50 characters",
-									matchPattern: (v) =>
-										/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-										"Email address must be a valid address",
+								maxLength: {
+									value: 50,
+									message: "The email should have at most 50 characters",
+								},
+								pattern: {
+									value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+									message: "Email address must be valid",
 								},
 							})}
 							aria-invalid={errors.email ? "true" : "false"}
+							onInput={() => trigger("email")}
 						/>
 						{errors.email && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -96,6 +107,7 @@ const Payment = () => {
 							placeholder="ID: 98615236493A"
 							{...register("jobNo", {required: "Please enter your Shipment number"})}
 							aria-invalid={errors.jobNo ? "true" : "false"}
+							onInput={() => trigger("jobNo")}
 						/>
 						{errors.jobNo && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -105,26 +117,30 @@ const Payment = () => {
 					</fieldset>
 
 					<fieldset>
-						<label htmlFor="phone" className="text-[#f8bf02]">
+						<label htmlFor="mobile" className="text-[#f8bf02]">
 							Mobile Number
 						</label>
 						<input
-							name="phone"
+							name="mobile"
 							type="number"
 							className="input-fields"
-							placeholder="9778240323"
-							{...register("phone", {
-								required: "Please enter your Phone number",
-								maxLength: {
-									value: 10,
-									message: "Mobile number has a limit of 10, please enter a valid number",
+							placeholder="EX: 9778240323"
+							{...register("mobile", {
+								required: "Please enter your mobile number",
+								pattern: {
+									value: /^\d{9}$/, // Regex pattern for exactly 10 digits
+									message: "Mobile number should be 10 digits",
 								},
+								// validate: (value) => {
+								// 	return /^[0-9]{10}$/.test(value) || "Mobile number should be exactly 10 digits";
+								// },
 							})}
-							aria-invalid={errors.phone ? "true" : "false"}
+							aria-invalid={errors.mobile ? "true" : "false"}
+							onInput={() => trigger("mobile")}
 						/>
-						{errors.phone && (
+						{errors.mobile && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.phone?.message}
+								{errors.mobile?.message}
 							</p>
 						)}
 					</fieldset>
@@ -140,6 +156,7 @@ const Payment = () => {
 							placeholder="Example: ₹100/-"
 							{...register("amount", {required: "Please enter your Amount"})}
 							aria-invalid={errors.amount ? "true" : "false"}
+							onInput={() => trigger("amount")}
 						/>
 						{errors.amount && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -175,7 +192,7 @@ const Payment = () => {
 						of 12% per annum until paid, including court costs or attorney fees.
 					</p>
 
-					<Button buttonText="submit" />
+					<Button buttonText="pay now" />
 				</FormWrapper>
 			</FormProvider>
 		</ServiceWrapper>
