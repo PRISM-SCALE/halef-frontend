@@ -93,7 +93,7 @@ const Payment = () => {
 							name="jobNo"
 							type="text"
 							className="input-fields"
-							placeholder="youremail@domain.com"
+							placeholder="ID: 98615236493A"
 							{...register("jobNo", {required: "Please enter your Shipment number"})}
 							aria-invalid={errors.jobNo ? "true" : "false"}
 						/>
@@ -138,31 +138,32 @@ const Payment = () => {
 							type="number"
 							className="input-fields appearance-none"
 							placeholder="Example: ₹100/-"
-							{...register("phone", {required: "Please enter your Amount"})}
-							aria-invalid={errors.phone ? "true" : "false"}
+							{...register("amount", {required: "Please enter your Amount"})}
+							aria-invalid={errors.amount ? "true" : "false"}
 						/>
-						{errors.phone && (
+						{errors.amount && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.phone?.message}
+								{errors.amount?.message}
 							</p>
 						)}
 					</fieldset>
 
-					<fieldset className="flex items-center gap-2">
-						<input
-							name="tandc"
-							type="checkbox"
-							id="relocation-insurance"
-							{...register("insurance", {required: "Please check the terms and conditions"})}
-							checked={values.tandc}
-						/>
-						<label htmlFor="tandc" className="font-semibold">
-							I accept the Terms and Conditions
-						</label>
+					<fieldset className="flex items-start gap-2 flex-col">
+						<div className="flex gap-2">
+							<input
+								name="tandc"
+								type="checkbox"
+								{...register("tandc", {required: "Please check the terms and conditions"})}
+								checked={values.tandc}
+							/>
+							<label htmlFor="tandc" className="font-semibold">
+								I accept the Terms and Conditions
+							</label>
+						</div>
 
-						{errors.phone && (
-							<p role="alert" className="text-[#ef4444] leading-none mt-1">
-								{errors.phone?.message}
+						{errors.tandc && (
+							<p role="alert" className="text-[#ef4444] leading-none mt-1 block w-full">
+								{errors.tandc?.message}
 							</p>
 						)}
 					</fieldset>

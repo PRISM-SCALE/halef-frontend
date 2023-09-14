@@ -2,10 +2,12 @@ export const navigations = [
 	{
 		pathname: "HOME",
 		url: "https://halefinternational.com/",
+		hover: false,
 	},
 	{
 		pathname: "SERVICES",
 		url: "https://halefinternational.com/services/compassionate-deceased-body-transportation/",
+		hover: true,
 		children: [
 			{
 				pathname: "COMPASSIONATE DECEASED BODY TRANSPORTATION",
@@ -41,25 +43,28 @@ export const navigations = [
 		pathname: "COST CALCULATOR",
 		url: "/", //"https://calculator.halefinternational.com",
 		active: true,
+		hover: false,
 	},
 	{
 		pathname: "PAY ONLINE",
 		url: "/pay-online", //"https://calculator.halefinternational.com",
-		active: false,
+		hover: false,
 	},
 	{
 		pathname: "TRACK SHIPMENT",
 		url: "https://halefinternational.com/track-shipment/",
+		hover: false,
 	},
 	{
 		pathname: "HALEF HUB",
 		url: "https://halefinternational.com/track-shipment/",
+		hover: true,
 		children: [
 			{pathname: "ABOUT US", url: "https://halefinternational.com/about-us/"},
 			{pathname: "CONTACT US", url: "https://halefinternational.com/contact-us/"},
 			{pathname: "CONTACT US", url: "https://halefinternational.com/from-the-ceo/"},
 			{pathname: "FAQ", url: "https://halefinternational.com/faq-2/"},
-			{pathname: "PAY NOW", url: "https://halefinternational.com/track-shipment/#"},
+			{pathname: "PAY NOW", url: "/pay-online"},
 		],
 	},
 ];

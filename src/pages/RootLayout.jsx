@@ -1,4 +1,4 @@
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import Navbar from "../components/navigation/Navbar";
 import {AuthProvider} from "../context/LogoutProvider";
 import Footer from "../components/Footer";
@@ -7,12 +7,32 @@ import ScrollToTop from "../components/ScrollToTop";
 // import PreloadImages from "../components/PreLoadImage";
 
 const RootLayout = () => {
+	const location = useLocation();
+	const {pathname} = location;
+
+	const changeText = pathname.includes("/pay") ? true : false;
+
+	const headerText = (
+		<>
+			Pay <span className="text-[#DD3333]">Online</span>
+		</>
+	);
+
+	const headerCostEstimator = (
+		<>
+			Cost <span className="text-[#DD3333]">Estimator</span>
+		</>
+	);
+
 	return (
 		<AuthProvider>
 			<ScrollToTop />
 			<div>
 				<Navbar />
-				<HeaderLayout />
+				<HeaderLayout
+					breadcrumbLink={changeText ? "Pay Now" : "Cost Estimator"}
+					title={changeText ? headerText : headerCostEstimator}
+				/>
 
 				{/* Navigation */}
 				{/* <PreloadImages /> */}
