@@ -5,8 +5,12 @@ import ServiceWrapper from "../../components/ServiceWrapper";
 import {useMemo} from "react";
 import FormWrapper from "../../components/forms/FormWrapper";
 import Button from "../../components/forms/Button";
+import {createPayment} from "../../utils/api";
+import useToggle from "../../hooks/useToggle";
+import PaymentModal from "../../components/PaymentModal";
 
 const Payment = () => {
+	const {toggle: open, onOpen, onClose} = useToggle();
 	const defaultValues = useMemo(
 		() => ({
 			name: "",
@@ -25,7 +29,7 @@ const Payment = () => {
 
 	const {
 		register,
-		formState: {errors},
+		formState: {errors, isValid},
 		handleSubmit,
 		trigger,
 		watch,
@@ -33,7 +37,25 @@ const Payment = () => {
 
 	const values = watch();
 
-	const onSubmit = () => {};
+	const onSubmit = async () => {
+		if (isValid) {
+			const POST_DATA = {
+				name: values.name,
+				email: values.email,
+				phone: values.mobile,
+				shipmentId: values.jobNo,
+				amount: values.amount,
+				isTermsAndConditionsVerified: values.tandc,
+			};
+
+			await createPayment(POST_DATA);
+			onOpen();
+		} else {
+			throw new Error("Uh-oh, Looks like Your form is still invalid!!");
+		}
+	};
+
+	console.log(values);
 
 	return (
 		<ServiceWrapper>
@@ -49,7 +71,9 @@ const Payment = () => {
 							type="text"
 							className="input-fields"
 							placeholder="Your name"
-							onInput={() => trigger("name")}
+							onInput={() => {
+								if (values.name) trigger("name");
+							}}
 							{...register("name", {
 								required: "Please enter your name",
 								minLength: {
@@ -58,6 +82,7 @@ const Payment = () => {
 								},
 							})}
 							aria-invalid={errors.name ? "true" : "false"}
+							autoComplete="new-password"
 						/>
 						{errors.name && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -87,7 +112,10 @@ const Payment = () => {
 								},
 							})}
 							aria-invalid={errors.email ? "true" : "false"}
-							onInput={() => trigger("email")}
+							onInput={() => {
+								if (values.email) trigger("email");
+							}}
+							autoComplete="new-password"
 						/>
 						{errors.email && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -107,7 +135,10 @@ const Payment = () => {
 							placeholder="ID: 98615236493A"
 							{...register("jobNo", {required: "Please enter your Shipment number"})}
 							aria-invalid={errors.jobNo ? "true" : "false"}
-							onInput={() => trigger("jobNo")}
+							onInput={() => {
+								if (values.jobNo) trigger("jobNo");
+							}}
+							autoComplete="new-password"
 						/>
 						{errors.jobNo && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -127,16 +158,19 @@ const Payment = () => {
 							placeholder="EX: 9778240323"
 							{...register("mobile", {
 								required: "Please enter your mobile number",
-								pattern: {
-									value: /^\d{9}$/, // Regex pattern for exactly 10 digits
-									message: "Mobile number should be 10 digits",
+								maxLength: {
+									value: 10,
+									message: "Mobile number has a limit of 10, please enter a valid number",
 								},
 								// validate: (value) => {
 								// 	return /^[0-9]{10}$/.test(value) || "Mobile number should be exactly 10 digits";
 								// },
 							})}
 							aria-invalid={errors.mobile ? "true" : "false"}
-							onInput={() => trigger("mobile")}
+							onInput={() => {
+								if (values.mobile) trigger("mobile");
+							}}
+							autoComplete="new-password"
 						/>
 						{errors.mobile && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -156,7 +190,10 @@ const Payment = () => {
 							placeholder="Example: ₹100/-"
 							{...register("amount", {required: "Please enter your Amount"})}
 							aria-invalid={errors.amount ? "true" : "false"}
-							onInput={() => trigger("amount")}
+							onInput={() => {
+								if (values.amount) trigger("amount");
+							}}
+							autoComplete="new-password"
 						/>
 						{errors.amount && (
 							<p role="alert" className="text-[#ef4444] leading-none mt-1">
@@ -195,6 +232,8 @@ const Payment = () => {
 					<Button buttonText="pay now" />
 				</FormWrapper>
 			</FormProvider>
+
+			<PaymentModal open={open} onClose={onClose} phone={values.mobile} />
 		</ServiceWrapper>
 	);
 };
