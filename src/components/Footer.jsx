@@ -7,6 +7,9 @@ import Logo from "./Logo";
 import {Icon} from "@iconify-icon/react";
 import SocialIcons from "./SocialIcons";
 
+const date = new Date();
+const year = date.getFullYear();
+
 const Footer = () => {
 	return (
 		<footer className="bg-[#171717] px-8">
@@ -17,10 +20,7 @@ const Footer = () => {
 				<div className="my-auto">
 					{/* LOGO */}
 					<a href="https://halefinternational.com">
-						<Logo
-							halefLogo="https://halefinternational.com/wp-content/uploads/2023/07/New-Logos-White.png"
-							styles={{height: "160px"}}
-						/>
+						<Logo halefLogo="/logo_white.webp" styles={{height: "160px"}} />
 					</a>
 				</div>
 
@@ -78,7 +78,7 @@ const Footer = () => {
 
 			<div className="text-center py-6">
 				<p className="font-barlow text-white text-lg">
-					© 2023 Halef International Private Limited. All Rights Reserved. Designed by PrismScale
+					© {year} Halef International Private Limited. All Rights Reserved. Designed by PrismScale
 				</p>
 			</div>
 		</footer>

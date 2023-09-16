@@ -233,7 +233,7 @@ const Payment = () => {
 				</FormWrapper>
 			</FormProvider>
 
-			<PaymentModal open={open} onClose={onClose} phone={values.mobile} />
+			<PaymentModal open={open} onClose={onClose} phone={Number(values.mobile)} />
 		</ServiceWrapper>
 	);
 };
