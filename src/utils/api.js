@@ -174,6 +174,18 @@ export const getLocalStorage = (key) => {
 };
 
 export async function relocationCalculationService(data, serviceId, userId) {
+	const estimates = {
+		pickup: data?.pickup,
+		dropoff: data?.dropoff,
+		insurance: data?.insurance,
+		vehicle: data?.vehicle,
+		houseCapacity: data?.houseCapacity,
+		packing: data?.packing,
+		distance: data?.distance,
+		goodsValue: data?.goodsValue,
+		isDifferentState: data?.isDifferentState,
+	};
+
 	const POST_DATA = {
 		distance: Math.round(data.distance),
 		goodsValue: Number(data.goodsValue),
@@ -183,7 +195,7 @@ export async function relocationCalculationService(data, serviceId, userId) {
 		vehicle: data.vehicle,
 		serviceId: serviceId,
 		userId: userId,
-		estimates: JSON.stringify(data),
+		estimates: JSON.stringify(estimates),
 	};
 
 	if (userId) {
@@ -238,13 +250,22 @@ export async function courierCargoCalculationService(data, serviceId, userId) {
 }
 
 export async function truckingCalculationService(data, serviceId, userId) {
+	const estimates = {
+		pickup: data?.pickup,
+		dropoff: data?.dropoff,
+		vehicle: data?.vehicle,
+		goodsType: data?.goodsType,
+		distance: data?.distance,
+		isDifferentState: data?.isDifferentState,
+	};
+
 	const POST_DATA = {
 		distance: Math.round(data.distance),
 		vehicle: data.vehicle,
 		serviceId: serviceId,
 		userId: userId,
 		isDifferentState: data.isDifferentState,
-		estimates: JSON.stringify(data),
+		estimates: JSON.stringify(estimates),
 	};
 	if (userId) {
 		const response = await fetch(`${CALCULATE_URL}/trucking`, {

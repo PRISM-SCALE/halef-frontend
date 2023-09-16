@@ -17,8 +17,6 @@ import {useLocation} from "react-router-dom";
 
 const INITIAL_VALUES = {
 	region: "",
-	// origin: "",
-	// destination: "",
 	pickup: "",
 	dropoff: "",
 	weight: null,
