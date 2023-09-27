@@ -11,6 +11,7 @@ import PaymentModal from "../../components/PaymentModal";
 
 const Payment = () => {
 	const {toggle: open, onOpen, onClose} = useToggle();
+	// const [responseData, setResponseData] = useState();
 	const defaultValues = useMemo(
 		() => ({
 			name: "",
@@ -29,33 +30,45 @@ const Payment = () => {
 
 	const {
 		register,
-		formState: {errors, isValid},
+		formState: {errors, isValid, isSubmitting},
 		handleSubmit,
 		trigger,
 		watch,
+		setError,
+		// reset,
 	} = methods;
 
 	const values = watch();
 
 	const onSubmit = async () => {
-		if (isValid) {
-			const POST_DATA = {
-				name: values.name,
-				email: values.email,
-				phone: values.mobile,
-				shipmentId: values.jobNo,
-				amount: values.amount,
-				isTermsAndConditionsVerified: values.tandc,
-			};
+		try {
+			if (isValid) {
+				setError("jobNo", {message: ""});
+				const POST_DATA = {
+					name: values.name,
+					email: values.email,
+					phone: values.mobile,
+					paymentId: values.jobNo,
+					amount: values.amount,
+					isTermsAndConditionsVerified: values.tandc,
+				};
 
-			await createPayment(POST_DATA);
-			onOpen();
-		} else {
-			throw new Error("Uh-oh, Looks like Your form is still invalid!!");
+				const response = await createPayment(POST_DATA);
+				// setResponseData(response);
+
+				if (!response.isError) {
+					onOpen();
+				} else {
+					setError("jobNo", {message: response?.error});
+				}
+			}
+			// else {
+			// 	throw new Error("Uh-oh, Looks like Your form is still invalid!!");
+			// }
+		} catch (error) {
+			console.log(error);
 		}
 	};
-
-	console.log(values);
 
 	return (
 		<ServiceWrapper>
@@ -126,7 +139,7 @@ const Payment = () => {
 
 					<fieldset>
 						<label htmlFor="jobNo" className="text-[#f8bf02]">
-							Shipment Id
+							Payment Id
 						</label>
 						<input
 							name="jobNo"
@@ -229,7 +242,7 @@ const Payment = () => {
 						of 12% per annum until paid, including court costs or attorney fees.
 					</p>
 
-					<Button buttonText="pay now" />
+					<Button buttonText="pay now" disabled={isSubmitting} />
 				</FormWrapper>
 			</FormProvider>
 

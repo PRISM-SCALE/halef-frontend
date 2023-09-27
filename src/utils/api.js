@@ -70,17 +70,13 @@ export async function getAllCities() {
 // * -------------------------------------------------------------------------
 // * PAY NOW
 export async function createPayment(data) {
-	const response = await fetch(`${BASE_URL}/payments`, {
+	const response = await fetch(`${BASE_URL}/customer_payments`, {
 		method: "POST",
 		body: JSON.stringify(data),
 		headers: {
 			"Content-Type": "application/json",
 		},
 	});
-
-	if (!response.ok) {
-		throw {message: "Failed to create a user.", status: 500};
-	}
 
 	return response.json();
 }
