@@ -9,11 +9,20 @@ import {navigations} from "./navConfig";
 import {Icon} from "@iconify-icon/react";
 import {IconButton} from "@mui/material";
 import {useState} from "react";
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
 	const {isLoggedIn, logout} = useAuth();
-
+	const [isOpen, setIsSidebarOpen] = useState(false);
 	const [isHovered, setIsHovered] = useState(null);
+
+	const handleSidebarOpen = () => {
+		setIsSidebarOpen(true);
+	};
+
+	const handleSidebarClose = () => {
+		setIsSidebarOpen(false);
+	};
 
 	const handleMouseEnter = (index) => {
 		setIsHovered(index);
@@ -74,6 +83,10 @@ const Navbar = () => {
 						</div>
 					))}
 
+					<div>
+						<button className="py-3 px-8 bg-[#DD3333] text-white">GET QUOTE</button>
+					</div>
+
 					{isLoggedIn ? (
 						<button className="rounded-md uppercase px-4 py-2  ml-2" onClick={handleLogout}>
 							Logout
@@ -81,16 +94,20 @@ const Navbar = () => {
 					) : null}
 				</div>
 
-				<div className="lg:hidden">
+				<div className="lg:hidden ">
 					<IconButton>
 						<Icon
 							icon="ci:menu-alt-05"
+							onClick={handleSidebarOpen}
 							width={32}
 							height={32}
 							style={{color: "#DD3333"}}
 							className="cursor-pointer"
 						/>
 					</IconButton>
+					<div className="relative">
+						<Sidebar isOpen={isOpen} handleDropdownClose={handleSidebarClose} />
+					</div>
 				</div>
 			</div>
 		</div>

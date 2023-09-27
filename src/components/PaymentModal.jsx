@@ -27,9 +27,12 @@ const PaymentModal = ({open, onClose, phone}) => {
 	const values = watch();
 
 	const onSubmit = async () => {
+		const customerId = window.localStorage.getItem("PID_CUSTOMER_ID");
+
 		const POST_DATA = {
 			code: values.code,
 			phone,
+			customerId,
 		};
 
 		await verifyPaymentOtp(POST_DATA);

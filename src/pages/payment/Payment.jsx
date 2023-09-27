@@ -55,6 +55,10 @@ const Payment = () => {
 
 				const response = await createPayment(POST_DATA);
 				// setResponseData(response);
+				console.log(response);
+				if (response?.paymentData?._id) {
+					window.localStorage.setItem("PID_CUSTOMER_ID", response?.paymentData?._id);
+				}
 
 				if (!response.isError) {
 					onOpen();
