@@ -28,9 +28,9 @@ const Navbar = () => {
 		setIsHovered(index);
 	};
 
-	// const handleMouseLeave = () => {
-	// 	setIsHovered(null);
-	// };
+	const handleMouseLeave = () => {
+		setIsHovered(null);
+	};
 
 	const handleLogout = () => {
 		logout();
@@ -63,7 +63,10 @@ const Navbar = () => {
 								{pathname}
 							</Link>
 							{children?.length !== 0 && isHovered === index && (
-								<div className="absolute left-0 mt-2 bg-white  w-60 py-2">
+								<div
+									className="absolute left-0 mt-2 bg-white w-60 py-2"
+									onMouseLeave={handleMouseLeave}
+								>
 									{children?.map(({pathname, url}) => (
 										<div className="relative px-5 py-2" key={pathname}>
 											<NavLink
@@ -84,7 +87,12 @@ const Navbar = () => {
 					))}
 
 					<div>
-						<button className="py-3 px-8 bg-[#DD3333] text-white">GET QUOTE</button>
+						<Link
+							to="https://halefinternational.com/request-a-quote/"
+							className="py-3 px-8 bg-[#DD3333] text-white"
+						>
+							GET QUOTE
+						</Link>
 					</div>
 
 					{isLoggedIn ? (
