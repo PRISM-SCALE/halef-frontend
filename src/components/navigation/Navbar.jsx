@@ -68,7 +68,7 @@ const Navbar = () => {
 									onMouseLeave={handleMouseLeave}
 								>
 									{children?.map(({pathname, url}) => (
-										<div className="relative px-5 py-2" key={pathname}>
+										<div className="relative px-5 py-2" key={pathname} onClick={handleMouseLeave}>
 											<NavLink
 												to={url}
 												className={({isActive}) =>
