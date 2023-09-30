@@ -96,7 +96,10 @@ const Navbar = () => {
 					</div>
 
 					{isLoggedIn ? (
-						<button className="rounded-md uppercase px-4 py-2  ml-2" onClick={handleLogout}>
+						<button
+							className="uppercase px-4 py-2 ml-2 border border-[#DD3333] border-2"
+							onClick={handleLogout}
+						>
 							Logout
 						</button>
 					) : null}
