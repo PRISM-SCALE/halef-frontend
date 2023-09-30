@@ -13,6 +13,10 @@ const ResultView = ({serviceData}) => {
 		);
 	}
 
+	if (serviceData?.isMessage) {
+		return <div className="text-center text-4xl py-6">{serviceData?.message}</div>;
+	}
+
 	return (
 		<>
 			{serviceData ? (
