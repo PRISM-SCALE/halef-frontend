@@ -7,7 +7,6 @@ import FormWrapper from "./forms/FormWrapper";
 import {useMemo} from "react";
 import OTPForm from "./forms/OTPForm";
 import {verifyPaymentOtp} from "../utils/api";
-import {redirect} from "react-router-dom";
 
 const PaymentModal = ({open, onClose, phone}) => {
 	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
