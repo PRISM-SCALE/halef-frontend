@@ -7,6 +7,7 @@ import FormWrapper from "./forms/FormWrapper";
 import {useMemo} from "react";
 import OTPForm from "./forms/OTPForm";
 import {verifyPaymentOtp} from "../utils/api";
+import {redirect} from "react-router-dom";
 
 const PaymentModal = ({open, onClose, phone}) => {
 	const {mediumScreenAndUp, smallScreenAndUp} = useResponsive();
@@ -27,15 +28,19 @@ const PaymentModal = ({open, onClose, phone}) => {
 	const values = watch();
 
 	const onSubmit = async () => {
-		const customerId = window.localStorage.getItem("PID_CUSTOMER_ID");
+		const customerId = window.localStorage.getItem("PID_CUSTOMER");
+		const customerData = JSON.parse(customerId);
 
 		const POST_DATA = {
 			code: values.code,
 			phone,
-			customerId,
+			customerId: customerData?._id,
 		};
 
 		await verifyPaymentOtp(POST_DATA);
+
+		console.log(customerData?.paymentId?.link);
+		window.open(customerData?.paymentId?.link, "_blank");
 
 		onClose();
 		reset();
@@ -75,7 +80,13 @@ const PaymentModal = ({open, onClose, phone}) => {
 							<Button onClick={onClose} color="error">
 								Cancel
 							</Button>
-							<Button type="submit" color="success">
+							<Button
+								// component={Link}
+								// to={paymentLink}
+								// target="_blank"
+								type="submit"
+								color="success"
+							>
 								Submit
 							</Button>
 						</DialogActions>

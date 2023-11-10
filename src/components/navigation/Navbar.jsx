@@ -106,10 +106,9 @@ const Navbar = () => {
 				</div>
 
 				<div className="lg:hidden ">
-					<IconButton>
+					<IconButton onClick={handleSidebarOpen}>
 						<Icon
 							icon="ci:menu-alt-05"
-							onClick={handleSidebarOpen}
 							width={32}
 							height={32}
 							style={{color: "#DD3333"}}

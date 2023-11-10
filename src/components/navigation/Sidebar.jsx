@@ -33,10 +33,9 @@ const Sidebar = ({isOpen, handleDropdownClose}) => {
 			}`}
 		>
 			<div className="w-full flex justify-end">
-				<IconButton sx={{m: 1}}>
+				<IconButton sx={{m: 1}} onClick={handleDropdownClose}>
 					<Icon
 						icon="octicon:x-12"
-						onClick={handleDropdownClose}
 						width={32}
 						height={32}
 						style={{color: "#DD3333"}}
