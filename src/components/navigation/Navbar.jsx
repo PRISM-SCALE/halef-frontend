@@ -64,7 +64,7 @@ const Navbar = () => {
 							</Link>
 							{children?.length !== 0 && isHovered === index && (
 								<div
-									className="absolute left-0 mt-2 bg-white w-60 py-2"
+									className="absolute left-0 mt-2 bg-white w-80 py-2"
 									onMouseLeave={handleMouseLeave}
 								>
 									{children?.map(({pathname, url}) => (
@@ -86,14 +86,14 @@ const Navbar = () => {
 						</div>
 					))}
 
-					<div>
+					{/* <div>
 						<Link
 							to="https://halefinternational.com/request-a-quote/"
 							className="py-3 px-8 bg-[#DD3333] text-white"
 						>
 							GET QUOTE
 						</Link>
-					</div>
+					</div> */}
 
 					{isLoggedIn ? (
 						<button

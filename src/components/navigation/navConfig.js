@@ -10,39 +10,38 @@ export const navigations = [
 		hover: true,
 		children: [
 			{
-				pathname: "COMPASSIONATE DECEASED BODY TRANSPORTATION",
-				url: "https://halefinternational.com/service/compassionate-deceased-body-transportation/",
-			},
-			{
-				pathname: "COURIER & CARGO",
-				url: "https://halefinternational.com/service/courier-cargo/",
-			},
-			{
-				pathname: "TRUCKING",
-				url: "https://halefinternational.com/service/trucking/",
-			},
-			{
-				pathname: "SCRAP MANAGEMENT",
-				url: "https://halefinternational.com/service/scrap/",
+				pathname: "RELOCATIONS",
+				url: "https://halefinternational.com/service/relocations/",
 			},
 			{
 				pathname: "WAREHOUSING",
 				url: "https://halefinternational.com/service/storage-and-warehousing/",
 			},
 			{
+				pathname: "TRUCKING",
+				url: "https://halefinternational.com/service/trucking/",
+			},
+			{
+				pathname: "COURIER & CARGO",
+				url: "https://halefinternational.com/service/courier-cargo/",
+			},
+			{
+				pathname: "DECEASED BODY TRANSPORTATION",
+				url: "https://halefinternational.com/service/compassionate-deceased-body-transportation/",
+			},
+			{
 				pathname: "LIQUIDATION",
 				url: "https://halefinternational.com/service/liquidation/",
 			},
 			{
-				pathname: "RELOCATIONS",
-				url: "https://halefinternational.com/service/relocations/",
+				pathname: "SCRAP MANAGEMENT",
+				url: "https://halefinternational.com/service/scrap/",
 			},
 		],
 	},
 	{
-		pathname: "COST CALCULATOR",
-		url: "/", //"https://calculator.halefinternational.com",
-		active: true,
+		pathname: "TESTIMONIALS",
+		url: "https://halefinternational.com/#", //"https://calculator.halefinternational.com",
 		hover: false,
 	},
 	// {
