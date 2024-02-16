@@ -81,6 +81,26 @@ export async function createPayment(data) {
 	return response.json();
 }
 
+export async function resendPaymentOTP(phone) {
+	const POST_DATA = {
+		phone: Number(phone),
+	};
+
+	const response = await fetch(`${BASE_URL}/otp/payment/resend`, {
+		method: "POST",
+		body: JSON.stringify(POST_DATA),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	if (!response.ok) {
+		throw {message: "Failed to create a user.", status: 500};
+	}
+
+	return response.json();
+}
+
 export async function verifyPaymentOtp(data) {
 	const response = await fetch(`${BASE_URL}/otp/verify_payment`, {
 		method: "POST",
@@ -116,12 +136,12 @@ export async function createUser(data) {
 	return response.json();
 }
 
-export async function resendOTP(phone) {
+export async function resendUserOTP(phone) {
 	const POST_DATA = {
 		phone: Number(phone),
 	};
 
-	const response = await fetch(`${BASE_URL}/otp/resend`, {
+	const response = await fetch(`${BASE_URL}/otp/user/resend`, {
 		method: "POST",
 		body: JSON.stringify(POST_DATA),
 		headers: {

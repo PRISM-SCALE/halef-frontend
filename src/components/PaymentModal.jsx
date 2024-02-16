@@ -43,6 +43,10 @@ const PaymentModal = ({open, onClose, phone}) => {
 
 		onClose();
 		reset();
+
+		setTimeout(() => {
+			window.location.reload();
+		}, 5000);
 	};
 
 	return (

@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
+import {useLocation} from "react-router-dom";
 import {useFormContext} from "react-hook-form";
-import {resendOTP} from "../../utils/api";
+import {resendPaymentOTP, resendUserOTP} from "../../utils/api";
 
 const OTPForm = ({phone}) => {
+	const location = useLocation();
+
+	console.log(location.pathname);
+
 	const {
 		register,
 		formState: {errors},
@@ -10,7 +15,13 @@ const OTPForm = ({phone}) => {
 
 	const handleResendOTP = async (e) => {
 		e.preventDefault();
-		await resendOTP(phone);
+		if (location.pathname === "pay-online") {
+			await resendPaymentOTP(phone);
+
+			return;
+		} else {
+			await resendUserOTP(phone);
+		}
 	};
 
 	return (
