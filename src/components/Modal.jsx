@@ -6,7 +6,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useResponsive} from "../hooks/useResponsive";
 
 // * API
-import {createUser, verifyOtp} from "../utils/api";
+import {createUser, resendUserOTP, verifyOtp} from "../utils/api";
 
 // * COMPONENTS
 import ModalForm from "./forms/ModalForm";
@@ -17,6 +17,8 @@ import ResultView from "./ResultView";
 import {Icon} from "@iconify-icon/react";
 import {useLocation} from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import {useEffect} from "react";
+import Alert from "./Alert";
 
 // * INITIAL FORM VALUES
 
@@ -44,6 +46,18 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	});
 
 	const {handleSubmit, reset} = methods;
+
+	useEffect(() => {
+		const resendOtp = async () => {
+			if (USER_DATA && !values?.user?.isPhoneVerified) {
+				return await resendUserOTP(values?.user?.phone);
+			}
+
+			return;
+		};
+
+		resendOtp();
+	}, [USER_DATA, values?.user?.isPhoneVerified, values?.user?.phone]);
 
 	const onSubmit = async (data) => {
 		if (!USER_DATA) {
@@ -119,11 +133,19 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 							{!USER_DATA ? (
 								<ModalForm />
 							) : USER_DATA && !values?.user?.isPhoneVerified ? (
-								<OTPForm
-									phone={Number(values?.user?.phone)}
-									USER_DATA={USER_DATA}
-									isPhoneVerified={values?.user?.isPhoneVerified}
-								/>
+								<>
+									<Alert
+										bgColor="bg-blue-50"
+										textColor="text-blue-700"
+										icon="charm:info"
+										message={`No OTP Received? Try clicking resend link to get a new otp`}
+									/>
+									<OTPForm
+										phone={Number(values?.user?.phone)}
+										USER_DATA={USER_DATA}
+										isPhoneVerified={values?.user?.isPhoneVerified}
+									/>
+								</>
 							) : (
 								<ResultView serviceData={serviceData} />
 							)}
