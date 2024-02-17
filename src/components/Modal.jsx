@@ -35,7 +35,6 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const location = useLocation();
 	const serviceId = location.search.replace(/^\?id=/, "");
 
-
 	const [values, setValueToLocalStorage] = useLocalStorage("userData", null);
 
 	const USER_DATA = Boolean(values);
@@ -47,7 +46,6 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 	const {handleSubmit, reset} = methods;
 
 	const onSubmit = async (data) => {
-
 		if (!USER_DATA) {
 			login();
 			const POST_DATA = {
@@ -67,6 +65,8 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 
 		if (USER_DATA && !values?.user?.isPhoneVerified) {
 			login();
+
+			console.log("USER NOT VERIFIED");
 
 			const POST_DATA = {
 				phone: Number(values?.user?.phone),
@@ -119,7 +119,11 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 							{!USER_DATA ? (
 								<ModalForm />
 							) : USER_DATA && !values?.user?.isPhoneVerified ? (
-								<OTPForm phone={Number(values?.user?.phone)} />
+								<OTPForm
+									phone={Number(values?.user?.phone)}
+									USER_DATA={USER_DATA}
+									isPhoneVerified={values?.user?.isPhoneVerified}
+								/>
 							) : (
 								<ResultView serviceData={serviceData} />
 							)}

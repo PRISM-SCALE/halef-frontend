@@ -36,6 +36,8 @@ const PaymentModal = ({open, onClose, phone}) => {
 			customerId: customerData?._id,
 		};
 
+		// await resendPaymentOTP(POST_DATA?.phone);
+
 		await verifyPaymentOtp(POST_DATA);
 
 		console.log(customerData?.paymentId?.link);

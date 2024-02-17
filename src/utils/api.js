@@ -137,6 +137,7 @@ export async function createUser(data) {
 }
 
 export async function resendUserOTP(phone) {
+	console.log("USER NOT VERIFIED, OTP SENT FOR VERIFICATION");
 	const POST_DATA = {
 		phone: Number(phone),
 	};
@@ -157,6 +158,8 @@ export async function resendUserOTP(phone) {
 }
 
 export async function verifyOtp(data) {
+	console.log("USER VERIFIED");
+
 	const response = await fetch(`${BASE_URL}/otp/verify_user`, {
 		method: "POST",
 		body: JSON.stringify(data),

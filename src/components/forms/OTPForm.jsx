@@ -1,10 +1,21 @@
+import {useEffect} from "react";
 import PropTypes from "prop-types";
 import {useLocation} from "react-router-dom";
 import {useFormContext} from "react-hook-form";
 import {resendPaymentOTP, resendUserOTP} from "../../utils/api";
 
-const OTPForm = ({phone}) => {
+const OTPForm = ({phone, isPhoneVerified, USER_DATA}) => {
 	const location = useLocation();
+
+	useEffect(() => {
+		const resendOtp = async () => {
+			if (USER_DATA && !isPhoneVerified) {
+				return await resendUserOTP(phone);
+			}
+		};
+
+		resendOtp();
+	}, [USER_DATA, isPhoneVerified, phone]);
 
 	console.log(location.pathname);
 
@@ -64,6 +75,8 @@ const OTPForm = ({phone}) => {
 
 OTPForm.propTypes = {
 	phone: PropTypes.number.isRequired,
+	isPhoneVerified: PropTypes.bool,
+	USER_DATA: PropTypes.bool,
 };
 
 export default OTPForm;
