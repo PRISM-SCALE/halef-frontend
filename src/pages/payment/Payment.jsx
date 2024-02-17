@@ -152,7 +152,7 @@ const Payment = () => {
 							name="jobNo"
 							type="text"
 							className="input-fields"
-							placeholder="ID: 98615236493A"
+							placeholder="ID: XXXXXX"
 							{...register("jobNo", {required: "Please enter your Shipment number"})}
 							aria-invalid={errors.jobNo ? "true" : "false"}
 							onInput={() => {
