@@ -97,7 +97,7 @@ const Navbar = () => {
 
 					{isLoggedIn ? (
 						<button
-							className="uppercase px-4 py-2 ml-2 border border-[#DD3333] border-2"
+							className="uppercase px-4 py-2 ml-2 border-[#DD3333] border-2"
 							onClick={handleLogout}
 						>
 							Logout
