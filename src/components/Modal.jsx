@@ -121,12 +121,14 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 								<ModalForm />
 							) : USER_DATA && !values?.user?.isPhoneVerified ? (
 								<>
-									<Alert
-										bgColor="bg-blue-50"
-										textColor="text-blue-700"
-										icon="charm:info"
-										message={`No OTP Received? Try clicking resend link to get a new otp`}
-									/>
+									<div className="max-w-lg">
+										<Alert
+											bgColor="bg-blue-50"
+											textColor="text-blue-700"
+											icon="charm:info"
+											message={`No OTP Received? Try clicking resend link to get a new otp`}
+										/>
+									</div>
 									<OTPForm
 										phone={Number(values?.user?.phone)}
 										USER_DATA={USER_DATA}
