@@ -127,6 +127,11 @@ const Relocation = () => {
 				// return [];
 				selectedHouseType = relocationHouseTypes?.filter(({_id}) => _id === selectedHouseCapacity);
 
+				// If distance is below 11km, consider all vehicles
+				if (values.distance < 11) {
+					return selectedHouseType[0]?.allowedVehicles;
+				}
+
 				return selectedHouseType[0]?.allowedVehicles?.filter(({relocationRange}) => {
 					return relocationRange?.some(({minDistance, maxDistance}) => {
 						if (minDistance && maxDistance) {
