@@ -121,7 +121,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 								<ModalForm />
 							) : USER_DATA && !values?.user?.isPhoneVerified ? (
 								<>
-									<div className="max-w-lg">
+									<div className="max-w-xl mx-auto">
 										<Alert
 											bgColor="bg-blue-50"
 											textColor="text-blue-700"
