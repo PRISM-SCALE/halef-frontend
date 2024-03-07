@@ -14,13 +14,13 @@ const RootLayout = () => {
 
 	const headerText = (
 		<>
-			Pay <span className="text-[#DD3333]">Online</span>
+			Pay <span className="text-[#d40035]">Online</span>
 		</>
 	);
 
 	const headerCostEstimator = (
 		<>
-			Cost <span className="text-[#DD3333]">Estimator</span>
+			Quote <span className="text-[#d40035]">Calculator</span>
 		</>
 	);
 
@@ -30,7 +30,7 @@ const RootLayout = () => {
 			<div>
 				<Navbar />
 				<HeaderLayout
-					breadcrumbLink={changeText ? "Pay Now" : "Cost Estimator"}
+					breadcrumbLink={changeText ? "Pay Now" : "Quote Calculator"}
 					title={changeText ? headerText : headerCostEstimator}
 				/>
 

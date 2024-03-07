@@ -99,12 +99,12 @@ const Cargo = () => {
 
 	const header_name = (
 		<>
-			Courier and - <strong className="text-[#DD3333]">Cargo</strong>
+			Courier and - <strong className="text-[#d40035]">Cargo</strong>
 		</>
 	);
 	return (
 		<ServiceWrapper>
-			<Header caption="cost estimation for" title={header_name} />
+			<Header caption="quote calculator for" title={header_name} />
 
 			{/* FORM */}
 

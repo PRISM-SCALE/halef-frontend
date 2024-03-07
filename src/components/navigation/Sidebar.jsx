@@ -38,7 +38,7 @@ const Sidebar = ({isOpen, handleDropdownClose}) => {
 						icon="octicon:x-12"
 						width={32}
 						height={32}
-						style={{color: "#DD3333"}}
+						style={{color: "#d40035"}}
 						className="cursor-pointer"
 					/>
 				</IconButton>
@@ -73,7 +73,7 @@ const Sidebar = ({isOpen, handleDropdownClose}) => {
 										width={24}
 										height={24}
 										icon="icon-park-solid:down-one"
-										style={{color: "#DD3333"}}
+										style={{color: "#d40035"}}
 										className="cursor-pointer"
 									/>
 								)}
@@ -116,7 +116,7 @@ const Sidebar = ({isOpen, handleDropdownClose}) => {
 					))}
 				</div>
 				<div>
-					<button className="py-3 px-8 bg-[#DD3333] text-white w-full mx-1">GET QUOTE</button>
+					<button className="py-3 px-8 bg-[#d40035] text-white w-full mx-1">GET QUOTE</button>
 				</div>
 			</div>
 		</div>

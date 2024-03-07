@@ -12,7 +12,7 @@ const Header = ({caption, title}) => {
 					<Icon
 						icon={"ion:chevron-back"}
 						height={"2rem"}
-						className="cursor-pointer text-[#DD3333]"
+						className="cursor-pointer text-[#d40035]"
 						onClick={() => navigate("/")}
 					/>
 				)}

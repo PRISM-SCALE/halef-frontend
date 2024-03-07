@@ -35,7 +35,7 @@ const Iconify = ({size, icon, link}) => {
 				icon={icon}
 				width={size}
 				height={size}
-				className="text-white cursor-pointer hover:text-[#DD3333] transition-colors ease-in-out delay-300"
+				className="text-white cursor-pointer hover:text-[#d40035] transition-colors ease-in-out delay-300"
 			/>
 		</a>
 	);

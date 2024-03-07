@@ -111,7 +111,7 @@ const UserDetails = ({open, onClose, serviceData, calculatorCallback}) => {
 						? "Fill the below form to get your calculated results"
 						: USER_DATA && !values?.user?.isPhoneVerified
 						? "Enter OTP to verify"
-						: "Cost Estimation"}
+						: "Quote Calculator"}
 				</DialogTitle>
 
 				<FormProvider {...methods}>

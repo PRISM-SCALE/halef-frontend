@@ -8,7 +8,7 @@ const ResultView = ({serviceData}) => {
 	if (!serviceData) {
 		return (
 			<Box sx={{display: "flex", justifyContent: "center", my: 10}}>
-				<CircularProgress size={60} sx={{color: "#DD3333"}} />
+				<CircularProgress size={60} sx={{color: "#d40035"}} />
 			</Box>
 		);
 	}

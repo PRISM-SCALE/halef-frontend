@@ -79,7 +79,7 @@ const Payment = () => {
 
 	return (
 		<ServiceWrapper>
-			<Header caption="Cost ESTIMATION - Halef International" title={"Payment Portal"} />
+			<Header caption="Quote Calculator - Halef International" title={"Payment Portal"} />
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>
 					<fieldset>

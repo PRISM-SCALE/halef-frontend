@@ -47,7 +47,7 @@
     content: "";
     width: 4px;
     height: 0;
-    background-color: #DD3333;
+    background-color: #d40035;
     opacity: 0;
     position: absolute;
     top: 50%;
@@ -70,7 +70,7 @@
     content: "";
     width: 4px;
     height: 0;
-    background-color: #DD3333;
+    background-color: #d40035;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -88,7 +88,7 @@
   }
 
   .footer-title {
-    color: #DD3333;
+    color: #d40035;
   }
 
   .footer-title::before {
@@ -109,7 +109,7 @@
     position: absolute;
     right: 0;
     bottom: 8px;
-    background: #DD3333;
+    background: #d40035;
   }
 
   .service-card {
@@ -123,7 +123,7 @@
     bottom: 0;
     width: 0;
     height: 4px;
-    background-color: #DD3333;
+    background-color: #d40035;
     transition: all .3s ease-in;
   }
 }

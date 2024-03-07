@@ -166,11 +166,11 @@ const Warehouse = () => {
 		return true;
 	};
 
-	const header_name = <strong className="text-[#DD3333]">Warehousing</strong>;
+	const header_name = <strong className="text-[#d40035]">Warehousing</strong>;
 
 	return (
 		<ServiceWrapper>
-			<Header caption="cost estimation for" title={header_name} />
+			<Header caption="quote calculator for" title={header_name} />
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>

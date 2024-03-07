@@ -227,13 +227,13 @@ const Relocation = () => {
 
 	const header_name = (
 		<>
-			Relocation - <strong className="text-[#DD3333]">Packers and Movers</strong>
+			Relocation - <strong className="text-[#d40035]">Packers and Movers</strong>
 		</>
 	);
 
 	return (
 		<ServiceWrapper>
-			<Header caption="cost estimation for" title={header_name} />
+			<Header caption="quote calculator for" title={header_name} />
 
 			<FormProvider {...methods}>
 				<FormWrapper

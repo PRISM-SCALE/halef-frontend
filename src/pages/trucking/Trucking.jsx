@@ -175,12 +175,12 @@ const Trucking = () => {
 		}
 	};
 
-	const header_name = <strong className="text-[#DD3333]">Trucking</strong>;
+	const header_name = <strong className="text-[#d40035]">Trucking</strong>;
 	const isDisabled = Boolean(values.distance) && Boolean(values.pickup) && Boolean(values.dropoff);
 
 	return (
 		<ServiceWrapper>
-			<Header caption="cost estimation for" title={header_name} />
+			<Header caption="quote calculator for" title={header_name} />
 
 			<FormProvider {...methods}>
 				<FormWrapper onSubmit={handleSubmit(onSubmit)}>

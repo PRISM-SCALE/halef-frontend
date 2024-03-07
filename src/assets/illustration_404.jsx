@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 // ----------------------------------------------------------------------
 
 export default function PageNotFoundIllustration({...other}) {
-	const PRIMARY_MAIN = "#DD3333";
+	const PRIMARY_MAIN = "#d40035";
 	const PRIMARY_DARKER = "#7f1d1d";
 
 	return (

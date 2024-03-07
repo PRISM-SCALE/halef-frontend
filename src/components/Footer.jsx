@@ -29,7 +29,7 @@ const Footer = () => {
 						{halefHub.title}
 					</h5>
 					<div>
-						<ul className="text-[#DD3333]">
+						<ul className="text-[#d40035]">
 							{halefHub.data.map(({href, name}, index) => (
 								<LinkHref key={index} href={href} name={name} />
 							))}
@@ -42,7 +42,7 @@ const Footer = () => {
 						{services.title}
 					</h5>
 					<div>
-						<ul className="text-[#DD3333]">
+						<ul className="text-[#d40035]">
 							{services.data.map(({href, name}, index) => (
 								<LinkHref key={index} href={href} name={name} />
 							))}
@@ -56,14 +56,14 @@ const Footer = () => {
 					</h5>
 					<div className="mb-4">
 						<p className="text-white">Need help?</p>
-						<a href="tel:08029915864" className="text-[#DD3333]">
+						<a href="tel:08029915864" className="text-[#d40035]">
 							08029915864
 						</a>
 					</div>
 
 					<div className="mb-6">
 						<p className="text-white">Email Us At:</p>
-						<a href="mailto:enquiry@halefinternational.com" className="text-[#DD3333]">
+						<a href="mailto:enquiry@halefinternational.com" className="text-[#d40035]">
 							enquiry@halefinternational.com
 						</a>
 					</div>
@@ -90,8 +90,8 @@ Footer.propTypes = {};
 const LinkHref = ({href, name}) => {
 	return (
 		<a href={href} className="text-white   cursor-pointer flex items-center gap-2 space-y-2">
-			<Icon icon="radix-icons:dot-filled" width={20} height={20} style={{color: "#DD3333"}} />
-			<li className="hover:text-[#DD3333] capitalize text-xl transition-all ease-in delay-200 ">
+			<Icon icon="radix-icons:dot-filled" width={20} height={20} style={{color: "#d40035"}} />
+			<li className="hover:text-[#d40035] capitalize text-xl transition-all ease-in delay-200 ">
 				{name}
 			</li>
 		</a>

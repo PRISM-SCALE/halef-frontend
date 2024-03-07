@@ -89,7 +89,7 @@ const Navbar = () => {
 					{/* <div>
 						<Link
 							to="https://halefinternational.com/request-a-quote/"
-							className="py-3 px-8 bg-[#DD3333] text-white"
+							className="py-3 px-8 bg-[#d40035] text-white"
 						>
 							GET QUOTE
 						</Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
 
 					{isLoggedIn ? (
 						<button
-							className="uppercase px-4 py-2 ml-2 border-[#DD3333] border-2"
+							className="uppercase px-4 py-2 ml-2 border-[#d40035] border-2"
 							onClick={handleLogout}
 						>
 							Logout
@@ -111,7 +111,7 @@ const Navbar = () => {
 							icon="ci:menu-alt-05"
 							width={32}
 							height={32}
-							style={{color: "#DD3333"}}
+							style={{color: "#d40035"}}
 							className="cursor-pointer"
 						/>
 					</IconButton>
